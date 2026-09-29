@@ -216,3 +216,16 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# graphify (managed by graphify-lifecycle)
+# Build artifact, not source. Gitignoring it also keeps graph.json (~4 MB)
+# and graph.html (~3.6 MB) out of the agent's grep/read range, and stops
+# graphify indexing its own output (graphify honours .gitignore).
+graphify-out/
+
+# Downloaded datasets (re-fetch with the pinned revision in data/SOURCES.md)
+data/raw/*.csv
+
+.pi
+
+skills-lock.json
