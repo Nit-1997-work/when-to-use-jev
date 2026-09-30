@@ -1,6 +1,7 @@
 # Experiment Design: Jev vs Gemini Flash for E-commerce Intent Classification
 
-Status: draft v0.2.
+Status: v1.0.
+The published results come from run `pilot-20260929T205311Z`: see [the report](../results/pilot-20260929T205311Z/report.md) and section 12.
 
 ## 1. Question
 
@@ -56,9 +57,10 @@ Other candidates considered and rejected: Bitext Customer Support (27 intents, l
 
 | ID | System | How it is called |
 | ---- | -------- | ------------------ |
-| **G** | **Gemini Flash-Lite** (`google/gemini-3.5-flash-lite`, a common low-latency choice for LLM intent classifiers) | Chat Completions call through the LiteLLM-based gateway, structured output with an `enum` of the 46 intents, temperature 0, thinking off or at the minimum setting |
-| **J** | **Jev** (`jev-1.13.0`, pinned rather than the moving `jev-latest` alias) | One `Choice` question with 46 options, each with a one-line description. The response gives `choice`, `probabilities`, and `confidence` |
-| G2 (optional) | Gemini Flash (`google/gemini-3.7-flash`, a larger general-purpose model) | Same as G. Shows whether the bigger Gemini changes the picture |
+| **`baseline`** | **Gemini Flash-Lite** (`google/gemini-3.5-flash-lite`, a common low-latency choice for LLM intent classifiers) | Chat Completions call through the LiteLLM-based gateway, structured output with an `enum` of the 46 intents, temperature 0, provider-default thinking (`minimal`) and provider-default safety settings |
+| `baseline-conf` | Same model | Same call, plus a self-reported `confidence` field in the schema. Needed because the gateway rejects `logprobs` for Gemini (verified: HTTP 400 "Logprobs is not supported for this model"). Used only for the confidence analysis; `baseline` stays the accuracy/latency/cost reference |
+| **`jev`** | **Jev** (`jev-1.13.0`, pinned rather than the moving `jev-latest` alias) | One `Choice` question with 46 options, each with a description. The response gives `choice`, `probabilities`, and `confidence` |
+| `baseline-2` (optional) | Gemini Flash (`google/gemini-3.7-flash`, a larger general-purpose model) | Same as `baseline`, with `reasoning_effort=low`, the lowest level the gateway accepts for this model. It still reasons: 24-148 reasoning tokens per call in the published run (5th to 95th percentile) |
 
 Both systems get **the same information**:
 
@@ -103,11 +105,13 @@ Sampling is per intent with a fixed random seed, and no message appears in more 
 
 | Set | Per intent | Total | Composition | Use |
 | --- | ---------- | ----- | ----------- | --- |
-| Practice | 5 | 230 | Same mix as the main test | Tune the 46 intent descriptions. Frozen after this. Never reported. |
+| Practice | 5 | 230 | 4 clean + 1 profane (20%) | Tune the 46 intent descriptions. Frozen after this. Never reported. |
 | **Main test** | 50 | **2,300** | 45 clean + 5 profane (10%). Typos at their natural rate (~50%). | Headline accuracy, latency, and cost. |
-| Profanity test | 10 | 460 | All profane | "What happens when users swear?" Wrong answers and safety refusals are counted separately. |
+| Profanity test | 10 | 460 | All profane | "What happens when users swear?" Wrong answers and safety-filter blocks are counted separately. |
 
-Each profanity-free intent has at least ~360 source messages, so every set can be filled without reuse.
+Every intent has at least 310 clean and 363 profane source messages, so every set can be filled without reuse.
+A fourth file, `warmup` (20 unused clean messages), feeds the discarded warm-up calls.
+The run order inside each split is shuffled, so time-of-run drift (network, rate limits) cannot line up with specific intents.
 A main test of 2,300 detects accuracy differences of about 2 percentage points.
 Both systems are cheap, so we can raise it to 100 per intent (4,600) if the confidence intervals are too wide.
 
@@ -117,19 +121,26 @@ Both systems are cheap, so we can raise it to 100 per intent (4,600) if the conf
 
 - **Intent accuracy** (46-way) and **macro-F1**.
 - **Category accuracy** (13-way): count a prediction correct when its category is right, even if the specific intent is wrong. This separates "wrong area" from "close sibling" mistakes.
-- A confusion matrix, plus the top confused pairs.
-- Accuracy by `tags` slice (typos, colloquial, offensive, and so on).
+- The top confused pairs (expected vs predicted intent).
+- Accuracy by typo slice (the `Z` tag); the profanity split covers offensive language.
 - **Invalid-output rate**: Gemini responses that fail to parse or fall outside the label set, which Jev cannot produce. Count these as wrong.
-- Statistics: 95% bootstrap confidence intervals, and McNemar's test on the paired predictions.
+- **Blocked messages**: when the provider's safety filter withholds an answer (`finish_reason=content_filter`), the message has no answer.
+  Blocked messages are excluded from every quality metric (accuracy, macro-F1, category accuracy, confidence) and reported separately, split into clean and profane messages.
+  API errors that survive the runner's retries are handled the same way.
+- Statistics: 95% bootstrap confidence intervals, and McNemar's exact test on the messages both systems answered.
 
 ### Latency
 
 - Measured on the client as wall-clock time from sending the request to having a parsed answer.
 - Report **p50, p95, and p99**, plus the mean.
-- Run sequentially (one request at a time) so queueing does not distort the numbers. Send 20 warm-up calls first and discard them.
+- Each system sends one request at a time, so queueing does not distort the numbers, after 20 discarded warm-up calls.
+  In the published run the four systems ran at the same time from one machine, each still one request at a time.
+  Where this could be checked, the effect was small: Gemini Flash's median latency was 2,932 ms while the other systems were running and 2,892 ms after they finished.
 - Run from the same machine and network for both systems, and record where that machine is (TypeSafe is hosted on the US West Coast).
-- All Gemini calls go through a **LiteLLM-based gateway compatible with OpenAI's Chat Completions API**. There are no direct Gemini API calls. Gemini latency therefore includes the gateway hop, which is how most production LLM classifiers are deployed. Record the gateway's own overhead separately if it reports it.
-- Repeat the whole test run 3 times, at different times of day. Report the spread.
+- All Gemini calls go through a **LiteLLM-based gateway compatible with OpenAI's Chat Completions API**. There are no direct Gemini API calls. Gemini latency therefore includes the gateway hop, which is how most production LLM classifiers are deployed. The gateway's own timing headers (`x-litellm-response-duration-ms`, `x-litellm-overhead-duration-ms`) are recorded per call.
+- The gateway caches identical requests: a repeat returns in about 90 ms with an `x-litellm-cache-key` header. Every request therefore sends LiteLLM's per-request bypass (`{"cache": {"no-cache": true}}`), and any response that still carries a cache key is flagged and excluded from latency.
+- The published results come from one run of every message.
+  Repeating the run at other times of day would show day-to-day spread; the harness supports repeats, but the report's margins of error assume one run per message.
 - Log retries (HTTP 429/529 and similar) separately, so rate limiting does not look like model latency.
 
 ### Token cost
@@ -139,38 +150,50 @@ Both systems are cheap, so we can raise it to 100 per intent (4,600) if the conf
   - Gemini: `prompt_tokens`, `completion_tokens`, and `completion_tokens_details.reasoning_tokens` from the Chat Completions `usage` object returned by the gateway.
 - Cost per call = tokens x list price on the run date.
   - Jev: $0.042 per million input tokens.
-  - Gemini: take the current published prices for input, output, and thinking tokens. Record the date and the price sheet URL.
+  - Gemini, as published for Vertex AI's global endpoint (the one the gateway calls) and identically on the Gemini Developer API price page, read 2026-09-29:
+    Flash-Lite costs $0.30 per million input tokens and $2.50 per million output tokens.
+    Flash costs $0.75 and $3.75, an introductory price through 2026-12-31 ($1.50 and $7.50 from 2027-01-01).
+    Thinking tokens are billed at the output rate.
+    Sources: `cloud.google.com/vertex-ai/generative-ai/pricing` and `ai.google.dev/gemini-api/docs/pricing`.
+  - Blocked responses are billed (Vertex charges every request that returns HTTP 200), so cost averages over every call, blocked ones included.
 - Report **cost per 1,000 classifications** and **cost per 1 million classifications**.
 - Also report tokens per call for each system. The 46 intent descriptions dominate the input, so the prompt size is similar for both. The difference comes from the per-token price and from Gemini's output tokens.
 
 ### Confidence (secondary)
 
-- Jev: `confidence` and the top `probabilities` value.
-- Gemini: the probability of the chosen label from token `logprobs` if the gateway passes them through. Otherwise, ask for a 0-1 confidence in the schema and label it as "self-reported".
+- Jev: the probability of its chosen intent (the top `probabilities` value).
+  Its `confidence` field tracks it closely (correlation 0.999 in the published run).
+- Gemini: the gateway does not support `logprobs` for these models, so Gemini's confidence is **self-reported** (`baseline-conf`). The blog must label it that way; it is a weaker signal than a native probability.
 - Jev's `confidence` measures how concentrated the probabilities are, not whether the answer is correct.
   Between close siblings (for example the three return intents), probability can legitimately split, so we also report accuracy on the top-2 options and look at what the low-confidence cases actually are.
 - Report:
-  - **Calibration**: expected calibration error (ECE) and a reliability plot. This shows whether "80% confident" means "right 80% of the time".
+  - **Calibration**: expected calibration error (ECE, 15 equal-width bins). This shows whether "80% confident" means "right 80% of the time".
   - **Accuracy vs coverage**: if we only act on answers above a confidence threshold, what accuracy do we get and what share of messages do we act on? For example: "Jev acts on 85% of messages at 98% accuracy; Gemini acts on 70%."
+    Coverage is a share of answered messages.
+    Thresholds fall only between groups of equal confidence: answers that all say 0.95 cannot be split into acted-on and not.
 
 ## 6. Measurement tooling
 
-Use **Arize Phoenix** (open source, runs locally; `arize-phoenix-otel` with OpenInference instrumentation) as the system of record, and keep a small analysis notebook for the statistics Phoenix does not compute.
+Use **Arize Phoenix** (open source, runs locally; `arize-phoenix-otel` with OpenInference instrumentation) for traces, dashboards, and side-by-side browsing.
+The harness itself drives every call and writes one JSONL record per classification; those records are the source of truth, and `jevbench report` computes the statistics from them.
 
 | Need | Tool | Hand-written? |
 | ---- | ---- | ------------- |
-| Per-call latency, tokens (incl. reasoning tokens), errors | OpenInference spans. Gemini via `openinference-instrumentation-openai` on the OpenAI client pointed at the LiteLLM-based gateway (automatic). Jev via one manual `LLM` span per call, with `llm.model_name`, `llm.provider`, `llm.token_count.*`, and the full `probabilities` as span attributes | Jev span only (~20 lines) |
-| Cost in USD | Phoenix cost tracking. Add custom prices in Settings > Models for `jev-1.13.0` (input $0.042/M, output $0) and for the gateway's `google/gemini-*` names if the built-in table does not match them | Config only |
-| The test set | A Phoenix **dataset**: input = message, expected output = intent, metadata = category and tags | No |
-| Running both systems on it | Phoenix **experiments**: one experiment per system x repeat, with code evaluators `intent_correct` and `category_correct`. The UI compares runs side by side per example | Task functions + 2 tiny evaluators |
-| Latency percentiles, cost and token dashboards | Phoenix project dashboards (one project per system) | No |
-| p50/p95/p99 per system, bootstrap CIs, McNemar, ECE, reliability plots, accuracy-vs-coverage, slice tables | Notebook that pulls experiment runs and spans from Phoenix (`arize-phoenix-client`) into pandas, then `scikit-learn`, `statsmodels`, `numpy` | Yes, but only analysis, no measurement |
+| Per-call latency, tokens (incl. reasoning tokens), errors | OpenInference spans, one Phoenix project per system (`jevbench-<system>`). Gemini via `openinference-instrumentation-openai` on the OpenAI client pointed at the LiteLLM-based gateway (automatic). Jev via one manual `LLM` span per call with `llm.model_name`, `llm.provider`, and `llm.token_count.*`. Each call sits under a `classify` span tagged with example id, split, repeat, and correctness; warm-up calls sit under a `warmup` span | Jev span only |
+| Cost in USD | Computed by `jevbench report` from recorded tokens and the prices recorded in each run's manifests. `make phoenix` registers Jev's price for Phoenix cost dashboards; the gateway's `google/gemini-*` names must be added in Settings > Models | Config only |
+| The test set | `jevbench phoenix-sync` uploads each split as a Phoenix **dataset** (content-addressed name, so a changed split becomes a new dataset) | No |
+| Side-by-side comparison | `jevbench phoenix-sync` logs each (system, split, repeat) as a Phoenix **experiment** from the JSONL records, with `intent_correct` and `category_correct` evaluations, linked to the run's traces | No |
+| Accuracy, macro-F1, CIs, McNemar, latency percentiles, cost, ECE, coverage, slices, confusions | `jevbench report` -> `results/<run_id>/report.md` | Yes (tested offline) |
+
+Why the harness drives the calls instead of Phoenix's `run_experiment`: it keeps the timed path free of experiment bookkeeping, makes runs resumable after an interruption, and keeps one local, auditable record per call even when Phoenix is not running.
 
 Rules that keep the numbers honest:
 
 - Register Phoenix with `batch=True`, so exporting spans never adds to the measured latency (the default synchronous exporter sends spans on the request path).
-- Latency is the duration of the provider-call span, not the whole experiment task, so evaluator and bookkeeping time is excluded.
-- Keep our own recorded prices and token counts in the run output too, so the blog does not depend on Phoenix's pricing table for Gemini 3.x names.
+- Latency is timed around exactly one HTTP attempt to a parsed answer. SDK retries are off; the runner's retries and backoff time are recorded separately.
+- Keep our own recorded prices and token counts in the run output, so the blog does not depend on Phoenix's pricing table for Gemini 3.x names.
+- Compute the report only from the committed records and manifests: `jevbench report` needs no API keys, and CI checks that the committed report matches the records.
+- Refuse full runs from uncommitted code, and refuse to resume a run whose configuration changed.
 - A local Phoenix in Docker means readers can reproduce the blog with `docker run` and no account.
 
 Alternatives considered:
@@ -182,6 +205,8 @@ Alternatives considered:
 
 - Temperature 0 for Gemini. Jev has no sampling setting.
 - Pin both model versions and log the model ID returned with every response.
+  Through the gateway, Gemini's returned model ID is the gateway alias (for example `google/gemini-3.5-flash-lite`), not a dated version.
+- Keep the provider's default safety settings (the harness sends none).
 - Save every request and response to JSONL (text, prediction, probabilities, tokens, latency, timestamp), so every number in the blog can be recomputed.
 - Do not change descriptions or prompts after looking at test results.
 
@@ -201,29 +226,52 @@ If Jev is clearly less accurate, the blog still has a finding: where the gap is 
 
 ```text
 when-to-use-jev/
-  data/prepare.py          # download Bitext, stratified dev/test split, upload as Phoenix datasets
-  data/intents.yaml        # the 46 intent descriptions (frozen after dev)
-  classifiers/jev.py       # Choice call + manual OpenInference span -> {intent, probabilities, confidence}
-  classifiers/gemini.py    # structured output via instrumented OpenAI client -> same shape
-  run.py                   # Phoenix experiments: classifier x split x repeat
-  analyze.ipynb            # pulls runs/spans from Phoenix; percentiles, CIs, calibration, plots
+  data/intents.yaml              # the 46 intent descriptions both systems see (frozen after practice tuning)
+  data/splits/*.jsonl            # practice / main / profanity / warmup (built by `jevbench prepare`)
+  src/jevbench/data.py           # deterministic split builder
+  src/jevbench/classifiers/      # jev.py (Choice call) and llm.py (gateway, structured output), same Prediction shape
+  src/jevbench/runner.py         # sequential, resumable runs -> results/<run>/<system>/<split>/repeat-<n>.jsonl
+  src/jevbench/metrics.py        # accuracy, macro-F1, CIs, McNemar, ECE, coverage, cost
+  src/jevbench/report.py         # results/<run>/report.md
+  src/jevbench/phoenix_sync.py   # datasets + experiments in Phoenix
+  src/jevbench/audit.py          # pre-publish scan for the gateway host, API keys, and internal names
+  src/jevbench/cli.py            # `jevbench prepare | systems | check | run | report | audit | phoenix-sync`
+  results/<run>/                 # published runs: records, manifests, and report.md
+  scripts/run_matrix.sh          # systems x splits x repeats under one run id
+  tests/                         # offline unit tests
   docs/experiment-design.md
 ```
 
-Stack: Python with `uv`, `datasets`, `typesafe-sdk`, `openai` (the client for the LiteLLM-based, Chat Completions-compatible gateway; used for all LLM calls), `arize-phoenix` (local server), `arize-phoenix-otel`, `arize-phoenix-client`, `openinference-instrumentation-openai`, `pandas`, `scikit-learn`, and `statsmodels`.
+Stack: Python 3.12 with `uv`, `pandas`, `typesafe-sdk`, `openai` (the client for the LiteLLM-based, Chat Completions-compatible gateway; used for all LLM calls), `arize-phoenix-otel`, `arize-phoenix-client`, `openinference-instrumentation-openai`, `scipy`, and `truststore`. Phoenix itself runs in Docker (`arizephoenix/phoenix:version-20.16.0`).
 
-Expected cost of the whole experiment: a few dollars at most. About 2,500 calls x 3 repeats x 2-3 systems, at roughly 1-2k input tokens per call.
+Cost of one full run (every system, main and profanity splits): about $10.
+Gemini Flash is most of it ($5.47); Jev's share was $0.26.
 
 ## 10. Steps
 
-1. Get a Jev API key, and try a handful of messages by hand in `console.typesafe.ai`.
-2. Build the splits and write the 46 intent descriptions.
-3. Tune the descriptions on the dev split, then freeze them.
-4. Run G, J, and optionally G2 on the test split, 3 times.
-5. Analyze and write up.
+1. Done: Jev and gateway keys validated (`make check`), splits built (`make prepare`), harness smoke-tested (`make smoke`).
+2. Done: `data/intents.yaml` frozen (its SHA-256, `d71d9547...`, is recorded in every run manifest).
+3. Done: Gemini prices set in `.env` and recorded in every run manifest.
+4. Done: full run `pilot-20260929T205311Z` (every system x main + profanity, one run).
+5. Write up from `results/pilot-20260929T205311Z/report.md`.
 
-## 11. Open items
+## 11. Decisions and open items
 
-- Access: Jev API key, and a key for the LiteLLM-based gateway with token usage in the `usage` object.
-- Does the gateway pass through `logprobs` for Gemini? If not, the confidence comparison uses self-reported confidence.
-- Check TypeSafe's Master Customer Agreement (`typesafe.ai/legal/mca`) for rules on publishing benchmark results before the blog goes out.
+- Decided: the run keeps the provider's default safety settings, because that is what a production classifier gets.
+  The blocks come from the provider's configurable safety filter.
+  Blocked messages are excluded from quality metrics and reported separately; in the published run, Flash-Lite blocked 3.7% of clean and 71.3% of profane main-split messages.
+- Decided: one run of every message (no repeats); repeats of the same messages would make the report's margins of error too narrow.
+- Open: cite the source and date for Jev's $0.042 per million input tokens (set `JEV_PRICE_SOURCE_URL` for future runs).
+- Open: check TypeSafe's Master Customer Agreement (`typesafe.ai/legal/mca`) for rules on publishing benchmark results before the blog goes out.
+
+## 12. Published run
+
+Run `pilot-20260929T205311Z`, 2026-09-29 from 20:53 to 23:17 UTC; full results in [the report](../results/pilot-20260929T205311Z/report.md).
+
+- Every system classified all 2,300 main and 460 profanity messages once, from one client machine on home Wi-Fi.
+- Each system sent one request at a time, but the four systems ran at the same time (see section 5, Latency).
+- Prompt size is nearly identical: Jev used 2,235 input tokens per call and Gemini 2,281.
+- Jev also reports about 400 output tokens per call, which are free.
+- The run's manifests record commit `383854f` with uncommitted changes, because the harness was not yet committed when it ran.
+  The later fixes in this repository change only situations the run never hit (it had no API errors, rate limits, HTTP-error blocks, invalid outputs, crashes, or resumes), plus dropping a duplicate field from new records, so no number from this run depends on them.
+  The report was rebuilt from the records with the final code, and CI checks that it still matches them.

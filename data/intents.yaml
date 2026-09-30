@@ -1,0 +1,192 @@
+# The 46 Bitext Retail intents, with the description both classifiers receive.
+#
+# Jev gets these as Choice `criteria`: {intent_name: {"means": ..., "not": ...}}.
+# The LLM gets the exact same objects serialized as JSON in its system prompt.
+# `not` is omitted when an intent has no close sibling worth contrasting.
+#
+# Tune these on the practice split only. Freeze before running the main test.
+# Changing any text changes `intents_sha256` in every run manifest.
+# Line length is capped by .yamllint.yaml (one description per line keeps diffs reviewable).
+
+instruction: "Which intent best describes this customer message?"
+
+intents:
+  # ACCOUNT
+  - name: open_account
+    category: ACCOUNT
+    means: Wants to create, open, or register a new user account.
+  - name: change_account
+    category: ACCOUNT
+    means: Wants to update, edit, or fix something in their existing user account.
+    not: Correcting personal data as a formal data-rights request (request_right_to_rectification).
+  - name: close_account
+    category: ACCOUNT
+    means: Wants to close, delete, or cancel their user account.
+  - name: recover_password
+    category: ACCOUNT
+    means: Wants to reset or recover a password, or regain access to a locked, hacked, or stolen account.
+  - name: order_history
+    category: ACCOUNT
+    means: Wants to see a list of their past orders or purchase history.
+    not: Checking the status or location of a specific current order (track_order).
+
+  # APP_WEBSITE
+  - name: use_app
+    category: APP_WEBSITE
+    means: Wants to download, install, or learn how to use the mobile app or website.
+  - name: technical_issue
+    category: APP_WEBSITE
+    means: Wants to report that the app or website is broken, crashing, or showing errors.
+
+  # CART
+  - name: add_product
+    category: CART
+    means: Wants to add a product to the shopping cart or basket.
+  - name: remove_product
+    category: CART
+    means: Wants to remove a product from the shopping cart or basket.
+    not: Cancelling an order that has already been placed (cancel_order).
+
+  # CONTACT
+  - name: customer_service
+    category: CONTACT
+    means: Wants to contact customer service or support by phone, email, or chat.
+    not: Explicitly asking to talk to a human or a live person instead of the assistant (human_agent).
+  - name: human_agent
+    category: CONTACT
+    means: Wants to talk to a human, a live person, or an operator instead of the assistant.
+
+  # DELIVERY
+  - name: delivery_time
+    category: DELIVERY
+    means: Wants to know when an order will arrive, its delivery date, or how long shipping takes.
+  - name: shipping_costs
+    category: DELIVERY
+    means: Wants to know how much shipping or delivery costs.
+  - name: track_delivery
+    category: DELIVERY
+    means: Wants to find out where their shipment or package is right now.
+    not: Asking about the overall status of an order or a replacement item (track_order).
+  - name: delivery_issue
+    category: DELIVERY
+    means: Wants to report a problem with a delivery as a whole, such as a lost, delayed, or never-received package.
+    not: Only some items missing (missing_item), damaged items (damaged_delivery), or wrong items (wrong_item).
+  - name: missing_item
+    category: DELIVERY
+    means: Received the order, but one or more items were not included.
+  - name: damaged_delivery
+    category: DELIVERY
+    means: Received an item that arrived broken or damaged in delivery.
+    not: An item that arrived intact but does not work (product_issue).
+  - name: wrong_item
+    category: DELIVERY
+    means: Received an item that is not what they ordered.
+
+  # FEEDBACK
+  - name: submit_feedback
+    category: FEEDBACK
+    means: Wants to give feedback, a comment, or a complaint about the company, brand, or service in general.
+    not: Feedback about a specific product (submit_product_feedback).
+  - name: submit_product_feedback
+    category: FEEDBACK
+    means: Wants to leave a review, comment, or complaint about a specific product.
+    not: Suggesting a new product or an improvement (submit_product_idea).
+  - name: submit_product_idea
+    category: FEEDBACK
+    means: Wants to suggest a new product idea or a product improvement.
+
+  # ORDER
+  - name: cancel_order
+    category: ORDER
+    means: Wants to cancel an order or a purchased item that has not been returned.
+    not: Sending back an item already received (return_product).
+  - name: change_order
+    category: ORDER
+    means: Wants to modify an order before it ships, such as changing an item, size, color, or quantity.
+  - name: track_order
+    category: ORDER
+    means: Wants to check the status of an order or a replacement, or find where an order is.
+    not: Specifically asking where a shipment or package is right now (track_delivery).
+  - name: request_invoice
+    category: ORDER
+    means: Wants to get, download, or request an invoice, bill, or receipt for a purchase.
+
+  # PAYMENT
+  - name: pay
+    category: PAYMENT
+    means: Wants to make a payment, transfer, or checkout.
+  - name: payment_methods
+    category: PAYMENT
+    means: Wants to know which payment methods are accepted, or how to pay with a specific method.
+  - name: payment_issue
+    category: PAYMENT
+    means: Wants to report a payment problem, such as a declined card or a failed payment.
+
+  # PRODUCT
+  - name: product_information
+    category: PRODUCT
+    means: Wants information or details about a product.
+  - name: availability
+    category: PRODUCT
+    means: Wants to check whether a product is available or in stock, without saying online or in store.
+    not: Asking specifically about online stock (availability_online) or in-store stock (availability_in_store).
+  - name: availability_online
+    category: PRODUCT
+    means: Wants to check whether a product is available or in stock online.
+  - name: availability_in_store
+    category: PRODUCT
+    means: Wants to check whether a product is available or in stock in a physical store.
+  - name: product_issue
+    category: PRODUCT
+    means: Wants to report that a product does not work or has a defect.
+    not: An item damaged during delivery (damaged_delivery).
+  - name: exchange_product
+    category: PRODUCT
+    means: Wants to exchange a product for another one, without saying where.
+    not: Exchanging in a physical store (exchange_product_in_store).
+  - name: exchange_product_in_store
+    category: PRODUCT
+    means: Wants to exchange a product in a physical store, including items bought online.
+
+  # RETURNS
+  - name: return_policy
+    category: RETURNS
+    means: Wants to know the return policy or how the return process works.
+    not: Asking about the refund or money-back policy (refund_policy).
+  - name: return_product
+    category: RETURNS
+    means: Wants to return or send back an item or order, without saying online or in store.
+    not: Returning online (return_product_online) or in a physical store (return_product_in_store).
+  - name: return_product_online
+    category: RETURNS
+    means: Wants to return an item online or by mail.
+  - name: return_product_in_store
+    category: RETURNS
+    means: Wants to return an item in a physical store, including items bought online.
+  - name: refund_policy
+    category: RETURNS
+    means: Wants to know the refund, reimbursement, or money-back policy.
+  - name: request_refund
+    category: RETURNS
+    means: Wants to get their money back for a purchase.
+  - name: refund_status
+    category: RETURNS
+    means: Wants to check the status of a refund they already requested.
+
+  # SALES
+  - name: sales_period
+    category: SALES
+    means: Wants to know about sales, promotions, or when a sale period starts or ends.
+
+  # STORE
+  - name: store_location
+    category: STORE
+    means: Wants to find a physical store or the nearest store location.
+  - name: store_opening_hours
+    category: STORE
+    means: Wants to know the opening hours of a store.
+
+  # USER
+  - name: request_right_to_rectification
+    category: USER
+    means: Wants to correct, update, or erase their personal data as a data-privacy right.
