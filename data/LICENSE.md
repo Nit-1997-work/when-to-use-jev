@@ -5,3 +5,9 @@ That dataset is licensed under the Community Data License Agreement - Sharing, V
 
 The source, pinned revision, and checksum are in [SOURCES.md](SOURCES.md), and the dataset card is in [intent/raw/README.md](intent/raw/README.md).
 The harness code in this repository is licensed separately under Apache-2.0 (see the top-level [LICENSE](../LICENSE)).
+
+## Amazon Shopping Queries Dataset (ESCI)
+
+The files in `data/rerank/splits/`, `data/rerank/grocery_review.yaml`, and the result records published under `results/rerank/` contain text derived from the Amazon Shopping Queries Dataset (Reddy et al., 2022), which is licensed under the Apache License, Version 2.0.
+A copy of that license is in [rerank/raw/LICENSE](rerank/raw/LICENSE); the source, pinned commit, and checksums are in [SOURCES.md](SOURCES.md).
+The derived files are shared under the same Apache-2.0 license.

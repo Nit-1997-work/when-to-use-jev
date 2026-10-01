@@ -4,7 +4,6 @@
 
 # Optional: RUN_ID=... on the command line. Recipes default to a new UTC timestamp (runs) or the latest run (report/sync).
 export RUN_ID
-NEW_RUN_ID = $${RUN_ID:-$$(date -u +%Y%m%dT%H%M%SZ)}
 
 # ---------- Experiment 1: intent classification ----------
 INTENT_SYSTEMS ?= jev baseline baseline-conf baseline-2
@@ -35,10 +34,10 @@ intent-check: ## Experiment 1: one live call per system to validate credentials
 	uv run jevbench intent check --systems $(INTENT_SYSTEMS)
 
 intent-smoke: ## Experiment 1: 5 examples x every system on the practice split, then report
-	scripts/run_matrix.sh intent "smoke-$(NEW_RUN_ID)" "practice" "$(INTENT_SYSTEMS)" "1" --limit 5 --warmup 2
+	scripts/run_matrix.sh intent "smoke-$${RUN_ID:-$$(date -u +%Y%m%dT%H%M%SZ)}" "practice" "$(INTENT_SYSTEMS)" "1" --limit 5 --warmup 2
 
 intent-run: ## Experiment 1: every system x main + profanity splits (needs committed code)
-	scripts/run_matrix.sh intent "$(NEW_RUN_ID)" "main profanity" "$(INTENT_SYSTEMS)" "$(INTENT_REPEATS)"
+	scripts/run_matrix.sh intent "$${RUN_ID:-$$(date -u +%Y%m%dT%H%M%SZ)}" "main profanity" "$(INTENT_SYSTEMS)" "$(INTENT_REPEATS)"
 
 intent-report: ## Experiment 1: report the latest run (or RUN_ID=...)
 	uv run jevbench intent report $${RUN_ID:+--run-id "$$RUN_ID"}
@@ -56,18 +55,18 @@ rerank-check: ## Experiment 2: one live search per system, to validate credentia
 	uv run jevbench rerank check --systems $(RERANK_SYSTEMS)
 
 rerank-smoke: ## Experiment 2: 5 searches x every system on the practice splits, then report
-	scripts/run_matrix.sh rerank "smoke-$(NEW_RUN_ID)" "practice practice-nomatch" "$(RERANK_SYSTEMS)" "1" \
+	scripts/run_matrix.sh rerank "smoke-$${RUN_ID:-$$(date -u +%Y%m%dT%H%M%SZ)}" "practice practice-nomatch" "$(RERANK_SYSTEMS)" "1" \
 		--limit 5 --warmup 2
 
 rerank-practice: ## Experiment 2: tuning run over the practice splits (scratch: allowed from uncommitted code)
-	scripts/run_matrix.sh rerank "practice-$(NEW_RUN_ID)" "practice practice-nomatch" "$(RERANK_SYSTEMS)" "1" \
+	scripts/run_matrix.sh rerank "practice-$${RUN_ID:-$$(date -u +%Y%m%dT%H%M%SZ)}" "practice practice-nomatch" "$(RERANK_SYSTEMS)" "1" \
 		--allow-dirty
 
 rerank-tune: ## Experiment 2: pick abstention thresholds from a practice run (RUN_ID=...)
 	uv run jevbench rerank tune-thresholds --run-id "$$RUN_ID"
 
 rerank-run: ## Experiment 2: every system x main, nomatch, reversed, and 3 consistency repeats (needs committed code)
-	run_id="$(NEW_RUN_ID)"; \
+	run_id="$${RUN_ID:-$$(date -u +%Y%m%dT%H%M%SZ)}"; \
 	scripts/run_matrix.sh rerank "$$run_id" "main nomatch reversed" "$(RERANK_SYSTEMS)" "1" && \
 	scripts/run_matrix.sh rerank "$$run_id" "consistency" "$(RERANK_SYSTEMS)" "1 2 3"
 
