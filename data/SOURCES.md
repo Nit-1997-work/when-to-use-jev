@@ -4,15 +4,15 @@
 
 - Dataset: `bitext/Bitext-retail-ecommerce-llm-chatbot-training-dataset` on Hugging Face.
 - Pinned revision: `12dd624ddcd3057382b2faad661bcda1fa869491`.
-- File: `data/raw/bitext-retail-ecommerce.csv` (gitignored, 42.6 MB).
+- File: `data/intent/raw/bitext-retail-ecommerce.csv` (gitignored, 42.6 MB).
 - SHA-256: `13a988266fed4e2b2c1ff947a89ef220ce09b5b13ac83c4a1496c0d7b81e8127`.
-- License: CDLA-Sharing-1.0. The dataset card is saved as `data/raw/README.md`.
+- License: CDLA-Sharing-1.0. The dataset card is saved as `data/intent/raw/README.md`.
 - Downloaded: 2026-09-29.
 
 Re-fetch:
 
 ```bash
-curl -L -o data/raw/bitext-retail-ecommerce.csv \
+curl -L -o data/intent/raw/bitext-retail-ecommerce.csv \
   "https://huggingface.co/datasets/bitext/Bitext-retail-ecommerce-llm-chatbot-training-dataset/resolve/12dd624ddcd3057382b2faad661bcda1fa869491/bitext-retail-ecommerce-llm-chatbot-training-dataset.csv"
 ```
 

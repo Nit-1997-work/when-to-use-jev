@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pytest
 
-from jevbench.settings import LLMSystemConfig, Prices, Settings
+from jevbench.common.settings import LLMSystemConfig, Prices, Settings
 
 RecordFactory = Callable[..., dict[str, object]]
 RunWriter = Callable[..., Path]
