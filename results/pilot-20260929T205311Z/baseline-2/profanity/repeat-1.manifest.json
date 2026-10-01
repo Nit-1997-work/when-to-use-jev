@@ -1,0 +1,47 @@
+{
+  "run_id": "pilot-20260929T205311Z",
+  "system": "baseline-2",
+  "split": "profanity",
+  "repeat": 1,
+  "model_requested": "google/gemini-3.7-flash",
+  "written_at": "2026-09-29T22:53:18.260+00:00",
+  "intents_sha256": "d71d95475e94dd1d8c5a0d7415c162371748aaf265e4745f5faf0b134fa54818",
+  "split_sha256": "c301df19ecf153cb4175fe2b5f24187fe198cbccf04c17882a23e88062e64be9",
+  "settings": {
+    "gateway": "LiteLLM-based, OpenAI Chat Completions compatible",
+    "baseline": {
+      "model": "google/gemini-3.5-flash-lite",
+      "reasoning_effort": null,
+      "price_per_mtok": {
+        "input": 0.3,
+        "output": 2.5,
+        "thinking": 2.5
+      }
+    },
+    "baseline_2": {
+      "model": "google/gemini-3.7-flash",
+      "reasoning_effort": "low",
+      "price_per_mtok": {
+        "input": 0.75,
+        "output": 3.75,
+        "thinking": 3.75
+      }
+    },
+    "typesafe_base_url": "https://api.typesafe.ai",
+    "typesafe_model": "jev-1.13.0",
+    "jev_input_price_per_mtok": 0.042,
+    "price_source_url": "https://ai.google.dev/gemini-api/docs/pricing (Standard paid tier, read 2026-09-29; 3.7 Flash promo price through 2026-12-31)",
+    "request_timeout_s": 30.0,
+    "client_location": "home wifi"
+  },
+  "git": {
+    "commit": "383854ff80747b7d49e1832c9452689ea2c98331",
+    "dirty": true
+  },
+  "python": "3.12.14",
+  "packages": {
+    "typesafe-sdk": "0.7.2",
+    "openai": "3.22.0",
+    "arize-phoenix-otel": "0.17.2"
+  }
+}

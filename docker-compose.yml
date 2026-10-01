@@ -1,0 +1,14 @@
+services:
+  phoenix:
+    # Pinned to match arize-phoenix-client / arize-phoenix-otel in uv.lock. UI + OTLP collector on :6006.
+    image: arizephoenix/phoenix:version-20.16.0
+    ports:
+      # Host port is configurable in case 6006 is taken (PHOENIX_HOST_PORT in .env). Container port stays 6006.
+      - "${PHOENIX_HOST_PORT:-6006}:6006"
+    environment:
+      PHOENIX_WORKING_DIR: /mnt/data
+    volumes:
+      - phoenix_data:/mnt/data
+
+volumes:
+  phoenix_data:
