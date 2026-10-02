@@ -223,13 +223,18 @@ __marimo__/
 # graphify indexing its own output (graphify honours .gitignore).
 graphify-out/
 
-# Downloaded datasets (re-fetch with the pinned revision in data/SOURCES.md)
-data/raw/*.csv
+# Downloaded datasets (re-fetch with the pinned revisions in data/SOURCES.md)
+data/*/raw/*.csv
+data/*/raw/*.parquet
 
 # Run outputs (JSONL records, manifests, reports). Publish selected runs deliberately, not by accident:
-# everything under results/ is ignored, and each published run is re-included by name.
-results/*
-!results/pilot-20260929T205311Z/
+# everything under results/<experiment>/ is ignored, and each published run is re-included by name.
+# Only a published run's report.md is committed; its records and manifests stay local.
+results/*/*
+!results/intent/pilot-20260929T205311Z/
+!results/rerank/main-20261002/
+results/*/*/*
+!results/*/*/report.md
 
 # Local-only patterns for `jevbench audit` (internal names or hosts that must never be published).
 .audit-denylist
@@ -237,3 +242,5 @@ results/*
 .pi
 
 skills-lock.json
+
+docs/plans/*.md

@@ -1,0 +1,44 @@
+# Label definitions every re-ranking system sees, so no system gets extra help.
+#
+# The four levels are ESCI's (Exact, Substitute, Complement, Irrelevant), rewritten for a shopper's search with
+# grocery examples. Gemini gets them in its prompt; Jev gets them as Score criteria, Noul criteria, and Choice text.
+# Tuned only on the practice splits, then frozen: the file's SHA-256 is recorded in every run manifest.
+---
+instruction: >-
+  A shopper typed a search query into an online store. Judge how well a product matches what the shopper is looking
+  for, reading the query's stated requirements literally: product type, brand, flavor, size, form, quantity, and
+  anything the query says to avoid ("without", "free", "no").
+labels:
+  exact:
+    means: >-
+      The product is the thing the shopper searched for and meets every requirement the query states, such as brand,
+      flavor, form, size, or "without X".
+    not: >-
+      A similar product that misses a stated requirement (that is a substitute), or an accessory for it (a complement).
+    example: "query 'shredded cheddar cheese' -> a bag of shredded cheddar"
+  substitute:
+    means: >-
+      The product is the same kind of thing but misses at least one stated requirement; the shopper could still buy
+      it instead.
+    not: >-
+      The exact item (exact), something that goes with it (complement), or a different kind of product (irrelevant).
+    example: "query 'gluten-free bread' -> regular whole wheat bread; query 'lavazza coffee machine' -> a Nespresso machine"
+  complement:
+    means: >-
+      The product is not what the shopper searched for, but it is used together with it.
+    not: >-
+      The searched item itself, or an alternative to it.
+    example: "query 'lavazza coffee machine' -> Lavazza coffee pods"
+  irrelevant:
+    means: >-
+      The product is a different kind of thing, or it fails the core of the query.
+    not: >-
+      An alternative the shopper could buy instead (substitute) or something used with the searched item (complement).
+    example: "query 'sesame chips' -> a trail mix; query 'baking without sugar' -> a low-sodium baking book"
+exact_match:
+  question: Is this product an exact match for the shopper's query?
+  match: The product is the item searched for and meets every requirement the query states.
+  no_match: >-
+    The product misses a stated requirement, is an accessory or a companion product, or is a different kind of thing.
+none_of_these: >-
+  No product in the list is an exact match: none is the searched item with every stated requirement.

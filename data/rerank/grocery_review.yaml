@@ -1,0 +1,3000 @@
+# Grocery review: one decision per candidate search from data/rerank/grocery_terms.yaml.
+# `grocery: true` when the shopper wants something to eat or drink; `false` otherwise (see grocery_terms.yaml).
+# `jevbench rerank prepare` refuses to build splits while any decision is still null.
+# Decisions: proposed by the coding agent from each query and its first Exact product, for the authors to approve.
+---
+searches:
+  - query_id: 13
+    query: '#1 rated resveratrol supplement without tea leaves'
+    signal: query
+    food_title_share: 0.05
+    exact_product: Jarrow Formulas Resveratrol 100 mg - 60 Veggie Caps - Resveratrol + Vitamin C - Antioxidant & Cardiovascular Support - 6
+    grocery: false
+  - query_id: 113
+    query: '&#34;tortillas without interesterified soybean oil”'
+    signal: query
+    food_title_share: 0.18
+    exact_product: Nature Made Fish Oil 1000 mg, 250 Softgels Value Size, Fish Oil Omega 3 Supplement For Heart Health
+    grocery: true
+  - query_id: 348
+    query: .40 cal suppressor oil filter not as it seems
+    signal: query
+    food_title_share: 0.0
+    exact_product: WIX Filters - 51258 Spin-On Lube Filter, Pack of 1
+    grocery: false
+  - query_id: 500
+    query: 02cool spray water bottle for drinking not flap to drink
+    signal: query
+    food_title_share: 0.0
+    exact_product: O2COOL ArcticSqueeze Insulated Mist 'N Sip Squeeze Bottle 20 oz., Blue
+    grocery: false
+  - query_id: 610
+    query: 1 & 1/4pvp water suction hose without couplings
+    signal: query
+    food_title_share: 0.0
+    exact_product: WaterAce WA62UP Drill Pump, Black
+    grocery: false
+  - query_id: 745
+    query: 1 gallon ziplock bags the kind without the zip clip
+    signal: products
+    food_title_share: 0.56
+    exact_product: Ziploc Gallon Food Storage Freezer Slider Bags, Power Shield Technology for More Durability, 24 Count
+    grocery: false
+  - query_id: 749
+    query: 1 gpm propane water heater not adapter
+    signal: query
+    food_title_share: 0.0
+    exact_product: Rheem RTEX-24 24kW 240V Electric Tankless Water Heater, Gray
+    grocery: false
+  - query_id: 883
+    query: 1 square container without lids small
+    signal: products
+    food_title_share: 0.56
+    exact_product: Rubbermaid Brilliance Food Storage Container, Large, 9.6 Cup, Clear 1991158
+    grocery: false
+  - query_id: 933
+    query: 1'' oil hose
+    signal: query
+    food_title_share: 0.0
+    exact_product: CHAPIN 20000 Garden Sprayer 1 Gallon Lawn
+    grocery: false
+  - query_id: 1090
+    query: 1/2gallon water bottle without straw
+    signal: query
+    food_title_share: 0.0
+    exact_product: 'SOXCOXO Half Gallon 64oz Water Bottle With Lid,Strap and Holder,bpa free,Leakproof,Great For Kids,Women,Man.Large Water '
+    grocery: false
+  - query_id: 1278
+    query: 10 oz plastic jars without lids bulk
+    signal: products
+    food_title_share: 0.6
+    exact_product: Sistema To Go Collection Mini Bites Small Food Storage Containers, 4.39 oz./130 mL, Pink/Green/Blue, 3 Count
+    grocery: false
+  - query_id: 1413
+    query: 100 oz water bottle bpa free
+    signal: query
+    food_title_share: 0.0
+    exact_product: Pogo BPA-Free Tritan Plastic Water Bottle with Chug Lid, 32 Oz, Grey
+    grocery: false
+  - query_id: 1414
+    query: 100 oz water bottles without words
+    signal: query
+    food_title_share: 0.0
+    exact_product: Life Bottle! Time Marked Water Bottle - 1 Gallon Water Bottle with Time Marker - Extra Large Water Bottle/Water Jug Help
+    grocery: false
+  - query_id: 1458
+    query: 100% cranberry juice not from concentrate
+    signal: both
+    food_title_share: 0.77
+    exact_product: Dynamic Health, Unsweetened Concentrate Juice, Cranberry , 16-Ounce
+    grocery: true
+  - query_id: 1466
+    query: 100% montmorency tart cherry juice without added sugar
+    signal: both
+    food_title_share: 0.85
+    exact_product: Montmorency Tart Cherry Juice Concentrate - Bottled in Premium Glass Bottles 16oz - 100% Pure Michigan-Grown Tart Cherri
+    grocery: true
+  - query_id: 1470
+    query: 100% organic, pure without any mix
+    signal: query
+    food_title_share: 0.43
+    exact_product: Annie's Organic Bunny Fruit Snacks, Variety Pack, Gluten Free, Vegan, 24 ct
+    grocery: false
+  - query_id: 1618
+    query: 10w30 marine oil
+    signal: query
+    food_title_share: 0.0
+    exact_product: Pennzoil 550035052 SAE 10W-30 Motor Oil API GF-5, 1 Quart
+    grocery: false
+  - query_id: 2257
+    query: 16.9 oz bottled water cooler
+    signal: query
+    food_title_share: 0.06
+    exact_product: AUPET Water Bottle Carrier,Purple Flower 500ML Water Sport Bottle Cover Pouch Insulated Soft Sleeve Holder Case +Shoulde
+    grocery: false
+  - query_id: 2524
+    query: 2 coffee filters organic
+    signal: both
+    food_title_share: 0.75
+    exact_product: 'If You Care Unbleached Coffee Filters, #2 – Cone Shaped, All Natural, Biodegradable, Compostable, Chlorine Free 100 Coun'
+    grocery: false
+  - query_id: 2603
+    query: 2 oz bowls
+    signal: products
+    food_title_share: 0.56
+    exact_product: HIC Ramekins, Fine White Porcelain, 2.5-Inch, 2-Ounce Capacity, Set of 6
+    grocery: false
+  - query_id: 3596
+    query: 30 oz coffee mug
+    signal: both
+    food_title_share: 0.82
+    exact_product: Allures and Illusions Worlds Largest Gigantic Coffee Mug
+    grocery: false
+  - query_id: 3659
+    query: 310 shakes for weight loss
+    signal: products
+    food_title_share: 0.5
+    exact_product: Plant Protein Powder and Meal Replacement Shake | 310 Shakes are Gluten, Dairy and Soy Free Protein and 0g of Sugar | Ke
+    grocery: true
+  - query_id: 4628
+    query: 50 gallon water heater
+    signal: query
+    food_title_share: 0.0
+    exact_product: Rheem MR50245 Marathon Tall Electric Water Heater, 50-Gallon
+    grocery: false
+  - query_id: 4661
+    query: 50 ways to soothe yourself without food
+    signal: query
+    food_title_share: 0.0
+    exact_product: '7 Steps to Get Off Sugar and Carbohydrates: Healthy Eating for Healthy Living with a Low-Carbohydrate, Anti-Inflammatory'
+    grocery: false
+  - query_id: 4676
+    query: 500 piece puzzle candy
+    signal: query
+    food_title_share: 0.0
+    exact_product: Galison 500 Piece Rainbow Popsicle Jigsaw Puzzle for Families and Teens, Colorful Rainbow Puzzle with Gorgeous and Uniqu
+    grocery: false
+  - query_id: 4860
+    query: 6 gallon water dispenser
+    signal: query
+    food_title_share: 0.0
+    exact_product: Zen Water Filter System, Portable Water Purification System, Water Cooler Bottle 6-Gallon
+    grocery: false
+  - query_id: 4911
+    query: 6 x 12 floor register oil rubbed bronze
+    signal: query
+    food_title_share: 0.0
+    exact_product: Accord Ventilation AMFRRBB212 Wicker Design Floor Register, Oil Rubbed Bronze, 2" x 12"
+    grocery: false
+  - query_id: 5249
+    query: 8 cup bowl with lid
+    signal: products
+    food_title_share: 0.62
+    exact_product: Pyrex Glass Measuring Cup Set (8-Cup, Microwave and Oven Safe )
+    grocery: false
+  - query_id: 5634
+    query: Always go for function over fashion, look for a warm multi purpose jacket with plenty of pockets and is water proof
+    signal: query
+    food_title_share: 0.03
+    exact_product: SCOTTeVEST Men's Revolution 2.0 Jacket Vest | 25 Pockets | Anti-Pickpocket
+    grocery: false
+  - query_id: 6560
+    query: adaptogenic herbs
+    signal: query
+    food_title_share: 0.06
+    exact_product: 'Paradise Herbs Imperial Adaptogen | Anti Stress & Qi Boosting Formula | Eleuthero | Rhodiola | Astragalus | Ashwaghanda '
+    grocery: false
+  - query_id: 6975
+    query: adult toothpaste not mint
+    signal: query
+    food_title_share: 0.17
+    exact_product: Colgate Sensitive Maximum Strength Whitening Toothpaste, Mint - 6 Ounce (Pack of 6)
+    grocery: false
+  - query_id: 6987
+    query: adult water slides inflatable
+    signal: query
+    food_title_share: 0.0
+    exact_product: Bounceland Bounce 'N Splash Island Wet or Dry Inflatable Bouncer or Water Slide All in one, Large Pool, Fun Bouncing Are
+    grocery: false
+  - query_id: 7663
+    query: ajenjo herb
+    signal: query
+    food_title_share: 0.1
+    exact_product: Frontier Co-op Cut & Sifted Wormwood Herb 1lb
+    grocery: false
+  - query_id: 7732
+    query: alani nu fruity cereal
+    signal: query
+    food_title_share: 0.31
+    exact_product: Alani Nu Whey Protein Powder, 23g of Ultra-Premium, Gluten-Free, Low Fat Blend of Fast-digesting Protein, Fruity Cereal,
+    grocery: true
+  - query_id: 8265
+    query: aloe vera water without latex
+    signal: query
+    food_title_share: 0.15
+    exact_product: George's Aloe Vera Liquid Supplement, 128 oz
+    grocery: true
+  - query_id: 9245
+    query: anjou coconut oil
+    signal: query
+    food_title_share: 0.06
+    exact_product: Anjou Coconut Oil, Organic Extra Virgin, Cold Pressed Unrefined for Hair, Skin, Cooking, Health, Beauty, USDA Certified,
+    grocery: true
+  - query_id: 9513
+    query: ao smith water tank
+    signal: query
+    food_title_share: 0.0
+    exact_product: AO Smith BTR-200 Tank Type Water Heater with Commercial Natural Gas
+    grocery: false
+  - query_id: 10650
+    query: asian coffee table
+    signal: query
+    food_title_share: 0.0
+    exact_product: Cotton Craft Jaipur Solid Wood Hand Carved Accent Coffee Table - 18 Inch Round Top x 18 Inch High - Antique Brown
+    grocery: false
+  - query_id: 11052
+    query: au lait hand wash
+    signal: products
+    food_title_share: 0.5
+    exact_product: Scottish Fine Soaps Au Lait Extra Nourishing Body Butter - 8.8 oz. Jar
+    grocery: false
+  - query_id: 11340
+    query: automatic wine glass
+    signal: query
+    food_title_share: 0.0
+    exact_product: Shot Glasses, Automatic Water Activated Colorful Flashing LED Light Up Flash Blinking Beer Wine Whisky Vodka Martini Dri
+    grocery: false
+  - query_id: 11619
+    query: b'one cup coffee dr'
+    signal: query
+    food_title_share: 0.4
+    exact_product: Andaz Press 11oz. Coffee Mug Gag Gift, World's Okayest Doctor, 1-Pack
+    grocery: false
+  - query_id: 11655
+    query: b07rfthpfy vegan amino acid supplements
+    signal: query
+    food_title_share: 0.06
+    exact_product: Optimum Nutrition Instantized BCAA Capsules, Keto Friendly Branched Chain Essential Amino Acids, 1000mg, 400 Count
+    grocery: false
+  - query_id: 12627
+    query: baja baby organic lavender lotion reviews
+    signal: query
+    food_title_share: 0.06
+    exact_product: California Baby Calming Everyday Lotion - Moisturizer for Dry, Sensitive Skin, Post Bath and Diaper Changing, Non-Greasy
+    grocery: false
+  - query_id: 12640
+    query: baked chips
+    signal: both
+    food_title_share: 0.81
+    exact_product: Lay's Oven Baked Sour Cream & Onion Flavored Potato Crisps, 1.125 Ounce (Pack of 64)
+    grocery: true
+  - query_id: 12655
+    query: baking pans 10x15
+    signal: query
+    food_title_share: 0.0
+    exact_product: Wilton Performance Pans Aluminum Jelly Roll and Cookie Pan, 10.5 x 15.5-Inch
+    grocery: false
+  - query_id: 12664
+    query: baking soda bulk
+    signal: both
+    food_title_share: 0.78
+    exact_product: ARM & HAMMER Pure Baking Soda 8 oz (Pack of 6)
+    grocery: true
+  - query_id: 12665
+    query: baking stones for bread
+    signal: query
+    food_title_share: 0.06
+    exact_product: Black Rock Grill Granite Baking Stone, Large Granite Pizza Stone, 14.9inch
+    grocery: false
+  - query_id: 13970
+    query: battery water flosser
+    signal: query
+    food_title_share: 0.0
+    exact_product: Waterpik Power Flosser Flexible Tip, Battery Operated, Assorted Color , 17 Piece Set
+    grocery: false
+  - query_id: 14306
+    query: beard oil and balm
+    signal: query
+    food_title_share: 0.06
+    exact_product: Honest Amish - Classic Beard Oil - 2 Ounce
+    grocery: false
+  - query_id: 14307
+    query: beard oil balm wax
+    signal: query
+    food_title_share: 0.06
+    exact_product: Honest Amish - Classic Beard Oil - 2 Ounce
+    grocery: false
+  - query_id: 14408
+    query: beauty and the beast tea set plastic
+    signal: query
+    food_title_share: 0.0
+    exact_product: Disney Princess Miniature Tea Set -- Beauty & the Beast, Belle
+    grocery: false
+  - query_id: 14654
+    query: beef jerky for dad
+    signal: both
+    food_title_share: 0.69
+    exact_product: People's Choice Beef Jerky - Jerky Box - Health Nut - Keto Gift - Sugar-Free, Carb-Free, Gluten-Free, High Protein, Keto
+    grocery: true
+  - query_id: 14667
+    query: beer barrel
+    signal: query
+    food_title_share: 0.25
+    exact_product: Washburn Dad's Wrapped Root Beer Barrels ~ 2 Lbs ~ Old Fashioned Flavor
+    grocery: true
+  - query_id: 14692
+    query: beer themed gifts for women
+    signal: query
+    food_title_share: 0.12
+    exact_product: Best Beer Chiller Sticks for Bottles and Cap Opener 2 Pack - Beer Gifts Men - Top Christmas Stocking Stuffers Idea for D
+    grocery: false
+  - query_id: 14847
+    query: belly tea
+    signal: query
+    food_title_share: 0.44
+    exact_product: Traditional Medicinals Organic Belly Comfort Peppermint Tea, 16 Count, Pack of 6
+    grocery: true
+  - query_id: 15658
+    query: big mama barbecue sources
+    signal: products
+    food_title_share: 0.5
+    exact_product: Mama Sita's Barbecue Marinade, 23 Ounce
+    grocery: true
+  - query_id: 15945
+    query: bio oil
+    signal: query
+    food_title_share: 0.26
+    exact_product: Mother's Special Blend All Natural Skin Toning Oil, 8-Ounce
+    grocery: false
+  - query_id: 15947
+    query: bio peel neogen lemon
+    signal: query
+    food_title_share: 0.12
+    exact_product: DERMALOGY by NEOGENLAB Bio-Peel Gauze Peeling Pad - Exfoliating & Cleansing Pad with Lemon Extract - Rich in Vitamin C -
+    grocery: false
+  - query_id: 16091
+    query: birthday beer hat
+    signal: query
+    food_title_share: 0.0
+    exact_product: Plush Beer Mug Hat Party Accessory (1 count)
+    grocery: false
+  - query_id: 16305
+    query: black and white candy canes
+    signal: query
+    food_title_share: 0.38
+    exact_product: Black and White Swirl Pop Suckers (24 individually wrapped lollipops) Party Candy
+    grocery: true
+  - query_id: 16449
+    query: black cumin seed powder
+    signal: products
+    food_title_share: 0.56
+    exact_product: Starwest Botanicals Organic Ground Cumin Seed Powder, 1 Pound Bulk Spice
+    grocery: true
+  - query_id: 16690
+    query: black olives snack pack
+    signal: both
+    food_title_share: 0.88
+    exact_product: PEARLS, Ripe Pitted, Large Black Olives, 6 oz, 6-Cans
+    grocery: true
+  - query_id: 16763
+    query: black rifle coffe ground
+    signal: products
+    food_title_share: 1.0
+    exact_product: Black Rifle Coffee Rounds (Supply Drop (Variety Pack), 48 Count)
+    grocery: true
+  - query_id: 17354
+    query: blue cheede
+    signal: products
+    food_title_share: 0.93
+    exact_product: igourmet Maytag Blue Cheese - Pound Cut (15.5 ounce)
+    grocery: true
+  - query_id: 17384
+    query: blue friends coffee mug big
+    signal: both
+    food_title_share: 0.75
+    exact_product: MAUAG Funny Coffee Mug Have a Great Day Cup Blue, 13 Oz
+    grocery: false
+  - query_id: 17401
+    query: blue laffy taffy
+    signal: products
+    food_title_share: 0.62
+    exact_product: Laffy Taffy Blue Raspberry 165 Count
+    grocery: true
+  - query_id: 17534
+    query: bluemat water
+    signal: query
+    food_title_share: 0.0
+    exact_product: Blumat Classic Plant Watering Stakes (X- Large) | for Everyday Home or Vacation Use | Indoor or Outdoor Water Spikes for
+    grocery: false
+  - query_id: 17814
+    query: bob evans sausage gravy
+    signal: both
+    food_title_share: 0.5
+    exact_product: Zatarain's Black Beans & Rice, 7 oz
+    grocery: true
+  - query_id: 18265
+    query: boneless beef chuck roast
+    signal: query
+    food_title_share: 0.1
+    exact_product: Prime Rib Roast, 1 count, 4.5-5 lb from Kansas City Steaks
+    grocery: true
+  - query_id: 18915
+    query: bottle wine
+    signal: query
+    food_title_share: 0.06
+    exact_product: Bottle Of Wine
+    grocery: true
+  - query_id: 18986
+    query: bowl noodle soup hot and spicy
+    signal: both
+    food_title_share: 0.7
+    exact_product: Nong Shim Bowl Noodle Hot & Spicy Soup - 12 Pack
+    grocery: true
+  - query_id: 19047
+    query: boxed wine gifts
+    signal: query
+    food_title_share: 0.0
+    exact_product: Twine Old World 2 Bottle Wooden Decorative Wine Box with Lid and Handle, Wine Accessory Sets, Wood, Faux Leather, Antiqu
+    grocery: false
+  - query_id: 19584
+    query: bread german
+    signal: both
+    food_title_share: 0.62
+    exact_product: Mestemacher Bread, Whole Rye Bread, 1.1 Pound (Pack of 12)
+    grocery: true
+  - query_id: 19597
+    query: bread without gluten
+    signal: both
+    food_title_share: 0.93
+    exact_product: Ener-G Foods Yeast-Free Brown Rice Loaf, 19-Ounce Packages (Pack of 6)
+    grocery: true
+  - query_id: 19842
+    query: brit s water filter
+    signal: query
+    food_title_share: 0.0
+    exact_product: Brita Basic Faucet Water Filter System, White, 1 Count
+    grocery: false
+  - query_id: 19855
+    query: brita water filter
+    signal: query
+    food_title_share: 0.0
+    exact_product: Brita Standard Water Filter, Standard Replacement Filters for Pitchers and Dispensers, BPA Free, 3 Count
+    grocery: false
+  - query_id: 20018
+    query: brovino silicone wine glasses
+    signal: query
+    food_title_share: 0.25
+    exact_product: 'Silicone Wine Glasses - Set of 6 - Unbreakable Outdoor Rubber Wine Cups: 14 oz, Clear Silicone. 100% Dishwasher Safe - S'
+    grocery: false
+  - query_id: 20104
+    query: brown sugar crystals
+    signal: both
+    food_title_share: 0.77
+    exact_product: Jansal Valley Rock Sugar Crystals, Amber, 16 Ounce
+    grocery: true
+  - query_id: 20215
+    query: bts shooky water bottle
+    signal: query
+    food_title_share: 0.12
+    exact_product: CSBD 20oz Sports Water Bottles, 10 Pack, Reusable No BPA Plastic, Pull Top Leakproof Drink Spout, Blank DIY Customizatio
+    grocery: false
+  - query_id: 20224
+    query: bubba water bottle
+    signal: query
+    food_title_share: 0.05
+    exact_product: bubba Flo Duo Dual-Wall Insulated Water Bottle, 24 oz., Smoke
+    grocery: false
+  - query_id: 20290
+    query: buckwheat sweet potato noodles
+    signal: both
+    food_title_share: 0.7
+    exact_product: ORGANIC PLANET Soba Noodles, 8-Ounce packages (Pack of 12)
+    grocery: true
+  - query_id: 20514
+    query: bulk water bottles
+    signal: query
+    food_title_share: 0.06
+    exact_product: CSBD 20oz Sports Water Bottles, 10 Pack, Reusable No BPA Plastic, Pull Top Leakproof Drink Spout, Blank DIY Customizatio
+    grocery: false
+  - query_id: 20894
+    query: butternut squash organic
+    signal: query
+    food_title_share: 0.19
+    exact_product: Organic Butternut Squash Whole Trade Guarantee, 1 Each
+    grocery: true
+  - query_id: 21859
+    query: camelbak eddy 32 oz water bottle
+    signal: query
+    food_title_share: 0.0
+    exact_product: CamelBak 53853 Eddy Water Bottle, 1 L, Oxford
+    grocery: false
+  - query_id: 21862
+    query: camelbak water bottle 20 oz
+    signal: query
+    food_title_share: 0.0
+    exact_product: CamelBak Eddy Water Bottle, Oxford, 0.6 Liter
+    grocery: false
+  - query_id: 21865
+    query: camellia sinensis tea
+    signal: both
+    food_title_share: 0.56
+    exact_product: Frontier Co-op Organic Fair Trade Chinese Green Tea 1lb
+    grocery: true
+  - query_id: 22161
+    query: camping coffee pot
+    signal: query
+    food_title_share: 0.12
+    exact_product: Farberware 50124 Classic Yosemite Stainless Steel Coffee Percolator - 8 Cup, Silver
+    grocery: false
+  - query_id: 22268
+    query: candle jars without lids
+    signal: products
+    food_title_share: 0.5
+    exact_product: Sunshine Mason Co. Pint Size (16 ounce, 473 mL) Regular Mouth Drinking Glass Mason Jars 6 Pieces
+    grocery: false
+  - query_id: 22570
+    query: cap to 5 gallon water jug
+    signal: query
+    food_title_share: 0.0
+    exact_product: 3 and 5 Gallon Water Bargain Premium Water Cooler Jug Non Spill BPA-FREE Bottle caps - Pack of 25
+    grocery: false
+  - query_id: 22892
+    query: car wash without water
+    signal: query
+    food_title_share: 0.0
+    exact_product: Aero Cosmetics Wet or Waterless Car Wash Wax 128 fl. oz. Aircraft Quality for Your Car, RV, Boat, Motorcycle Anywhere, A
+    grocery: false
+  - query_id: 23564
+    query: case of limon 7 salt
+    signal: query
+    food_title_share: 0.38
+    exact_product: Sabritas Salt And Lime Peanuts, 7-Ounce (Pack of 6)
+    grocery: true
+  - query_id: 23588
+    query: cases of beer to drink
+    signal: query
+    food_title_share: 0.31
+    exact_product: 6 Bottle Holder Kraft Cardboard 12 oz. Beer or Soda Bottle Carrier for Safe And Easy Transport, 6 pack carrier by MT Pro
+    grocery: true
+  - query_id: 23601
+    query: cashew cheese
+    signal: both
+    food_title_share: 0.62
+    exact_product: Treeline Vegan Soft Herb and Garlic Cheese, 6 oz
+    grocery: true
+  - query_id: 23603
+    query: cashew oil for warts
+    signal: query
+    food_title_share: 0.0
+    exact_product: Cashew Cream Kasoy Cream by JPD (with Free Oil) 3ml
+    grocery: false
+  - query_id: 23605
+    query: cashews without peanut oil
+    signal: both
+    food_title_share: 0.9
+    exact_product: PLANTERS Deluxe Salted Mixed Nuts, Resealable Canister - Contains Cashews, Almonds, Pecans, Pistachios & Hazelnuts Seaso
+    grocery: true
+  - query_id: 23694
+    query: castile soap without coconut oil
+    signal: query
+    food_title_share: 0.17
+    exact_product: 'Dr. Bronners - Pure-Castile Liquid Soap (Baby Unscented, 32 Ounce) - Made with Organic Oils, 18-in-1 Uses: Face, Hair, L'
+    grocery: false
+  - query_id: 24026
+    query: cauliflower rice frozen organic
+    signal: query
+    food_title_share: 0.42
+    exact_product: Blue Dragon Spring Roll Wrapper oz, 4.7 Ounce
+    grocery: true
+  - query_id: 24080
+    query: cbd oil not hemp oil
+    signal: query
+    food_title_share: 0.13
+    exact_product: (2 Pack 10000mg) Hemp Oil - Natural Organic Hemp Seed Extract Hemp Drops Rich in Vitamin & Omega 3 6 9, Zero THC CBD Can
+    grocery: false
+  - query_id: 24082
+    query: cbd tea
+    signal: query
+    food_title_share: 0.2
+    exact_product: Buddha Teas Organic Calm Buddha Blend Tea 18 Bags
+    grocery: true
+  - query_id: 24141
+    query: cdb oil for pain and anxiety
+    signal: query
+    food_title_share: 0.17
+    exact_product: Manitoba Harvest Hemp Seed Oil, 12g of Omegas 3&6 Per Serving, Non-GMO, Vegan, Gluten-Free 12 Fl Oz
+    grocery: false
+  - query_id: 24226
+    query: celery juice
+    signal: both
+    food_title_share: 0.5
+    exact_product: Biotta Organic Celery Root Juice - 100% Celery Juice Superfood For Kidney Support, Immune Support & Hydration - Good Sou
+    grocery: true
+  - query_id: 24387
+    query: ceramic coffee mug without handle
+    signal: both
+    food_title_share: 0.75
+    exact_product: UDMG Reusable Double Wall Insulated White Ceramic Travel Coffee Cup with Lid & Sleeve, 12 fl.oz, I Am Not a Paper Cup…
+    grocery: false
+  - query_id: 24390
+    query: ceramic cups without handles
+    signal: products
+    food_title_share: 0.6
+    exact_product: Double Wall Glass Cup - 12 oz - Set of 2, Verona Collection, Double Walled Glass Coffee Cups for Latte, Cappuccino or Te
+    grocery: false
+  - query_id: 25197
+    query: cheese dip prime pantry
+    signal: both
+    food_title_share: 0.62
+    exact_product: Cheez Whiz Original Plain Cheese Dip (15 oz Jar)
+    grocery: true
+  - query_id: 25315
+    query: cherry humps candy bar
+    signal: query
+    food_title_share: 0.44
+    exact_product: 'Chase''s: Mini Mash Cherry Mash, 12 Oz'
+    grocery: true
+  - query_id: 25513
+    query: chikko not coffee
+    signal: both
+    food_title_share: 0.75
+    exact_product: Bodum Pour Over Coffee Maker, 17 Ounce, .5 Liter, Cork Band
+    grocery: false
+  - query_id: 25555
+    query: children melatonin zarbees
+    signal: products
+    food_title_share: 0.54
+    exact_product: Zarbee's Naturals Children's Sleep with Melatonin Supplement, Natural Grape Flavor, Multi-Colored, Grape Chewable Tablet
+    grocery: false
+  - query_id: 25619
+    query: chile en polvo miguelito
+    signal: products
+    food_title_share: 0.56
+    exact_product: Miguelito El Original Chilito En Polvo Mexican Candy Chili Powder 2 Bottles 950g Each
+    grocery: true
+  - query_id: 25627
+    query: chillx - 2 - 5 ton budget water-cooled air handlers
+    signal: query
+    food_title_share: 0.0
+    exact_product: VCJ Evaporative Air Cooler, Portable 3 Speed Cooling Fan, 3 Mode, Includes 4 Ice Crystal Boxes, Big Water Tank and Caste
+    grocery: false
+  - query_id: 25663
+    query: chinese tea cups bulk
+    signal: both
+    food_title_share: 0.62
+    exact_product: JapanBargain, Chinese Porcelain Teacup Japanese Tea Cups Dragon Peony Longevity and 12 Beauties 6 Ounce (1, Multicolor)
+    grocery: false
+  - query_id: 25712
+    query: choc zero syrup
+    signal: query
+    food_title_share: 0.38
+    exact_product: ChocZero's Caramel Syrup. Sugar free, Low Carb, No preservatives. Thick and Rich. Sugar Alcohol free, Gluten Free, Desse
+    grocery: true
+  - query_id: 25721
+    query: chocolate banana flavored peanut spread
+    signal: both
+    food_title_share: 0.94
+    exact_product: Legendary Foods Peanut Butter | Keto Diet Friendly, Low Carb, No Sugar Added, Vegan | Chocolate Banana (Chocolate Banana
+    grocery: true
+  - query_id: 25740
+    query: chocolate gum paste
+    signal: both
+    food_title_share: 0.75
+    exact_product: Chistepper 4 Pack Marine Theme Silicone Mold Fondant Molds Seahorse Seashell Starfish Mermaid Tail Silicone Mold Gum Pas
+    grocery: false
+  - query_id: 25742
+    query: chocolate letter
+    signal: query
+    food_title_share: 0.19
+    exact_product: Wocuz 26 Cavities Crayon Letter Silicone Mold Large Alphabet Chocolate Baking Mold Abc Resin Mold Cake Pan Handmade Soap
+    grocery: false
+  - query_id: 25856
+    query: christmas candy stocking stuffers
+    signal: query
+    food_title_share: 0.38
+    exact_product: Popcornopolis Gourmet Popcorn Snacks, 12 Cone Variety Snack Packs (Gift Cone) – Perfect Party Favors Including Zebra Pop
+    grocery: true
+  - query_id: 26321
+    query: cinnamon sticks for potpourri
+    signal: query
+    food_title_share: 0.19
+    exact_product: McCormick Cinnamon Sticks, 8 Ounce (Pack of 1)
+    grocery: false
+  - query_id: 26322
+    query: cinnamon sugar pop tarts
+    signal: both
+    food_title_share: 0.69
+    exact_product: Kellogg's Pop-Tarts Frosted Toaster Pastries Frosted Brown Sugar Cinnamon, 12 Count (Pack of 3)
+    grocery: true
+  - query_id: 26966
+    query: cloister honey
+    signal: both
+    food_title_share: 0.75
+    exact_product: Cloister Infused Honey (Vanilla)
+    grocery: true
+  - query_id: 27324
+    query: coconut hot sauce
+    signal: both
+    food_title_share: 0.81
+    exact_product: Robert Rothschild Farm Pineapple Coconut Mango Tequila Gourmet Glaze and Finishing Sauce, 12.1 Ounces
+    grocery: true
+  - query_id: 27331
+    query: coconut shoes for women
+    signal: query
+    food_title_share: 0.0
+    exact_product: COCONUTS BY MATISSE Women's Gaucho Boot,Tan,7.5 M US
+    grocery: false
+  - query_id: 27371
+    query: coffee butler germany
+    signal: query
+    food_title_share: 0.19
+    exact_product: Isosteel Tableline VA-9331K 1.5 L / 51 oz Stainless Steel Vacuum Insulated Thermal Carafe Dishwasher Safe BPA Free
+    grocery: false
+  - query_id: 27406
+    query: coffee maker not keurig
+    signal: query
+    food_title_share: 0.2
+    exact_product: BLACK+DECKER Single Serve Coffeemaker, Black, CM618
+    grocery: false
+  - query_id: 27409
+    query: coffee maker without pot
+    signal: query
+    food_title_share: 0.05
+    exact_product: Mr. Coffee 12-Cup Coffee Maker, Black
+    grocery: false
+  - query_id: 27429
+    query: coffee roaster
+    signal: query
+    food_title_share: 0.44
+    exact_product: Nuvo Eco Ceramic Handy Coffee Bean Roaster
+    grocery: false
+  - query_id: 27704
+    query: collagen tea
+    signal: both
+    food_title_share: 0.62
+    exact_product: Vital Proteins Collagen Peptides Powder Supplement (Type I, III), for Hair, Nails, Skin and Joint Health, Hydrolyzed Col
+    grocery: true
+  - query_id: 28153
+    query: commercial refrigerator food truck
+    signal: query
+    food_title_share: 0.0
+    exact_product: Whynter BR-091WS, 90 Can Capacity Stainless Steel Beverage Refrigerator with Lock, White
+    grocery: false
+  - query_id: 28500
+    query: confument bowls
+    signal: products
+    food_title_share: 0.62
+    exact_product: Now Designs L46001 Pinch Bowls, Set of 6, Canyon
+    grocery: false
+  - query_id: 28749
+    query: cookies without palm oil
+    signal: both
+    food_title_share: 0.65
+    exact_product: MI-DEL Classic Chocolate Snap Cookies 10 oz (8 Pack)
+    grocery: true
+  - query_id: 29450
+    query: cotton candy chapstick
+    signal: query
+    food_title_share: 0.44
+    exact_product: Chubby Chapstick - Large Jumbo Chapstick Natural Chapstick - .5 Ounce Lip Balm (Cotton Candy)
+    grocery: false
+  - query_id: 29938
+    query: cream and sugar
+    signal: query
+    food_title_share: 0.23
+    exact_product: Luigi Bormioli Sugar & Creamer, Set of 2
+    grocery: false
+  - query_id: 29954
+    query: creamcheese philadelphia pouches
+    signal: products
+    food_title_share: 0.9
+    exact_product: Kraft Philadelphia Strawberry Cream Cheese - Cup, 1 Ounce -- 100 per case.
+    grocery: true
+  - query_id: 30049
+    query: crest cinnamon toothpaste
+    signal: query
+    food_title_share: 0.17
+    exact_product: Crest Complete Toothpaste Whitening Cinnamon Expressions 6 oz
+    grocery: false
+  - query_id: 30667
+    query: cuinart coffee maker
+    signal: query
+    food_title_share: 0.0
+    exact_product: Cuisinart DCC-1200 Brew Central 12 Cup Programmable Coffeemaker, Black/Silver
+    grocery: false
+  - query_id: 30730
+    query: cup of tea
+    signal: both
+    food_title_share: 0.5
+    exact_product: Royal Albert Polka Rose Teacup and Saucer Set, 6.5 Ounces, Mostly Pink with White Multicolored Floral Print
+    grocery: false
+  - query_id: 30906
+    query: cusinart coffee grinder burr
+    signal: query
+    food_title_share: 0.0
+    exact_product: Cuisinart Coffee Bar Coffee Grinder, White
+    grocery: false
+  - query_id: 30907
+    query: cusinart compact juice extractor
+    signal: query
+    food_title_share: 0.0
+    exact_product: Cuisinart CJE-1000 Die-Cast Juice Extractor
+    grocery: false
+  - query_id: 30972
+    query: cute adult chicken
+    signal: query
+    food_title_share: 0.25
+    exact_product: Chicken Farm Animal Costume Hat for Adults and Kids
+    grocery: false
+  - query_id: 31153
+    query: cvt oil
+    signal: query
+    food_title_share: 0.0
+    exact_product: Lucas Oil Synthetic CVT Transmission Fluid/4x1/Gallon
+    grocery: false
+  - query_id: 31446
+    query: damien rice
+    signal: query
+    food_title_share: 0.0
+    exact_product: B-Sides
+    grocery: false
+  - query_id: 31564
+    query: dark chocolate without sugar
+    signal: both
+    food_title_share: 0.82
+    exact_product: HERSHEY'S Chocolate Bars, Zero Sugar, 3 Ounce (Pack of 12)
+    grocery: true
+  - query_id: 31584
+    query: dark humor is like food not everyone gets it
+    signal: query
+    food_title_share: 0.1
+    exact_product: Crazy Dog T-Shirts This is Why We Can't Have Nice Things T Shirt Funny Anti Capitol Political Tee (Light Heather Grey) -
+    grocery: false
+  - query_id: 32117
+    query: deep water culture
+    signal: query
+    food_title_share: 0.0
+    exact_product: Viagrow V4DWCV Hydroponic Bucket, 4-Site, Black
+    grocery: false
+  - query_id: 32221
+    query: delish white jordan almonds
+    signal: both
+    food_title_share: 0.95
+    exact_product: Hoosier Hill Farm, White Jordan Almonds,5 lbs
+    grocery: true
+  - query_id: 33197
+    query: difusor essential oil 2 pack
+    signal: query
+    food_title_share: 0.0
+    exact_product: InnoGear Essential Oil Diffuser, Upgraded Diffusers for Essential Oils Aromatherapy Diffuser Cool Mist Humidifier with 7
+    grocery: false
+  - query_id: 33289
+    query: dill pickle slim jim
+    signal: both
+    food_title_share: 0.51
+    exact_product: Slim Jim Giant Original Sticks 24/0.97oz
+    grocery: true
+  - query_id: 33374
+    query: dinosaur food toy
+    signal: query
+    food_title_share: 0.12
+    exact_product: VTech Baby Feed Me Dino | Musical Baby Toy with Numbers, Counting Music & Shapes | Interactive Light Up Toy Suitable fro
+    grocery: false
+  - query_id: 34012
+    query: dizzy pig dust
+    signal: products
+    food_title_share: 0.8
+    exact_product: Dizzy Pig BBQ Raging River Rub Spice - 7.9 Oz
+    grocery: true
+  - query_id: 34118
+    query: do matcha green tea powder organic
+    signal: both
+    food_title_share: 0.95
+    exact_product: DoMatcha - Organic Ceremonial Green Tea Matcha Powder, Natural Source of Antioxidants, Caffeine, and L-Theanine, Promote
+    grocery: true
+  - query_id: 34406
+    query: dog food 100 lb bag
+    signal: both
+    food_title_share: 0.75
+    exact_product: Blue Buffalo Wilderness Rocky Mountain Recipe High Protein, Natural Adult Dry Dog Food, Red Meat 22-lb
+    grocery: false
+  - query_id: 34799
+    query: donut shop dark coffee k-cup
+    signal: both
+    food_title_share: 0.7
+    exact_product: Donut House Collection Donut House Coffee, Single-Serve Keurig K-Cup Pods, Light Roast Coffee, 96 Count
+    grocery: true
+  - query_id: 35117
+    query: dr adorable jojoba oil organic
+    signal: query
+    food_title_share: 0.0
+    exact_product: Jojoba Oil Golden Organic,16 Oz
+    grocery: false
+  - query_id: 35161
+    query: dr herbs cleanse
+    signal: query
+    food_title_share: 0.06
+    exact_product: SpeedyVite Blood Cleansing LifeBoost Tea Organic -Cleanses & Supports Natural Removal of Excess Waste Chemicals from The
+    grocery: false
+  - query_id: 35496
+    query: dried fruit sugar free
+    signal: both
+    food_title_share: 0.56
+    exact_product: Mariani Mixed Fruits - 32oz (Pack of 1) – Perfect Blend of Orchard Fruits, No Sugar Added, Good Source of Dietary Fiber,
+    grocery: true
+  - query_id: 35500
+    query: dried lychee
+    signal: both
+    food_title_share: 0.56
+    exact_product: Monin Lychee FS 1 L - Single Bottle
+    grocery: true
+  - query_id: 35502
+    query: dried red chili
+    signal: query
+    food_title_share: 0.25
+    exact_product: Pepper Thai Conventional
+    grocery: true
+  - query_id: 35545
+    query: drink water not coke shirt
+    signal: query
+    food_title_share: 0.0
+    exact_product: Coca Cola Men's Enjoy Coke T-Shirt, Red, XX-Large
+    grocery: false
+  - query_id: 35690
+    query: dry cherry unsweetened
+    signal: products
+    food_title_share: 0.62
+    exact_product: Country Spoon No Sugar Added Dried Tart Montmorency Cherries, 1 pound
+    grocery: true
+  - query_id: 35707
+    query: dry herb vaporizer pen for smoking weed
+    signal: query
+    food_title_share: 0.0
+    exact_product: Welch Allyn 71000-C NiCad/Convertible Rechargeable Plug-in Handle
+    grocery: false
+  - query_id: 35966
+    query: dunkaroo oreos
+    signal: products
+    food_title_share: 0.69
+    exact_product: Kraft, Handi Snacks, Oreo Sticks N Creme, 6oz Box (Pack of 4)
+    grocery: true
+  - query_id: 35971
+    query: dunkin ground coffee 30 oz
+    signal: both
+    food_title_share: 0.88
+    exact_product: Dunkin' Original Blend Medium Roast Decaf Ground Coffee, 12 Ounces
+    grocery: true
+  - query_id: 36624
+    query: eclipse poker chips
+    signal: query
+    food_title_share: 0.12
+    exact_product: Eclipse 14gm Clay Poker Chip Sample Set - 11 New Chips
+    grocery: false
+  - query_id: 36734
+    query: edr3rxd1 whirlpool water filter
+    signal: query
+    food_title_share: 0.0
+    exact_product: Everydrop by Whirlpool Ice and Water Refrigerator Filter 3, EDR3RXD1, Single-Pack, White
+    grocery: false
+  - query_id: 36753
+    query: educational baking game
+    signal: query
+    food_title_share: 0.0
+    exact_product: Pete the Cat's Groovy Bake Sale (My First I Can Read)
+    grocery: false
+  - query_id: 36804
+    query: egg life egg white wraps
+    signal: products
+    food_title_share: 0.55
+    exact_product: BariWise Protein Omelet, Bacon & Cheese - Low Calorie, Gluten Free, 15g Protein (7ct)
+    grocery: true
+  - query_id: 37214
+    query: electronic herb grinder
+    signal: query
+    food_title_share: 0.12
+    exact_product: Electric Tobacco Shredder
+    grocery: false
+  - query_id: 37314
+    query: elf jelly pop lipgloss
+    signal: query
+    food_title_share: 0.06
+    exact_product: e.l.f. Shimmer Lip Gloss, Believe, 0.088 Ounce
+    grocery: false
+  - query_id: 37364
+    query: elkay water cooler parts
+    signal: query
+    food_title_share: 0.0
+    exact_product: Elkay LK35 3-1/2" Drain Fitting with Type 304 Stainless Steel Body, Strainer Basket, and Tailpiece
+    grocery: false
+  - query_id: 37507
+    query: emergency oil cans 5 gallon
+    signal: query
+    food_title_share: 0.0
+    exact_product: Midwest Can 5600-4PK Gas Can - 5 Gallon Capacity, (Pack of 4)
+    grocery: false
+  - query_id: 37670
+    query: energen-c electrolutes
+    signal: products
+    food_title_share: 0.62
+    exact_product: Emergen-C 1000mg Vitamin C Powder, with Antioxidants, B Vitamins and Electrolytes, Vitamin C Supplements for Immune Supp
+    grocery: false
+  - query_id: 37732
+    query: english candy
+    signal: query
+    food_title_share: 0.25
+    exact_product: Walkers English Creamy Toffees, 5.5 Pound Bag
+    grocery: true
+  - query_id: 38145
+    query: espresso machine with coffee grinder
+    signal: query
+    food_title_share: 0.06
+    exact_product: De'Longhi ESAM3300 Magnifica Super Automatic Espresso & Coffee Machine, Silver
+    grocery: false
+  - query_id: 38189
+    query: essential oil pets book
+    signal: query
+    food_title_share: 0.0
+    exact_product: 'Essential Oils For Pets: Ultimate Guide for Amazingly Effective Natural Remedies For Pets (Natural Pet Remedies,Essentia'
+    grocery: false
+  - query_id: 38449
+    query: european nutella
+    signal: both
+    food_title_share: 0.62
+    exact_product: Nutella Hazelnut Spread IMPORTED 180g Glass
+    grocery: true
+  - query_id: 38791
+    query: extra chewy mints peppermint
+    signal: both
+    food_title_share: 0.53
+    exact_product: King Leo Soft Peppermint Candy 5lb
+    grocery: true
+  - query_id: 38811
+    query: extra large glass containers
+    signal: products
+    food_title_share: 0.5
+    exact_product: OXO Good Grips 8 Cup Smart Seal Glass Rectangle Container
+    grocery: false
+  - query_id: 39007
+    query: ez brew tea and coffee maker
+    signal: both
+    food_title_share: 0.75
+    exact_product: 'GROSCHE Aberdeen PERFECT TEA MAKER Tea pot with coaster, Tea Steeper, Easy Tea Infuser, 17.7 oz. 525 ml, EASY CLEAN Tea '
+    grocery: false
+  - query_id: 39029
+    query: ezikel bread low sodium
+    signal: both
+    food_title_share: 0.78
+    exact_product: Edward & Sons Organic Low Sodium Breadcrumbs, Lightly Salted, 15 Ounce Canisters (Pack of 6)
+    grocery: true
+  - query_id: 39496
+    query: falltech water
+    signal: query
+    food_title_share: 0.0
+    exact_product: Water Weight Anchor, Synthetic
+    grocery: false
+  - query_id: 40042
+    query: fertility tea pink stork
+    signal: query
+    food_title_share: 0.12
+    exact_product: 'Pink Stork Fertility Tea: Organic Red Raspberry Leaf Tea, Fertility Prenatal Vitamins, Fertility Supplements for Women, '
+    grocery: true
+  - query_id: 40044
+    query: fertilizer for houseplants eco
+    signal: products
+    food_title_share: 0.56
+    exact_product: Organic Plant Magic Instant Compost Tea - 100% Organic Fertilizer - Easy to Use (5 lb Bucket)
+    grocery: false
+  - query_id: 40527
+    query: firearm cleaning kit 9mm with oil
+    signal: query
+    food_title_share: 0.0
+    exact_product: UTG 9MM Pistol Cleaning Kit
+    grocery: false
+  - query_id: 40661
+    query: fish oil veggie cap
+    signal: query
+    food_title_share: 0.06
+    exact_product: Viva Naturals Triple-Strength Omega 3 Fish Oil with EPA and DHA Supplements 2,200mg, 180 Softgels (3 Month Supply)
+    grocery: false
+  - query_id: 40794
+    query: fit 9 sascha fitness
+    signal: products
+    food_title_share: 0.5
+    exact_product: 'Sascha Fitness Fat Loss pills | Collagen support | Fluid Balance | FIT9 Ingredients: 7Keto + Uva Ursi, Gotu Kola, L-Thea'
+    grocery: false
+  - query_id: 41102
+    query: flat bottom popcorn bags
+    signal: both
+    food_title_share: 0.56
+    exact_product: 100 Popcorn Serving Bags - 'Large' Standalone Flat Bottom Paper Bag Style
+    grocery: false
+  - query_id: 41485
+    query: flour 15
+    signal: query
+    food_title_share: 0.12
+    exact_product: King Arthur, Gluten Free Classic Pancake Mix, Certified Gluten-Free, Non-GMO Project Verified, Certified Kosher, 15 Ounc
+    grocery: true
+  - query_id: 41646
+    query: fly shotgun salt
+    signal: query
+    food_title_share: 0.0
+    exact_product: BUG-A-SALT 2.0 Fly Gun - Direct from Patent Holder
+    grocery: false
+  - query_id: 41911
+    query: food freeze dryer machine not dehydrator
+    signal: query
+    food_title_share: 0.0
+    exact_product: Magic Mill Food Dehydrator Machine | 7 Stainless Steel Trays | Dryer for Jerky, Dog Treats, Herb, Meat, Beef, Fruit | Ke
+    grocery: false
+  - query_id: 42422
+    query: frankie pickle book 2
+    signal: query
+    food_title_share: 0.0
+    exact_product: Frankie Pickle and the Pine Run 3000
+    grocery: false
+  - query_id: 42428
+    query: franzia chillable red boxed wine
+    signal: query
+    food_title_share: 0.0
+    exact_product: 'Electric Wine Aerator Pourer, Stopper Multi-Smart Automatic Wine Dispenser - Premium Aerating Pourer and Decanter Spout '
+    grocery: true
+  - query_id: 42524
+    query: freeze dryer for home use food not dehydrator
+    signal: query
+    food_title_share: 0.0
+    exact_product: Excalibur EXC10EL Electric Food Dehydrator NSF Approved with Digital Controller Features 99-Hour Timer with Adjustable T
+    grocery: false
+  - query_id: 42647
+    query: friend wine stopper
+    signal: query
+    food_title_share: 0.12
+    exact_product: Ne'Qwa Frosty's Friends Wine Stopper
+    grocery: false
+  - query_id: 42727
+    query: frog candy dish
+    signal: query
+    food_title_share: 0.06
+    exact_product: Boston Warehouse 75483 Frog Scrubby Holder with Non-scratch Dish Scrubber, Hand Painted Ceramic
+    grocery: false
+  - query_id: 42792
+    query: frosted flakes
+    signal: products
+    food_title_share: 0.88
+    exact_product: Kellogg's Frosted Flakes, Breakfast Cereal in a Cup, Fat-Free, Bulk Size, 12 Count (Pack of 2, 12.6 oz Trays)
+    grocery: true
+  - query_id: 42882
+    query: fruit of the loom boys tshirts
+    signal: query
+    food_title_share: 0.0
+    exact_product: Fruit of the Loom Heavyweight Youth Short Sleeve T-Shirt - BLACK - small
+    grocery: false
+  - query_id: 42885
+    query: fruit of the loom long sleeves women
+    signal: query
+    food_title_share: 0.0
+    exact_product: Fruit of the Loom Ladies Lady-Fit Valueweight Long Sleeve T-Shirt (L) (Black)
+    grocery: false
+  - query_id: 43153
+    query: fun eco drink cups
+    signal: products
+    food_title_share: 0.5
+    exact_product: Dixie to Go Disposable Hot Beverage Paper Coffee Cups with Lids, 12 Oz, 156 Count, Assorted Designs
+    grocery: false
+  - query_id: 43585
+    query: funny wine tshirts for women
+    signal: query
+    food_title_share: 0.0
+    exact_product: Comical Shirt Ladies V-Neck Tee My Favorite Workout Funny Wine Lover Corkscrew Gym Tee Black XL
+    grocery: false
+  - query_id: 43888
+    query: gaia herbs turmeric supreme joint 120 capsules
+    signal: query
+    food_title_share: 0.0
+    exact_product: Gaia Herbs, Turmeric Supreme Extra Strength, Turmeric Curcumin Supplement with Black Pepper, Daily Joint Support & Healt
+    grocery: false
+  - query_id: 44101
+    query: gallon milk 2 percent
+    signal: both
+    food_title_share: 0.78
+    exact_product: Horizon Organic Shelf-Stable 1% Low Fat Milk Boxes, Chocolate, 144 Fl Oz, Pack of 18
+    grocery: true
+  - query_id: 44104
+    query: gallon water bottle without straw
+    signal: query
+    food_title_share: 0.0
+    exact_product: BuildLife 1 Gallon Water Bottle - Motivational Fitness Workout with Time Marker/Drink More Daily/Clear BPA Free/Large 12
+    grocery: false
+  - query_id: 44405
+    query: garden of life shake
+    signal: products
+    food_title_share: 0.69
+    exact_product: Garden of Life Raw Organic Meal Replacement Powder - Vanilla, 28 Servings, 20g Plant Based Protein Powder, Superfoods, G
+    grocery: true
+  - query_id: 44997
+    query: german food
+    signal: query
+    food_title_share: 0.31
+    exact_product: Knorr Kuchenkrauter Salad Dressing - 5 pcs
+    grocery: true
+  - query_id: 45175
+    query: gift cards for olive garden
+    signal: query
+    food_title_share: 0.0
+    exact_product: Olive Garden $25 Gift Card
+    grocery: false
+  - query_id: 45371
+    query: ginger snaps jewelry charms
+    signal: query
+    food_title_share: 0.0
+    exact_product: 'Ginger Snaps Infinity Necklace | Interchangeable, Customizable & Adjustable Snap Jewelry Collection | Button Charms for '
+    grocery: false
+  - query_id: 45712
+    query: girls trip water bottle
+    signal: query
+    food_title_share: 0.06
+    exact_product: Personalized Water Bottle, Personalized Stainless Steel Tumbler, Rose Gold, Bridesmaid Proposal Gift, Girls Trip Employe
+    grocery: false
+  - query_id: 45928
+    query: glass water bottle hot and cold 32
+    signal: query
+    food_title_share: 0.2
+    exact_product: null
+    grocery: false
+  - query_id: 45930
+    query: glass water bottle with silicone sleeve 60 oz
+    signal: query
+    food_title_share: 0.12
+    exact_product: DE.KITCHEN&HIFUN 60OZ Glass Water Bottle, Large Glass Water Bottle with Twist Cap, Borosilicate Glass Bottle Nut Storage
+    grocery: false
+  - query_id: 46134
+    query: gluten free lemon cookie
+    signal: both
+    food_title_share: 0.56
+    exact_product: Nana's No Gluten Lemon Cookies, 3.2-Ounce Packages (Pack of 12)
+    grocery: true
+  - query_id: 46267
+    query: godiva dark chocolate truffle
+    signal: query
+    food_title_share: 0.44
+    exact_product: Godiva Chocolatier Assorted Dark Chocolate Truffles Gift Box, Dark Decadence, 6 pc.
+    grocery: true
+  - query_id: 46520
+    query: gold tray for coffee table
+    signal: query
+    food_title_share: 0.0
+    exact_product: American Atelier Alligator Rectangle Serving Tray with Handles, 14" x 19" x 3", gold
+    grocery: false
+  - query_id: 46831
+    query: gormet kitchen spices
+    signal: query
+    food_title_share: 0.38
+    exact_product: Badia Spices inc Spice, Cumin Seed Ground, 16-Ounce, Yellow Multi (087881)
+    grocery: true
+  - query_id: 46911
+    query: gourmet chocolate
+    signal: query
+    food_title_share: 0.41
+    exact_product: European Cookies Kirkland Signature with Belgian, Chocolate, 49.4 Oz
+    grocery: true
+  - query_id: 46915
+    query: gourmet tea cookies
+    signal: both
+    food_title_share: 0.88
+    exact_product: Lotus Biscoff Cookies - Caramelized Biscuit Cookies - 0.2 Ounce (100 Count) - Dispenser Box - Individually Wrapped – Veg
+    grocery: true
+  - query_id: 47074
+    query: granola without nuts
+    signal: both
+    food_title_share: 0.95
+    exact_product: Bear Naked Granola NonGMO Project Verified Grain Free and Gluten Free Bag, Vanilla Almond, 12 Oz (Pack of 6)
+    grocery: true
+  - query_id: 47237
+    query: great american products wine tumbler
+    signal: query
+    food_title_share: 0.2
+    exact_product: SUNWILL Insulated Wine Tumbler with Lid Rose Gold, Double Wall Stainless Steel Stemless Insulated Wine Glass 12oz, Durab
+    grocery: false
+  - query_id: 47631
+    query: groceries ebt eligible snacks
+    signal: both
+    food_title_share: 0.65
+    exact_product: Wonderful Pistachios & Almonds Roasted and Salted Pistachios,1.5 Ounce, Pack of 24.
+    grocery: true
+  - query_id: 47632
+    query: groceries ham roll
+    signal: query
+    food_title_share: 0.12
+    exact_product: Taylor Pork Roll 6 Ounces Pre-Sliced (12 Pack)
+    grocery: true
+  - query_id: 48026
+    query: gummy soda
+    signal: both
+    food_title_share: 0.5
+    exact_product: Original Worlds Largest Giant Gummy Soda Bottle™(vanilla Cola) - 8 Tall
+    grocery: true
+  - query_id: 48212
+    query: habanero hot sauce cholula organic
+    signal: both
+    food_title_share: 0.88
+    exact_product: Cholula Hot Sauce 5 fl oz Variety Pack, 6 count | Original, Green Pepper, Chipotle, Chili Garlic, Chili Lime and Sweet H
+    grocery: true
+  - query_id: 48234
+    query: hada labo oil cleanser
+    signal: query
+    food_title_share: 0.0
+    exact_product: ROHTO Hadalabo Gokujun Cleansing Oil 200ml
+    grocery: false
+  - query_id: 48669
+    query: halls syrup center cough drops
+    signal: query
+    food_title_share: 0.1
+    exact_product: Halls Breezers Cool Berry Throat Drops - 300 Drops (12 bags of 25 drops)
+    grocery: false
+  - query_id: 48715
+    query: ham earbuds
+    signal: query
+    food_title_share: 0.0
+    exact_product: '3.5MM 1 Pin Universal Listen Receive Only Covert Acoustic Tube Earpiece Headset Compatible for Motorola GP2000 GP88 Ham '
+    grocery: false
+  - query_id: 48716
+    query: ham radio hotspot
+    signal: query
+    food_title_share: 0.0
+    exact_product: MMDVM Hotspot Spot Radio Station WiFi Digital Voice Modem DMR P25 Hotspot Support YSF OLED Raspberry Pi Antenna
+    grocery: false
+  - query_id: 49222
+    query: haribo gummy bears
+    signal: products
+    food_title_share: 0.75
+    exact_product: Haribo Gummi Candy, Goldbears, 5 Pound (Packaging may vary)
+    grocery: true
+  - query_id: 49523
+    query: hayward salt chlorine generator
+    signal: query
+    food_title_share: 0.0
+    exact_product: Hayward Goldline AQR9 AquaRite Electronic Salt Chlorination System for In-Ground Pools , 25,000-Gallon Cell
+    grocery: false
+  - query_id: 49530
+    query: hazelnut candy
+    signal: both
+    food_title_share: 0.56
+    exact_product: TOFFIFAY Hazelnut Candies, 12 Piece Box (3.5 Ounce), Caramel Candy, Hazelnut Candy, Chocolate Candy, Sweets for Home, Ro
+    grocery: true
+  - query_id: 50243
+    query: herb grinder electric cusinart
+    signal: query
+    food_title_share: 0.25
+    exact_product: Cuisinart SG-10 Electric Spice-and-Nut Grinder, Stainless/Black
+    grocery: false
+  - query_id: 50245
+    query: herb jelly
+    signal: both
+    food_title_share: 0.75
+    exact_product: PRINCE OF PEACE RED GINSENG ROYAL JELLY, 30X10 CC
+    grocery: false
+  - query_id: 50249
+    query: herb vaporizor
+    signal: query
+    food_title_share: 0.0
+    exact_product: Variable Voltage Premium Kit I Sleek
+    grocery: false
+  - query_id: 50372
+    query: hey water antoinette portis
+    signal: query
+    food_title_share: 0.12
+    exact_product: Watch Over Our Water (Cloverleaf Books ™ ― Planet Protectors)
+    grocery: false
+  - query_id: 50641
+    query: hills healthy cuisine cat food 2.9
+    signal: both
+    food_title_share: 1.0
+    exact_product: Hill's Prescription Diet k/d Kidney Care Vegetable, Tuna & Rice Stew Canned Cat Food, Veterinary Diet, 2.9 oz, 24-pack w
+    grocery: false
+  - query_id: 50643
+    query: hills prescription urgent care a/d
+    signal: products
+    food_title_share: 0.75
+    exact_product: Prescription Diet a/d Canine/Feline Urgent Care w/Chicken, 24 x 5.5 oz cans
+    grocery: false
+  - query_id: 50669
+    query: himalayan salt hempz lotion
+    signal: query
+    food_title_share: 0.06
+    exact_product: Hempz Pink Pomelo & Himalayan Sea Salt Herbal Body Moisturizer 17 oz.
+    grocery: false
+  - query_id: 50869
+    query: holiday hersehey
+    signal: products
+    food_title_share: 0.62
+    exact_product: HERSHEY'S Nuggets Assortment, Holiday Chocolate Candy Gift, 52 Ounce Bag
+    grocery: true
+  - query_id: 51046
+    query: homebrew water filter
+    signal: query
+    food_title_share: 0.05
+    exact_product: CuZn UC-200 Under Counter Water Filter - 50K Ultra High Capacity - Made in USA
+    grocery: false
+  - query_id: 51383
+    query: hot cinnamon sunset tea from harney and sons
+    signal: both
+    food_title_share: 0.54
+    exact_product: Harney & Sons Caffeinated Hot Cinnamon Sunset Black Tea with Orange and Cloves Tin 20 Sachets
+    grocery: true
+  - query_id: 51414
+    query: hot ones hot sauce
+    signal: both
+    food_title_share: 0.75
+    exact_product: Hot Sauce Pack Of 6 Sauce Special Gift Collection Da Bomb , Heartbeat Red Habanero , Torchbearer Son of Zombie , Bravado
+    grocery: true
+  - query_id: 51430
+    query: hot sauce
+    signal: both
+    food_title_share: 0.75
+    exact_product: Jack Link’s Beef Jerky Variety Bag Original, Teriyaki 9ct 1.25oz Single-serve Bags
+    grocery: true
+  - query_id: 51442
+    query: hot tea pot sets
+    signal: query
+    food_title_share: 0.31
+    exact_product: 'Primula Half Moon Teapot with Removable Infuser, Borosilicate Glass Tea Maker, Stainless Steel Filter, Dishwasher Safe, '
+    grocery: false
+  - query_id: 52064
+    query: hummus without tahini
+    signal: both
+    food_title_share: 0.6
+    exact_product: Kevala Organic Black Sesame Tahini , 56 Ounce
+    grocery: true
+  - query_id: 52222
+    query: hydraulic oil for log splitter
+    signal: query
+    food_title_share: 0.0
+    exact_product: Renewable Lubricants Biodegradable Hydraulic Fluid Bio-Bottle Floor Jack Hydraulic Oil ISO 32, Log Splitter, Car Jack an
+    grocery: false
+  - query_id: 52353
+    query: i am looking for an olive green fur coat that has a cheetah print on it. it is a long jacket with buttons.
+    signal: query
+    food_title_share: 0.0
+    exact_product: Sunmoot 2018 New Women Casual Warm Winter Long Lapel Leopard Print Faux Fur Coat (Large, White)
+    grocery: false
+  - query_id: 52410
+    query: i love the wine not the label shirt
+    signal: query
+    food_title_share: 0.0
+    exact_product: I Like The Wine Not The Label Pansexual Pride LGBT T Shirt
+    grocery: false
+  - query_id: 52573
+    query: ic40 salt cell pentair
+    signal: query
+    food_title_share: 0.0
+    exact_product: Pentair 520556 IntelliChlor Power Center For Salt Chlorine Generator Systems (US Version)
+    grocery: false
+  - query_id: 52591
+    query: ice cream cone
+    signal: products
+    food_title_share: 0.62
+    exact_product: Skinny Cow Not Fudging Around Chocolate Fudge Low Fat Ice Cream Cones, (Frozen), (4 Count of 4 Fl Oz Cones) 16 Fl Oz (Pa
+    grocery: true
+  - query_id: 52715
+    query: if im too much maybe youre not enough
+    signal: products
+    food_title_share: 0.57
+    exact_product: I Am Not Responsible For What My Face Does When You Talk T-Shirt
+    grocery: false
+  - query_id: 53037
+    query: indian oil painting
+    signal: query
+    food_title_share: 0.0
+    exact_product: U LIFE Indian Dancing Women Vintage Oil Painting Passport Cover Holder Case Leather Protector with Slots for Women Men K
+    grocery: false
+  - query_id: 53447
+    query: instant oatmeal cups
+    signal: both
+    food_title_share: 0.69
+    exact_product: Quaker Instant Oatmeal, Lower Sugar, 4 Flavor Variety Pack, Individual Packets, 48 Count
+    grocery: true
+  - query_id: 55365
+    query: jade oil
+    signal: query
+    food_title_share: 0.0
+    exact_product: 'Jade, Scented Magickal Oil 2 Dram Bottle, For the patient millionaire, this formula is designed to inspire vast wealth. '
+    grocery: false
+  - query_id: 55531
+    query: jars without lids
+    signal: products
+    food_title_share: 0.72
+    exact_product: Sunshine Mason Co. Pint Size (16 ounce, 473 mL) Regular Mouth Drinking Glass Mason Jars 6 Pieces
+    grocery: false
+  - query_id: 55821
+    query: jerky slicer machine
+    signal: query
+    food_title_share: 0.1
+    exact_product: Weston Manual Single-Support Jerky Slicer, Charcoal Gray
+    grocery: false
+  - query_id: 56779
+    query: k cup chicken broth
+    signal: both
+    food_title_share: 0.94
+    exact_product: LonoLife Chicken Bone Broth Powder with 8g Protein, Paleo and Keto Friendly, Gluten-free, Single Serve Cups, 10 Servings
+    grocery: true
+  - query_id: 56806
+    query: k-duo essentials single serve & carafe coffee maker
+    signal: query
+    food_title_share: 0.19
+    exact_product: Keurig K-Duo Plus Coffee Maker, Single Serve and 12-Cup Carafe Drip Coffee Brewer, Compatible with K-Cup Pods and Ground
+    grocery: false
+  - query_id: 56863
+    query: kaizen home goods
+    signal: products
+    food_title_share: 0.81
+    exact_product: Reusable Storage Bags - 10 Pack BPA FREE Freezer Bags (6 Leakproof Large Reusable Sandwich Bags + 4 Small Reusable Snack
+    grocery: false
+  - query_id: 57122
+    query: kcup tea digestion
+    signal: both
+    food_title_share: 0.56
+    exact_product: Twinings Lemon and Ginger Herbal Tea, Keurig K-Cups, 48 Count
+    grocery: true
+  - query_id: 57154
+    query: keen womens water shoe
+    signal: query
+    food_title_share: 0.0
+    exact_product: KEEN Women's Newport Hydro-W Sandal, Steel Grey/Blue Turquoise, 8 M US
+    grocery: false
+  - query_id: 57174
+    query: kefir grains organic
+    signal: query
+    food_title_share: 0.0
+    exact_product: Cultures for Health Water Kefir Grains | Easy To Maintain Kefir Starter Culture Powder | Bulgaros De Leche Vivos | Reusa
+    grocery: true
+  - query_id: 57297
+    query: ketchup pump
+    signal: query
+    food_title_share: 0.3
+    exact_product: Winco Pump Kit with Standard Pump and 5 Lids,White,Medium
+    grocery: false
+  - query_id: 57319
+    query: keto cukies
+    signal: both
+    food_title_share: 0.75
+    exact_product: Fat Snax Keto Cookies - Low Carb, Keto, and Sugar-Free (Variety Pack, 12-pack (24 cookies)) - Keto-Friendly & Gluten-Fre
+    grocery: true
+  - query_id: 57331
+    query: keto jelly
+    signal: both
+    food_title_share: 0.88
+    exact_product: Polaner Sugar-Free Strawberry Preserves with Fiber, 13.5 Ounce
+    grocery: true
+  - query_id: 57341
+    query: keto pizza
+    signal: query
+    food_title_share: 0.44
+    exact_product: Shrewd Food Protein Puffs, Low Carb Cheese Pizza Puffs, High Protein Crunch, Keto Friendly Snack, Savory Protein Chip, 1
+    grocery: true
+  - query_id: 57405
+    query: keurig reusable coffee filters
+    signal: query
+    food_title_share: 0.3
+    exact_product: Reusable Cups Compatible with K Cups Keurig 2.0 & 1.0 Brewers Easy To Use Refillable Single Cup Coffee Filters - Eco Fri
+    grocery: false
+  - query_id: 57641
+    query: kid vegan cookbook
+    signal: query
+    food_title_share: 0.0
+    exact_product: 'Vegan Lunch Box: 130 Amazing, Animal-Free Lunches Kids and Grown-Ups Will Love!'
+    grocery: false
+  - query_id: 58993
+    query: kombucha
+    signal: both
+    food_title_share: 0.69
+    exact_product: Yogi Tea - Green Tea Kombucha (6 Pack) - Supplies Antioxidants - 96 Tea Bags
+    grocery: true
+  - query_id: 59039
+    query: korean facial oil cleanser
+    signal: query
+    food_title_share: 0.12
+    exact_product: The Face Shop Rice Water Bright Light Cleansing Oil - 2 Count
+    grocery: false
+  - query_id: 59042
+    query: korean food
+    signal: both
+    food_title_share: 0.5
+    exact_product: Pancake Mix, Korean Style (2.2 Lb) By Beksul (1)
+    grocery: true
+  - query_id: 59063
+    query: kosher food decorating
+    signal: query
+    food_title_share: 0.25
+    exact_product: Wilton Icing Colors 12-Piece Gel Food Coloring Set
+    grocery: true
+  - query_id: 59064
+    query: kosher honey sticks
+    signal: both
+    food_title_share: 0.6
+    exact_product: Stakich Wildflower Honey Stix (100 Stix)
+    grocery: true
+  - query_id: 59170
+    query: kuerig coffee machines
+    signal: both
+    food_title_share: 0.5
+    exact_product: Keurig K155 Office Pro Commercial Coffee Maker, Single Serve K-Cup Pod Coffee Brewer, Silver, Extra Large 90 Oz. Water R
+    grocery: false
+  - query_id: 59191
+    query: kurig coffee machines
+    signal: query
+    food_title_share: 0.41
+    exact_product: Keurig K155 Office Pro Commercial Coffee Maker, Single Serve K-Cup Pod Coffee Brewer, Silver, Extra Large 90 Oz. Water R
+    grocery: false
+  - query_id: 60021
+    query: large chicken coop for 5 chickens
+    signal: query
+    food_title_share: 0.0
+    exact_product: Large Metal Chicken Coop Walk-in Chicken Coops Hen Run House Shade Cage with Waterproof and Anti-Ultraviolet Cover for O
+    grocery: false
+  - query_id: 60433
+    query: lavazza coffee machine
+    signal: query
+    food_title_share: 0.31
+    exact_product: Lavazza Blue Single Serve Espresso Machine LB910
+    grocery: false
+  - query_id: 60624
+    query: lean beef organic
+    signal: query
+    food_title_share: 0.47
+    exact_product: Oscar Mayer Original Center Cut Bacon, 12 oz Pack, 17-19 slices
+    grocery: true
+  - query_id: 61444
+    query: lemon essential oils for body butter
+    signal: query
+    food_title_share: 0.07
+    exact_product: NOW Essential Oils, Lemon Oil, Cheerful Aromatherapy Scent, Cold Pressed, 100% Pure, Vegan, Child Resistant Cap, 4-Ounce
+    grocery: false
+  - query_id: 61449
+    query: lemon lime caffiene drink mix
+    signal: query
+    food_title_share: 0.44
+    exact_product: CELSIUS On-the-Go Powder Stick Packs, Cranberry Lemon, 2.5 Ounce (Pack of 14)
+    grocery: true
+  - query_id: 61456
+    query: lemon yellow blouse
+    signal: query
+    food_title_share: 0.0
+    exact_product: SIVVAN Scrubs for Women - Long Sleeve Comfort Underscrub Tee - S8500 - Citron - M
+    grocery: false
+  - query_id: 61522
+    query: lens filter for olympus tg6 water camera
+    signal: query
+    food_title_share: 0.0
+    exact_product: Hoya 40.5mm Digital Filter Kit with 3 Filters & Pouch
+    grocery: false
+  - query_id: 62098
+    query: lids for ecomozz 20 ounce tumblers
+    signal: products
+    food_title_share: 0.81
+    exact_product: Dart Prima Clear Strawless Lid, 626NSL (1,000 Count)
+    grocery: false
+  - query_id: 62556
+    query: lime green checked place mats
+    signal: query
+    food_title_share: 0.0
+    exact_product: GANKE Gingham Placemats, Smooth Gingham Lime Green Art Backdrop Checked Set of 4 Place Mats 12x18 Inch Heat Resistant Ki
+    grocery: false
+  - query_id: 62557
+    query: lime green christmas garland
+    signal: query
+    food_title_share: 0.0
+    exact_product: Christmas Concepts 2 Metre Chunky/Fine Christmas Tinsel Garland - Christmas Decoration Tinsel Garland (Lime Green)
+    grocery: false
+  - query_id: 62558
+    query: lime green fitted hat
+    signal: query
+    food_title_share: 0.0
+    exact_product: KBETHOS KNW-2364 LIM (8) The Real Original Fitted Flat-Bill Hats True-Fit, 9 Sizes & 20 Colors
+    grocery: false
+  - query_id: 62744
+    query: lip balm softlips vanilla
+    signal: query
+    food_title_share: 0.0
+    exact_product: Softlips Lip Protectant SPF 20, Vanilla 2 count (Pack Of 6)
+    grocery: false
+  - query_id: 63816
+    query: louisianne caffeine free tea bags
+    signal: both
+    food_title_share: 0.5
+    exact_product: Luzianne Iced Tea Bags, Specially Blended for Iced Tea, Family Size, 48 Count Box (Pack of 6)
+    grocery: true
+  - query_id: 63927
+    query: low card flour
+    signal: both
+    food_title_share: 0.57
+    exact_product: Al Dente Carba-Nada Egg Fettuccine, 10-Ounce Bags (Pack of 6)
+    grocery: true
+  - query_id: 63933
+    query: low fat
+    signal: products
+    food_title_share: 0.5
+    exact_product: Kellogg's Breakfast Cereal, Low Fat Granola with Raisins, Low Fat, Good Source of Fiber, Single Serve, 2.2 oz Box(Pack o
+    grocery: false
+  - query_id: 63991
+    query: lox spread
+    signal: products
+    food_title_share: 0.56
+    exact_product: Earth Balance Original Buttery Spread, 15 oz.
+    grocery: true
+  - query_id: 64110
+    query: lucky charms marshmallows
+    signal: products
+    food_title_share: 0.91
+    exact_product: Lucky Charms, Gluten Free Marshmallow Cereal with Unicorns, 26.1 oz
+    grocery: true
+  - query_id: 64617
+    query: macbook pro 15 inch keyboard cover candy colir
+    signal: query
+    food_title_share: 0.0
+    exact_product: 'Kuzy Older Version Keyboard Cover Compatible with MacBook Pro 13 15 17 inch Release 2010-2015 and MacBook Air 13.3 inch '
+    grocery: false
+  - query_id: 64790
+    query: magic candy
+    signal: query
+    food_title_share: 0.31
+    exact_product: mberry Miracle Berry Tablets, Miracle Fruit Snacks, 10 Count, .12 Ounce, Pack of 1
+    grocery: true
+  - query_id: 65941
+    query: marshmallow chapstick
+    signal: products
+    food_title_share: 0.5
+    exact_product: Chapstick Holiday Collection 2017, Pack of 3, Holiday Cinnamon, Caramel Creme & Holiday Cocoa, 0.15 Oz Ea
+    grocery: false
+  - query_id: 66292
+    query: matcha green tea powder organic
+    signal: both
+    food_title_share: 0.56
+    exact_product: DoMatcha - Organic Ceremonial Green Tea Matcha Powder, Natural Source of Antioxidants, Caffeine, and L-Theanine, Promote
+    grocery: true
+  - query_id: 66560
+    query: maxwell medium roast
+    signal: products
+    food_title_share: 0.69
+    exact_product: Maxwell House The Original Roast Medium Roast Ground Coffee (30.6 oz Canister)
+    grocery: true
+  - query_id: 66616
+    query: maze food bowl for cats
+    signal: query
+    food_title_share: 0.06
+    exact_product: The Company of Animals CATCH Interactive Feeder, Purple
+    grocery: false
+  - query_id: 66732
+    query: meat ebt eligible food
+    signal: query
+    food_title_share: 0.47
+    exact_product: 'Mountain House Cooked Diced Chicken | Freeze Dried Survival & Emergency Food | #10 Can | Gluten-Free, 30235-Parent'
+    grocery: true
+  - query_id: 66733
+    query: meat gloves cold
+    signal: query
+    food_title_share: 0.0
+    exact_product: Dowellife Cut Resistant Gloves Food Grade Level 5 Protection, Safety Kitchen Cuts Gloves for Oyster Shucking, Fish Fille
+    grocery: false
+  - query_id: 66975
+    query: meiomi pinot noir red wine
+    signal: query
+    food_title_share: 0.09
+    exact_product: Riedel Vinum Pinot Noir (Burgundy Red) Glasses, Set of 4
+    grocery: true
+  - query_id: 68112
+    query: mercer bread knife millenia
+    signal: query
+    food_title_share: 0.0
+    exact_product: Mercer Culinary Genesis 8-Inch Bread Knife
+    grocery: false
+  - query_id: 68169
+    query: mermaid tail chocolate mold
+    signal: query
+    food_title_share: 0.14
+    exact_product: Grandmama's Goodies N067 Mermaid Tail Chocolate Candy Mold with Exclusive Molding Instructions
+    grocery: false
+  - query_id: 68302
+    query: mesquite wood chips
+    signal: query
+    food_title_share: 0.2
+    exact_product: Camerons Products Smoking Chips - (Mesquite) 1 Pint Kiln Dried, 100% Natural Extra Fine Wood Smoker Sawdust Shavings - 1
+    grocery: false
+  - query_id: 68664
+    query: michael kors vanilla acorn wallet
+    signal: query
+    food_title_share: 0.0
+    exact_product: MICHAEL Michael Kors Travel Continental Vanilla One Size
+    grocery: false
+  - query_id: 69106
+    query: milk crate for vinyl records
+    signal: query
+    food_title_share: 0.12
+    exact_product: Sterilite Plastic Storage Crate, Black
+    grocery: false
+  - query_id: 69259
+    query: minecraft party candy bags
+    signal: query
+    food_title_share: 0.06
+    exact_product: Fun Express - Pixel Pattern Treat Bags - Party Supplies - Bags - Paper Treat Bags - 12 Pieces
+    grocery: false
+  - query_id: 69269
+    query: mineral drops for reverse osmosis water
+    signal: query
+    food_title_share: 0.12
+    exact_product: Trace Minerals Research - Concentrace Trace Mineral Drops - 8 Fl Oz (Pack of 1)
+    grocery: false
+  - query_id: 69525
+    query: mini snack dispenser
+    signal: query
+    food_title_share: 0.12
+    exact_product: Zevro /GAT200 Indispensable Dry Food Dispenser, Dual Control, Black/Chrome
+    grocery: false
+  - query_id: 69672
+    query: mint container heart
+    signal: query
+    food_title_share: 0.25
+    exact_product: Heart Metal Tins with Window Lids by Celebrate It, 30 Count
+    grocery: false
+  - query_id: 69675
+    query: mint face mask
+    signal: query
+    food_title_share: 0.06
+    exact_product: QUEEN HELENE Masque Mint Julep 8 oz
+    grocery: false
+  - query_id: 69677
+    query: mint green hankerchief
+    signal: query
+    food_title_share: 0.0
+    exact_product: Alotpower Cotton Bandanas Square Handkerchiefs, 6 Pack,Mint Green
+    grocery: false
+  - query_id: 69695
+    query: miracle noodles
+    signal: both
+    food_title_share: 1.0
+    exact_product: Miracle Noodle Fettuccine Pasta - Plant Based Shirataki Noodles, Keto, Vegan, Gluten-Free, Low Carb, Paleo, Kosher, 0 Ca
+    grocery: true
+  - query_id: 69766
+    query: miskets snacks
+    signal: both
+    food_title_share: 0.81
+    exact_product: Chocolate Caramel and Crunch Grand Gift Basket for Christmas, Holiday, Snack, Business, Office and Family
+    grocery: true
+  - query_id: 70411
+    query: monk fruit sweetener without erythritol
+    signal: both
+    food_title_share: 0.78
+    exact_product: Health Garden Monk Fruit Sweetener, Golden- Non GMO - Gluten Free - Sugar Substitute - Kosher - Keto Friendly (3 lbs)
+    grocery: true
+  - query_id: 70792
+    query: mother of bride dresses for wedding tea length
+    signal: query
+    food_title_share: 0.0
+    exact_product: Ever-Pretty Womens Lace Open Back Floor Length Evening Dress 12 US Blush
+    grocery: false
+  - query_id: 71218
+    query: mr clean bathroom lemon bathroom vlesner
+    signal: query
+    food_title_share: 0.0
+    exact_product: Mr. Clean Multi-Surfaces 128 Fluid Ounce Bottle
+    grocery: false
+  - query_id: 71226
+    query: mr coffee tea cafe replacement pitcher
+    signal: query
+    food_title_share: 0.12
+    exact_product: Mr. Coffee 2-Quart Replacement Pitcher for TM1, TM1P
+    grocery: false
+  - query_id: 71229
+    query: mr crappie sausage head
+    signal: query
+    food_title_share: 0.19
+    exact_product: Strike King MRC Sausage Head Tuxedo Black (MRCSH116-183)
+    grocery: false
+  - query_id: 71652
+    query: muscletech pro series whey protein rich chocolate
+    signal: both
+    food_title_share: 0.88
+    exact_product: MuscleTech NitroTech Performance Series Whey Isolate Chocolate 4lb
+    grocery: true
+  - query_id: 71738
+    query: mustard gold pillow
+    signal: query
+    food_title_share: 0.0
+    exact_product: JUSPURBET Gold Luxury Velvet Throw Pillow Covers 18x18 Set of 2 for Sofa Couch Bed,Decorative Soft Solid Cushion Cases
+    grocery: false
+  - query_id: 71741
+    query: mustard saree blouse readymade
+    signal: query
+    food_title_share: 0.0
+    exact_product: Saree Blouse Choli - Mustard Brocade Indian Sari Blouse - 81 SL
+    grocery: false
+  - query_id: 71743
+    query: mustard tie
+    signal: query
+    food_title_share: 0.0
+    exact_product: Calvin Klein Men's Steel Micro Solid B Tie, Mustard, One Size
+    grocery: false
+  - query_id: 71747
+    query: mustard yellow ukulele case
+    signal: query
+    food_title_share: 0.0
+    exact_product: 21" Top Grade Standard Soprano Leather Ukulele Case Yellow
+    grocery: false
+  - query_id: 72428
+    query: natures recipe vegetarian stew
+    signal: products
+    food_title_share: 0.62
+    exact_product: AvoDerm Natural Dry & Wet Dog Food, For Skin & Coat, Lamb & Rice Formula (Pack of 12)
+    grocery: false
+  - query_id: 72915
+    query: nesoresso vertuoline pods
+    signal: products
+    food_title_share: 1.0
+    exact_product: Nespresso Capsules VertuoLine, Espresso Variety Pack, Medium and Dark Roast Espresso Coffee, 50 Count Coffee Pods, Brews
+    grocery: true
+  - query_id: 73139
+    query: new home wine glasses
+    signal: query
+    food_title_share: 0.0
+    exact_product: King Beer Queen Wine Glass (Set of 2) - His Hers Couple Drinkware - Newlyweds Wedding Anniversary Bridal Gift - Mr and M
+    grocery: false
+  - query_id: 73382
+    query: night air fragrance oil
+    signal: query
+    food_title_share: 0.03
+    exact_product: Jasmine Diffuser Refill, Natural Essential Jasmine Oil 6.8 oz 200ml - Fresh & Long Lasting Fragrance - Scented Reed Diff
+    grocery: false
+  - query_id: 73953
+    query: nismo oil filter
+    signal: query
+    food_title_share: 0.0
+    exact_product: FRAM Extra Guard PH3614, 10K Mile Change Interval Spin-On Oil Filter
+    grocery: false
+  - query_id: 74318
+    query: nori powder
+    signal: products
+    food_title_share: 0.81
+    exact_product: Nori Komi Furikake (Prepared Sesame Seed & Seaweed) - 1.9oz (Pack of 1)
+    grocery: true
+  - query_id: 74336
+    query: north carolina food gifts
+    signal: query
+    food_title_share: 0.44
+    exact_product: Country Ham, Biscuits and Red Eye Gravy
+    grocery: true
+  - query_id: 74337
+    query: north carolina water bottle hidroflask
+    signal: query
+    food_title_share: 0.31
+    exact_product: Simple Modern Officially Licensed Collegiate North Carolina Tar Heels Tumbler with Straw and Flip Lid | Insulated Stainl
+    grocery: false
+  - query_id: 74529
+    query: nothins better water stain remover
+    signal: query
+    food_title_share: 0.0
+    exact_product: Stardrops - The Pink Stuff - The Miracle All Purpose Cleaning Paste
+    grocery: false
+  - query_id: 74654
+    query: nugo dark chocolate pretzel with sea salt
+    signal: both
+    food_title_share: 0.75
+    exact_product: NuGo All-Natural Nutrition Bar, Chocolate Chocolate Chip, 1.76-Ounce Bars (Pack of 12)
+    grocery: true
+  - query_id: 74705
+    query: numi white rose tea
+    signal: both
+    food_title_share: 0.68
+    exact_product: Numi Organic Tea White Rose, 16 Count Box of Tea Bags, White Tea (Packaging May Vary)
+    grocery: true
+  - query_id: 74782
+    query: nut free food coloring
+    signal: query
+    food_title_share: 0.25
+    exact_product: Airheads Candy Bars, Variety Bulk Box, Chewy Full Size Fruit Taffy, Gifts, Holiday, Parties, Concessions, Pantry, Non Me
+    grocery: true
+  - query_id: 74784
+    query: nut pods french vanilla non dairy creamer
+    signal: query
+    food_title_share: 0.28
+    exact_product: 'nutpods French Vanilla, (4-Pack), Unsweetened Dairy-Free Creamer, Made from Almonds and Coconuts, Whole30, Gluten Free, '
+    grocery: true
+  - query_id: 74810
+    query: nutribiotic plain rice protein powder 1 lb
+    signal: both
+    food_title_share: 1.0
+    exact_product: NutriBiotic Plain Rice Protein, 1 Lb. 5 Oz. (600g) | Low Carb, Keto-Friendly, Vegan, Raw Protein Powder | Grown & Proces
+    grocery: true
+  - query_id: 74838
+    query: nuts gift basket
+    signal: query
+    food_title_share: 0.12
+    exact_product: Christmas Holiday Nuts Gift Basket - Gourmet Food Gifts Prime Delivery - Mothers & Fathers Day Fruit Nut Gift Box, Assor
+    grocery: true
+  - query_id: 75048
+    query: ocean spray white cran strawberry juice
+    signal: both
+    food_title_share: 0.82
+    exact_product: Ocean Spray White Cran-Peach Juice Drink, 64 Ounce Bottle
+    grocery: true
+  - query_id: 75171
+    query: office candy tray
+    signal: query
+    food_title_share: 0.0
+    exact_product: 'Welaxy Office Drawer Organizers Trays Drawers dividers Felt Storage Bins Organizer bin for Jewelry Cosmetic Makeup Junk '
+    grocery: false
+  - query_id: 75234
+    query: oganifi green juice
+    signal: query
+    food_title_share: 0.2
+    exact_product: Garden of Life Raw Organic Perfect Food Green Superfood Juiced Greens Powder - Original Stevia-Free, 30 Servings - Non-G
+    grocery: true
+  - query_id: 75291
+    query: oil drip pan
+    signal: query
+    food_title_share: 0.0
+    exact_product: YunZyun Chrome Stove Drip Pans Electric Burner Covers Top Replacement Bowls Universal,Speeds Cooking Time Saving Energy.
+    grocery: false
+  - query_id: 75306
+    query: oil of play
+    signal: query
+    food_title_share: 0.06
+    exact_product: Face Moisturizer by Olay Complete Lotion All Day Moisturizer with Sunscreen SPF 15 for Sensitive Skin, 6.0 fl oz (Pack o
+    grocery: false
+  - query_id: 75307
+    query: oil paints for canvas
+    signal: query
+    food_title_share: 0.0
+    exact_product: Winsor & Newton Artists' Oil Color Paint, 37-ml Tube, Titanium White
+    grocery: false
+  - query_id: 75311
+    query: oil recovery kit
+    signal: query
+    food_title_share: 0.07
+    exact_product: Robinair (13172) Maintenance Kit, CHROME
+    grocery: false
+  - query_id: 75316
+    query: oil rubbed bronze tub faucet without diverter
+    signal: query
+    food_title_share: 0.0
+    exact_product: Moen T920ORB Kingsley Two-Handle High Arc Roman Tub Faucet Without Valve, Oil Rubbed Bronze
+    grocery: false
+  - query_id: 75317
+    query: oil rubbed bronze tub spout without diverter
+    signal: query
+    food_title_share: 0.0
+    exact_product: DANCO Universal Tub Spout without Diverter, Brushed Nickel, 1-Pack (89247)
+    grocery: false
+  - query_id: 75325
+    query: oil well
+    signal: query
+    food_title_share: 0.12
+    exact_product: 'Just Havin'' Fun: Adventures of an Oil Well Firefighter'
+    grocery: false
+  - query_id: 75360
+    query: olaf candy
+    signal: query
+    food_title_share: 0.38
+    exact_product: Wilton 12 Count Disney Frozen Icing Decorations
+    grocery: true
+  - query_id: 75446
+    query: olive green kitten heel women
+    signal: query
+    food_title_share: 0.0
+    exact_product: YDN Women Classic Pointy Toe Kitten Pumps Slip-on Suede Low Heel D'Orsay Shoes Formal Olive 8
+    grocery: false
+  - query_id: 75449
+    query: olive green throw pillow
+    signal: query
+    food_title_share: 0.0
+    exact_product: KINGROSE Decorative Handmade 3D Floral Decorative Throw Pillow Case Wool Cushion Covers for Sofa Couch Chair 12 x 20 Inc
+    grocery: false
+  - query_id: 75456
+    query: olive oil not extra virgin
+    signal: query
+    food_title_share: 0.15
+    exact_product: Filippo Berio Extra Virgin Olive Oil, 101.4 Ounce
+    grocery: true
+  - query_id: 75461
+    query: olive sneakers for women
+    signal: query
+    food_title_share: 0.0
+    exact_product: Taos Footwear Women's Star Olive Wash Canvas Sneaker 7 M US
+    grocery: false
+  - query_id: 75603
+    query: one cup french press
+    signal: products
+    food_title_share: 0.5
+    exact_product: Healthy Steps Single Serve French Coffee Press
+    grocery: false
+  - query_id: 75865
+    query: optavia lean and green cauliflower pizza
+    signal: products
+    food_title_share: 0.57
+    exact_product: Premier Protein Shake 30g Protein 1g Sugar 24 Vitamins Minerals Nutrients to Support Immune Health, Chocolate, 11.5 Fl O
+    grocery: true
+  - query_id: 76059
+    query: orgain organic protein powder under $25
+    signal: both
+    food_title_share: 0.94
+    exact_product: 'Orgain Organic Plant Based Protein Powder, Vanilla Bean - 21g of Protein, Vegan, Low Net Carbs, Non Dairy, Gluten Free, '
+    grocery: true
+  - query_id: 76088
+    query: organic chemistry 10th edition carey
+    signal: query
+    food_title_share: 0.0
+    exact_product: Organic Chemistry - Standalone book
+    grocery: false
+  - query_id: 76098
+    query: organic cotton baby clothes
+    signal: query
+    food_title_share: 0.08
+    exact_product: L'ovedbaby Unisex-Baby Organic Cotton Footed Overall, Seafoam, 0/3 Months
+    grocery: false
+  - query_id: 76118
+    query: organic exfoliating face wipes
+    signal: query
+    food_title_share: 0.0
+    exact_product: Facial Sponges - APPEARUS Compressed Natural Cellulose Face Sponge - Made in USA - Spa Sponges for Face Cleansing, Massa
+    grocery: false
+  - query_id: 76133
+    query: organic lotions for women
+    signal: query
+    food_title_share: 0.19
+    exact_product: 'Dr. Bronner''s - Organic Lotion (Patchouli Lime, 8 Ounce) - Body Lotion and Moisturizer, Certified Organic, Soothing for '
+    grocery: false
+  - query_id: 76138
+    query: organic milk powder
+    signal: both
+    food_title_share: 0.62
+    exact_product: NOW Natural Foods, Organic Non-Fat Dry Milk Powder with Protein and Calcium, Product of the USA, 12-Ounce (Packaging May
+    grocery: true
+  - query_id: 76142
+    query: organic non gmo mint herb seeds
+    signal: query
+    food_title_share: 0.0
+    exact_product: Seed Needs, Peppermint Herb (Mentha piperita) Twin Pack of 1,000 Seeds Each Non-GMO
+    grocery: false
+  - query_id: 76144
+    query: organic orthopedic pillow
+    signal: query
+    food_title_share: 0.0
+    exact_product: Holy Lamb Organics Orthopedic Neck Pillow
+    grocery: false
+  - query_id: 76969
+    query: oxo pancake spatula
+    signal: query
+    food_title_share: 0.0
+    exact_product: OXO Good Grips Nylon Flexible Pancake Turner,Black,One Size
+    grocery: false
+  - query_id: 77019
+    query: p n b performance nut butter
+    signal: both
+    food_title_share: 0.88
+    exact_product: Performance Nut Butter Macadamia, Coconut & Cashew Keto Friendly Whole 30 Approved Food | Healthy Fat Bomb Packets - Pal
+    grocery: true
+  - query_id: 77343
+    query: palm heart lasagna noodles
+    signal: both
+    food_title_share: 0.7
+    exact_product: Le Veneziane Gluten Free Lasagne Sheets 250g - Pack of 2
+    grocery: true
+  - query_id: 77350
+    query: palmini pasta
+    signal: both
+    food_title_share: 0.69
+    exact_product: Palmini Low Carb Linguine | 4g of Carbs | As Seen On Shark Tank | Hearts of Palm Pasta (14 Ounce - Pack of 6)
+    grocery: true
+  - query_id: 78397
+    query: pea not cups
+    signal: products
+    food_title_share: 0.85
+    exact_product: REESE'S Zero Sugar Miniatures Chocolate Peanut Butter Cups Candy, Bulk, Individually Wrapped, 3 oz Bags (12 Count)
+    grocery: true
+  - query_id: 78441
+    query: peanut buttertaffy
+    signal: both
+    food_title_share: 0.69
+    exact_product: ABBA ZABA - 2 oz. bars, 24 ct
+    grocery: true
+  - query_id: 78909
+    query: pepper fresh
+    signal: query
+    food_title_share: 0.19
+    exact_product: GREEN BELL PEPPERS FRESH FRUIT PRODUCE VEGETABLES BY THE POUND
+    grocery: true
+  - query_id: 78919
+    query: peppermint cinnamon candy
+    signal: both
+    food_title_share: 0.62
+    exact_product: Quality Candy Spi-C-Mints Candy - 2 Lb Bag
+    grocery: true
+  - query_id: 78926
+    query: peppermint oil spray
+    signal: query
+    food_title_share: 0.0
+    exact_product: Rodent Sheriff Pest Control - Ultra-Pure Peppermint Spray - Repels Mice, Raccoons, Ants, and More - Made in USA (2)
+    grocery: false
+  - query_id: 78981
+    query: perfect keto bar chocolate chip cookie dough
+    signal: both
+    food_title_share: 0.58
+    exact_product: Perfect Keto Bars Bundle - The Cleanest Keto Snacks with Collagen and MCT. No Added Sugar, Keto Diet Friendly - 3g Net C
+    grocery: true
+  - query_id: 79409
+    query: pheromone sexy body oil
+    signal: query
+    food_title_share: 0.19
+    exact_product: Cotton Candy Women Pheromone Body Oil 2.7 Fl Oz
+    grocery: false
+  - query_id: 79452
+    query: phillips coffee machine milk system
+    signal: query
+    food_title_share: 0.25
+    exact_product: Philips 2200 Series Fully Automatic Espresso Machine w/ Milk Frother, Black, EP2220/14
+    grocery: false
+  - query_id: 80355
+    query: pink water beads
+    signal: query
+    food_title_share: 0.0
+    exact_product: Super Z Outlet 1 Pound Bag of Pink Water Gel Pearls Beads for Home Decoration, Wedding Centerpiece, Vase Filler, Plants,
+    grocery: false
+  - query_id: 80927
+    query: planted protein powder unflavored
+    signal: products
+    food_title_share: 0.75
+    exact_product: PlantFusion Complete Plant Based Pea Protein Powder, Non-GMO, Vegan, Dairy Free, Gluten Free, Soy Free, Allergy Free w/D
+    grocery: true
+  - query_id: 81011
+    query: plastic cereal bins
+    signal: query
+    food_title_share: 0.44
+    exact_product: Rubbermaid Modular Cereal Keeper, Large
+    grocery: false
+  - query_id: 81119
+    query: plastic travel coffee mug
+    signal: query
+    food_title_share: 0.31
+    exact_product: GAMA Electronics 2 Foam Insulated ThermoServ Coffee Mugs 16 oz. Blue
+    grocery: false
+  - query_id: 81711
+    query: pointed coffee filters
+    signal: both
+    food_title_share: 0.69
+    exact_product: Hario V60 Paper Coffee Filters Single Use Pour Over Cone Filters Size 02, Natural, 100 count
+    grocery: false
+  - query_id: 82733
+    query: potato chip seasoning powder
+    signal: both
+    food_title_share: 1.0
+    exact_product: Gourmet Fries Seasonings Bottle, Flame Grilled BBQ, 9 Ounce
+    grocery: true
+  - query_id: 82799
+    query: powdered lemonade drink mix
+    signal: products
+    food_title_share: 0.5
+    exact_product: Country Time Sugar-Sweetened Lemonade Drink Mix (60 On-the-Go Packets, 6 Packs of 10)
+    grocery: true
+  - query_id: 82931
+    query: powerbar endurance drink
+    signal: products
+    food_title_share: 0.5
+    exact_product: PowerBar PowerGel RecoveryMax, Regeneration Sports Drink with Carbs, Protein, Vitamins and Minerals (13 Servings), Choco
+    grocery: true
+  - query_id: 84476
+    query: purehealth blood sugar formula
+    signal: query
+    food_title_share: 0.06
+    exact_product: PureHealth Research Blood Sugar 30 CT
+    grocery: false
+  - query_id: 84515
+    query: purneat refrigerator water filter
+    signal: query
+    food_title_share: 0.0
+    exact_product: General Electric MWF Refrigerator Water Filter , White
+    grocery: false
+  - query_id: 85014
+    query: quest shakes
+    signal: products
+    food_title_share: 0.88
+    exact_product: Quest Nutrition Chocolate Milkshake Protein Powder, High Protein, Low Carb, Gluten Free, Soy Free, 48 Ounce (Pack of 1)
+    grocery: true
+  - query_id: 85198
+    query: rachael ray wet cat
+    signal: products
+    food_title_share: 0.68
+    exact_product: Rachael Ray Nutrish Natural Wet Cat Food, Chicken Purrcata Recipe, 2.8 Ounce Cup (Pack of 24), Grain Free
+    grocery: false
+  - query_id: 85384
+    query: rain shower splash pond water table
+    signal: query
+    food_title_share: 0.0
+    exact_product: Step2 Rain Showers Splash Pond Water Table | Kids Water Play Table with 13-Pc Accessory Set
+    grocery: false
+  - query_id: 85643
+    query: raspberry tea leaf pregnancy
+    signal: both
+    food_title_share: 0.62
+    exact_product: Traditional Medicinals Organic Raspberry Leaf Tea, Supports Healthy Pregnancy and Soothes Menstrual Cramps, 16 Count (Pa
+    grocery: true
+  - query_id: 86505
+    query: red tea detox for weight loss
+    signal: query
+    food_title_share: 0.12
+    exact_product: Teami Skinny Detox Tea - Loose Leaf - 30 Day Supply Starter Pack with Red Tea Tumbler and Tea Infuser
+    grocery: true
+  - query_id: 86506
+    query: red tea dress
+    signal: query
+    food_title_share: 0.0
+    exact_product: GRACE KARIN BoatNeck Sleeveless Vintage Tea Dress with Belt Size M, Floral-7(red)
+    grocery: false
+  - query_id: 87061
+    query: renal food canine
+    signal: both
+    food_title_share: 0.69
+    exact_product: Dr. Harvey's Canine Health Miracle Dog Food, Human Grade Dehydrated Base Mix for Dogs with Organic Whole Grains and Vege
+    grocery: false
+  - query_id: 87937
+    query: roast chicken chips
+    signal: query
+    food_title_share: 0.31
+    exact_product: Walkers Roast Chicken Crisps 6 Pack 150g
+    grocery: true
+  - query_id: 88886
+    query: royal purple 15w40 diesel oil synthetic
+    signal: query
+    food_title_share: 0.0
+    exact_product: Royal Purple 04154 Duralec Super SAE 15W-40 API CK-4 High Performance Diesel Motor Oil - 1 Gallon
+    grocery: false
+  - query_id: 89126
+    query: rume bags grocery
+    signal: products
+    food_title_share: 0.5
+    exact_product: Everest Luggage Deluxe Shopping Tote, Black, Black, One Size
+    grocery: false
+  - query_id: 89299
+    query: rv black water hose
+    signal: query
+    food_title_share: 0.0
+    exact_product: Valterra EZ Coupler 20-Foot RV Sewer Hose Kit, Universal Sewer Hose for RV Camper, Includes 2 Attachable 10-Foot Hoses w
+    grocery: false
+  - query_id: 89779
+    query: salicylic acid face cleanser vegan
+    signal: query
+    food_title_share: 0.0
+    exact_product: DERMA E Very Clear Acne Cleanser with Salicylic Acid & Anti-Blemish Complex 6 oz
+    grocery: false
+  - query_id: 90461
+    query: sandwich baking tray
+    signal: query
+    food_title_share: 0.0
+    exact_product: KeepingcooX Mini Baguette Baking Tray, 11x9.5 in, Non-stick Perforated Pan - Bread Crisping Tray, Loaf Baking Mould, Fre
+    grocery: false
+  - query_id: 90566
+    query: sarah lee 45 calorie bread
+    signal: both
+    food_title_share: 0.7
+    exact_product: B&M Brown Bread, Original Flavor, 16 Ounce (Pack of 12)
+    grocery: true
+  - query_id: 91337
+    query: sealed plastic bags for food
+    signal: query
+    food_title_share: 0.42
+    exact_product: Plymor Flat Open Clear Plastic Poly Bags, 2 Mil, 4" x 6", case of 1000
+    grocery: false
+  - query_id: 91874
+    query: serving platters chips and dip
+    signal: query
+    food_title_share: 0.0
+    exact_product: Chips & Salsa Dish Plate Dip Bowl With Tray Salsa Tortilla Dish JUMBO Family Size
+    grocery: false
+  - query_id: 92196
+    query: shakeology
+    signal: products
+    food_title_share: 0.5
+    exact_product: Shake 30 Servings (Bulk) in a Bag 2.38LBS +Extra Bonus greenberry Pack 1.25oz for Free (Cafe Latte)
+    grocery: true
+  - query_id: 92209
+    query: shaklee herb lax 240 tablets
+    signal: query
+    food_title_share: 0.0
+    exact_product: Integrative Therapeutics Blue Heron - Detox Complex with Dietary Fiber, Herbs and Probiotics - Supports Colon Function -
+    grocery: false
+  - query_id: 93094
+    query: side by side refrigerator without water dispenser
+    signal: query
+    food_title_share: 0.0
+    exact_product: AstroAI Mini Fridge 4 Liter/6 Can AC/DC Portable Thermoelectric Cooler and Warmer for Skincare, Foods, Medications, Home
+    grocery: false
+  - query_id: 93253
+    query: silicone bongs and water pipes
+    signal: query
+    food_title_share: 0.0
+    exact_product: Portable Elephant Silicone Crafts (Powder/Blue/Purple)
+    grocery: false
+  - query_id: 93654
+    query: simple modern straw lid water bottle
+    signal: query
+    food_title_share: 0.12
+    exact_product: Simple Modern Slim Cruiser Tumbler with Clear Flip Lid and Straw Insulated Travel Mug Stainless Steel Water Bottle, 32 O
+    grocery: false
+  - query_id: 93678
+    query: simply organic all-purpose seasoning 2.08 oz
+    signal: query
+    food_title_share: 0.38
+    exact_product: Simply Organic All-Purpose Seasoning, Certified Organic | 2.08 oz
+    grocery: true
+  - query_id: 93723
+    query: single bottle wine chiller
+    signal: query
+    food_title_share: 0.0
+    exact_product: Vacu Vin Active Wine Cooler Silver, Set of 2
+    grocery: false
+  - query_id: 94195
+    query: skull baking pan
+    signal: query
+    food_title_share: 0.0
+    exact_product: CK Products Plastic Skull Cake Pan, White
+    grocery: false
+  - query_id: 94209
+    query: skull muffin baking pan
+    signal: query
+    food_title_share: 0.0
+    exact_product: CK Products Plastic Skull Cake Pan, White
+    grocery: false
+  - query_id: 94428
+    query: slim oil pen
+    signal: query
+    food_title_share: 0.0
+    exact_product: 9pcs Cuticle Oil Pen Bulk Nail Nutrition Oil for Nail Multi-Function Nail Gel Polish Nourish Pen Nourishment With Vitami
+    grocery: false
+  - query_id: 94456
+    query: slimfast meal replacement bar
+    signal: products
+    food_title_share: 0.7
+    exact_product: SlimFast Meal Bar Chocolate Crunch - 4 x 60g
+    grocery: true
+  - query_id: 94609
+    query: small bodum
+    signal: products
+    food_title_share: 0.62
+    exact_product: Bodum Eileen French Press, 34 oz, Chrome
+    grocery: false
+  - query_id: 94873
+    query: small res papaer boats
+    signal: products
+    food_title_share: 0.94
+    exact_product: 'Southern Champion Tray 0429 #500 Southland Paperboard Food Tray, 5 lb Capacity, Red Check (Case of 500)'
+    grocery: false
+  - query_id: 94957
+    query: small water cups disposable 3 oz
+    signal: query
+    food_title_share: 0.06
+    exact_product: Dixie Bath Cups Coordinating Designs, 3 oz, 600Count, Multicolor (40957)
+    grocery: false
+  - query_id: 95193
+    query: smoke house nut and rice crackers
+    signal: both
+    food_title_share: 0.62
+    exact_product: Blue Diamond Almond Nut-Thins Cracker Crisps, Smokehouse, 4.25 Ounce (Pack of 12)
+    grocery: true
+  - query_id: 95231
+    query: smuckers uncrustables sandwiches
+    signal: products
+    food_title_share: 0.62
+    exact_product: Smuckers Uncrustables Peanut Butter and Grape Jelly Wheat Bread Sandwich, 2.6 Ounce -- 72 per case.
+    grocery: true
+  - query_id: 95247
+    query: snack vending machine
+    signal: query
+    food_title_share: 0.06
+    exact_product: True GDM-49-HC~TSL01 Double Swing Glass Door Merchandiser Refrigerator with Hydrocarbon Refrigerant and LED Lighting, Ho
+    grocery: false
+  - query_id: 95512
+    query: so vegan in 5 cookbook
+    signal: query
+    food_title_share: 0.0
+    exact_product: 'So Vegan in 5 Ingredients: Over 100 super simple 5-ingredient recipes'
+    grocery: false
+  - query_id: 95648
+    query: soda ash for tye dye
+    signal: both
+    food_title_share: 0.62
+    exact_product: Jacquard Soda Ash 1lb Pkg
+    grocery: false
+  - query_id: 95649
+    query: soda fountain machine
+    signal: query
+    food_title_share: 0.06
+    exact_product: Keurig 119010 KOLD Drinkmaker, Black
+    grocery: false
+  - query_id: 95653
+    query: soda stream
+    signal: query
+    food_title_share: 0.04
+    exact_product: Original sodastream Three Pack 1 Liter Carbonating Bottles - Lasts 2 years - Purple, Blue, and Green
+    grocery: false
+  - query_id: 95654
+    query: soda stream co2 cartridges
+    signal: query
+    food_title_share: 0.0
+    exact_product: PASONG CO2 Soda Chargers, Set of 2
+    grocery: false
+  - query_id: 95824
+    query: sola granola low carb
+    signal: both
+    food_title_share: 0.88
+    exact_product: 'Low Carb Granola Cereal, Gluten Free, Sugar Free, 4g Net Carbs, No Sugar Added, Non-GMO, No Artificial Sweeteners, %100 '
+    grocery: true
+  - query_id: 95891
+    query: solar water fountains outdoor with lights
+    signal: query
+    food_title_share: 0.0
+    exact_product: Solar Fountain, Solar Water Pump for Bird Bath, Free Standing Outdoor Submersible Fountain Panel Kit for Pond, Pool, Pat
+    grocery: false
+  - query_id: 96707
+    query: spice jars drawer
+    signal: query
+    food_title_share: 0.44
+    exact_product: Seville Classics Bamboo Eco-Conscious 3-Tier Spice & Seasoning Rack Drawer Organizer Kitchen Home Pantry Tray Countertop
+    grocery: false
+  - query_id: 97045
+    query: sports water system
+    signal: query
+    food_title_share: 0.03
+    exact_product: Sawyer Products SP129 Squeeze Water Filtration System w/ Two 32-Oz Squeeze Pouches, Straw, and Hydration Pack Adapter
+    grocery: false
+  - query_id: 97134
+    query: sprite soda mini machine
+    signal: query
+    food_title_share: 0.31
+    exact_product: Sprite Mini-Cans, 7.5 fl oz (Pack of 24)
+    grocery: true
+  - query_id: 97142
+    query: spu water cooler
+    signal: query
+    food_title_share: 0.0
+    exact_product: Cooler Master MasterLiquid LC240E RGB Close-Loop AIO CPU Liquid Cooler, 240mm Radiator, Dual Chamber RGB Pump, Dual MF12
+    grocery: false
+  - query_id: 97264
+    query: squize bottles water packs
+    signal: query
+    food_title_share: 0.0
+    exact_product: Gatorade 32 Oz Squeeze Water Sports Bottle - Pack of 2 - New Easy Grip Design
+    grocery: false
+  - query_id: 98087
+    query: stevia without erythritol
+    signal: both
+    food_title_share: 0.87
+    exact_product: Now Foods Better Stevia Certified Organic Extract Powder 1 Lb (454 G) Powder
+    grocery: true
+  - query_id: 98124
+    query: stickers for kids food
+    signal: query
+    food_title_share: 0.0
+    exact_product: Melissa & Doug Sticker Pad - Make-a-Meal, 225+ Food Stickers
+    grocery: false
+  - query_id: 98532
+    query: stress away essential oil
+    signal: query
+    food_title_share: 0.0
+    exact_product: Young Living Stress Away Essential Oil Roll On - Contains Lime, Copaiba, and Lavender - 10 ml
+    grocery: false
+  - query_id: 98641
+    query: stroop waffle
+    signal: products
+    food_title_share: 0.88
+    exact_product: 40 count 100% Butter Syrupwafers (Stroopwafels 100% Butter) In Frustration Free Packaging
+    grocery: true
+  - query_id: 98962
+    query: sugar bear hair gummy
+    signal: query
+    food_title_share: 0.31
+    exact_product: SugarBearHair Vitamins, Vegan Gummy Hair Vitamins with Biotin, Vitamin D, Vitamin B-12, Folic Acid, Vitamin A (1 Month S
+    grocery: false
+  - query_id: 98968
+    query: sugar container
+    signal: both
+    food_title_share: 0.5
+    exact_product: Sistema Bake IT Sugar Storage Container with Measuring Cup, 10.2 cup/2.4L, Clear/White
+    grocery: false
+  - query_id: 98999
+    query: sugar-free oyster sauce
+    signal: both
+    food_title_share: 0.75
+    exact_product: 'Wok Mei Gluten Free Sauces 3-Flavor Variety: One 8 oz Jar Each of Oyster, Hoisin, and Plum in a BlackTie Box (3 Items To'
+    grocery: true
+  - query_id: 99958
+    query: swixx butter knife
+    signal: query
+    food_title_share: 0.0
+    exact_product: Swix World Cup Ski Vise (3 Piece Design), 1'x8 x7
+    grocery: false
+  - query_id: 100437
+    query: take out containers paper clear lid
+    signal: products
+    food_title_share: 0.62
+    exact_product: Dart Container 50 Piece, Clear Hinged Plastic Food Take Out to-Go/Clamshell Container, 6" W, Model:C57PST1-50
+    grocery: false
+  - query_id: 100551
+    query: tamper proof container
+    signal: products
+    food_title_share: 0.94
+    exact_product: Decony Deli Food Container with Lid, 16 oz.
+    grocery: false
+  - query_id: 100822
+    query: tastefully simple spinach and herb dip mix
+    signal: both
+    food_title_share: 0.65
+    exact_product: Tastefully Simple Spinach and Herb Seasoning, 1.5 Ounce
+    grocery: true
+  - query_id: 100998
+    query: tea pot charm
+    signal: query
+    food_title_share: 0.0
+    exact_product: Sexy Sparkles Clip on Tea Pot Tea Time Charm for European Jewelry with Lobster Clasp
+    grocery: false
+  - query_id: 101004
+    query: tea socks
+    signal: query
+    food_title_share: 0.0
+    exact_product: Hot Sox Women's Bubble Tea Socks
+    grocery: false
+  - query_id: 101015
+    query: tea tree blepharitis
+    signal: query
+    food_title_share: 0.19
+    exact_product: Cliradex Towelettes - Natural Face, Eyelash & Eyelid Cleanser - Wipes for Demodex, Blepharitis, Mgd and Red Irritated Ey
+    grocery: false
+  - query_id: 101401
+    query: tempered chocolate kit
+    signal: query
+    food_title_share: 0.07
+    exact_product: Wilton Chocolate Pro Melting Chocolate Candy Wafers for Chocolate Fountain, 2 lbs (Pack of 2)
+    grocery: true
+  - query_id: 102275
+    query: the one for whom food is not enough gorman
+    signal: query
+    food_title_share: 0.07
+    exact_product: 'Metabolism Booster Tea For Women - Energize Tea will Increase Energy - Replace Your Coffee with Energize to Get Through '
+    grocery: false
+  - query_id: 102625
+    query: thermos owl water bottle replacement straw
+    signal: query
+    food_title_share: 0.0
+    exact_product: Contigo Kids Water Bottle with Straw, 14 oz, Pink
+    grocery: false
+  - query_id: 102793
+    query: this is water david foster wallace book
+    signal: query
+    food_title_share: 0.0
+    exact_product: 'Oblivion: Stories'
+    grocery: false
+  - query_id: 102999
+    query: tian tankless water heater
+    signal: query
+    food_title_share: 0.0
+    exact_product: SCR4 N-180 Titan Tankless Water Heater, 77 amp, 18 kW.
+    grocery: false
+  - query_id: 103962
+    query: tomato hanger
+    signal: query
+    food_title_share: 0.0
+    exact_product: Upsy Downsy Hanging Tomato Garden
+    grocery: false
+  - query_id: 104212
+    query: top water fishing baits popin pickle
+    signal: query
+    food_title_share: 0.0
+    exact_product: Arbogast Hula Popper Topwater Fishing Lure, Frog White Belly, G730 (1 1/4 in, 3/16 oz)
+    grocery: false
+  - query_id: 104318
+    query: tortillas without interesterified soybean oil”
+    signal: query
+    food_title_share: 0.38
+    exact_product: Al Dente Carba-Nada Egg Fettuccine, 10-Ounce Bags (Pack of 6)
+    grocery: true
+  - query_id: 105442
+    query: truck salt spreader
+    signal: query
+    food_title_share: 0.0
+    exact_product: Buyers Products ATVS15A ATV All Purpose Broadcast Spreader 15 Gallon Capacity Black
+    grocery: false
+  - query_id: 105773
+    query: turmeric and green tea extract
+    signal: query
+    food_title_share: 0.25
+    exact_product: Green Tea CR (Green Tea + Curcumin + Resveratrol) - 60 Vegetarian Capsules - 30 Day Supply - from Purity Products
+    grocery: false
+  - query_id: 106439
+    query: ultimate direction water soft flask
+    signal: query
+    food_title_share: 0.0
+    exact_product: Ultimate Direction Clutch Water Bottle Coral, One Size
+    grocery: false
+  - query_id: 107648
+    query: v8 splash juice 24 pack
+    signal: query
+    food_title_share: 0.47
+    exact_product: V8 Splash Mango Peach, 64 oz. Bottle
+    grocery: true
+  - query_id: 107752
+    query: valerian root oil
+    signal: query
+    food_title_share: 0.0
+    exact_product: Herb Pharm Certified Organic Valerian Root Liquid Extract for Relaxation and Restful Sleep, Organic Cane Alcohol, 1 Ounc
+    grocery: false
+  - query_id: 107826
+    query: vanilla lotion and perfume
+    signal: query
+    food_title_share: 0.06
+    exact_product: Bath & Body Works Warm Vanilla Sugar Body Set | Shower Gel, Body Lotion & Fragrance Mist
+    grocery: false
+  - query_id: 107910
+    query: vape juice
+    signal: query
+    food_title_share: 0.06
+    exact_product: Capella SilverLine Fruit Circles Flavor Concentrate 13ml bottle
+    grocery: false
+  - query_id: 107939
+    query: vaporizer dry herb
+    signal: query
+    food_title_share: 0.0
+    exact_product: Airtight Protective Case, Smell Proof Container, Fits Px 2 or Px 3, Removable Stash Containers
+    grocery: false
+  - query_id: 108045
+    query: vegan bags
+    signal: query
+    food_title_share: 0.0
+    exact_product: Travelon Anti-Theft Heritage Hobo Bag, Pewter, 11.5 X 9.5 X 3
+    grocery: false
+  - query_id: 108048
+    query: vegan chinese cookbook
+    signal: query
+    food_title_share: 0.0
+    exact_product: 'The Chinese Vegan Kitchen: More Than 225 Meat-free, Egg-free, Dairy-free Dishes from the Culinary Regions o f China'
+    grocery: false
+  - query_id: 108054
+    query: vegan eye cream for dark circles and puffiness
+    signal: query
+    food_title_share: 0.12
+    exact_product: LilyAna Naturals Eye Cream - 2-Month Supply - Made in USA, Eye Cream for Dark Circles and Puffiness, Under Eye Cream, An
+    grocery: false
+  - query_id: 108062
+    query: vegan men
+    signal: query
+    food_title_share: 0.06
+    exact_product: 'Vegan Man: The manual for cooking amazing plant-based food - 64 delicious, easy recipes (Haynes Manuals)'
+    grocery: false
+  - query_id: 108074
+    query: vegan whoopie pies
+    signal: query
+    food_title_share: 0.33
+    exact_product: Wilton Muffin Top Pan Perfect Results Premium Non-Stick Bakeware, 12-Cup, Steel
+    grocery: true
+  - query_id: 108075
+    query: veganise mayonnaise
+    signal: query
+    food_title_share: 0.0
+    exact_product: FOLLOW YOUR HEART Soy Free Vegenaise, 16 FZ
+    grocery: true
+  - query_id: 108506
+    query: vic firth pepper grinder
+    signal: query
+    food_title_share: 0.0
+    exact_product: Pump & Grind Pepper Mill STS06PM01
+    grocery: false
+  - query_id: 108934
+    query: vitamin c complex whole food
+    signal: query
+    food_title_share: 0.19
+    exact_product: Vitamin C for Immune Support – New Chapter Activated C Food Complex + Organic Non-GMO Ingredients - 180 ct
+    grocery: false
+  - query_id: 108964
+    query: vitamin k oil
+    signal: query
+    food_title_share: 0.0
+    exact_product: Liquid Vitamin K1 - 1 Fl Oz – Alcohol-Free Oral Vitamin K1 Drops - Liquid Vitamin K for Skin, Bones & Blood Health – Veg
+    grocery: false
+  - query_id: 109295
+    query: waddle i do without you mug
+    signal: products
+    food_title_share: 0.53
+    exact_product: I Am Not Bossy, I Just Know What You Should Be Doing Coffee Mug Funny Office Collectible Novelty and Souvenir 11 Oz
+    grocery: false
+  - query_id: 109544
+    query: wall mounted wooden spice storage rack
+    signal: query
+    food_title_share: 0.12
+    exact_product: Ikea Bekvam Wooden Spice Rack/Organizer in Birch (2-pack), Garden, Lawn, Maintenance by Garden-Outdoor
+    grocery: false
+  - query_id: 109797
+    query: waste not how to get the most from your food
+    signal: query
+    food_title_share: 0.08
+    exact_product: 'Waste Not: How To Get The Most From Your Food'
+    grocery: false
+  - query_id: 109866
+    query: water
+    signal: query
+    food_title_share: 0.06
+    exact_product: FIJI Natural Artesian Water, 50.7 Fl Ounce Bottle (Pack of 12)
+    grocery: true
+  - query_id: 109867
+    query: water 1.5 liter
+    signal: query
+    food_title_share: 0.0
+    exact_product: FIJI Natural Artesian Water, 50.7 Fl Ounce Bottle (Single)
+    grocery: true
+  - query_id: 109882
+    query: water bongs
+    signal: query
+    food_title_share: 0.0
+    exact_product: HT9527 Hookah, Portable Mini Hookah Set with Shisha Accessories Handheld Hookah Gifts for Boyfriend Father Husband or Fr
+    grocery: false
+  - query_id: 109888
+    query: water bottle for running
+    signal: query
+    food_title_share: 0.0
+    exact_product: 'KUYOU Hydration Pack with 2L Hydration Bladder Water Rucksack Backpack Bladder Bag Cycling Bicycle Bike/Hiking Climbing '
+    grocery: false
+  - query_id: 109899
+    query: water bottle with lid
+    signal: query
+    food_title_share: 0.0
+    exact_product: Tervis 24 oz. Clear Water Bottle
+    grocery: false
+  - query_id: 109940
+    query: water flavoring packets without aspartame
+    signal: query
+    food_title_share: 0.47
+    exact_product: Country Time Sugar-Sweetened Lemonade Drink Mix (60 On-the-Go Packets, 6 Packs of 10)
+    grocery: true
+  - query_id: 109951
+    query: water gun camera
+    signal: query
+    food_title_share: 0.0
+    exact_product: Forum Novelties Clown Squirt Camera
+    grocery: false
+  - query_id: 109969
+    query: water level monitor
+    signal: query
+    food_title_share: 0.0
+    exact_product: Rain Harvesting Pty Ltd TATG02 Tank Gauge Level Indicator44; Monitoring Your rainwater Made Easy
+    grocery: false
+  - query_id: 109973
+    query: water meter cover outdoor
+    signal: query
+    food_title_share: 0.0
+    exact_product: Storm Drain 12-in. x 17-in. Meter Box with Lid
+    grocery: false
+  - query_id: 109999
+    query: water resistant down knee length parka
+    signal: query
+    food_title_share: 0.0
+    exact_product: BGSD Women's "Tisha" Water Resistant Down Parka Coat - XL,Black
+    grocery: false
+  - query_id: 110048
+    query: water weights for pool exercise
+    signal: query
+    food_title_share: 0.0
+    exact_product: All Pro Weight Adjustable Aqua Power Aquatic Wrist Weights, 4-Pound
+    grocery: false
+  - query_id: 110664
+    query: wellness puppy food large breed
+    signal: query
+    food_title_share: 0.06
+    exact_product: Wellness Complete Health Natural Wet Canned Puppy Food, Puppy Chicken & Salmon 12.5-Ounce Can (Pack of 12)
+    grocery: false
+  - query_id: 110811
+    query: wheel locks lug nuts
+    signal: query
+    food_title_share: 0.0
+    exact_product: Gorilla Automotive 78641N Acorn Open End Wheel Locks (14mm x 1.50 Thread Size) - Pack of 4
+    grocery: false
+  - query_id: 110902
+    query: whiskey coffee table book
+    signal: query
+    food_title_share: 0.0
+    exact_product: 'American Whiskey, Bourbon & Rye: A Guide to the Nation''s Favorite Spirit'
+    grocery: false
+  - query_id: 111032
+    query: white coffee pod holder
+    signal: query
+    food_title_share: 0.06
+    exact_product: Mind Reader Anchor Coffee Pod Drawer, 12.87 x 13.46 x 3.25, White
+    grocery: false
+  - query_id: 111893
+    query: wine
+    signal: query
+    food_title_share: 0.03
+    exact_product: 'Wine Folly: Magnum Edition: The Master Guide'
+    grocery: true
+  - query_id: 111913
+    query: wine decorker
+    signal: query
+    food_title_share: 0.06
+    exact_product: Portuguese Double Lever Corker
+    grocery: false
+  - query_id: 111914
+    query: wine fridge 15 inch wide dual zone built in
+    signal: query
+    food_title_share: 0.0
+    exact_product: Avallon 23 Bottle 15" Dual Zone Built-In Wine Cooler - Right Hinge
+    grocery: false
+  - query_id: 111923
+    query: wine glasses for women gift
+    signal: query
+    food_title_share: 0.13
+    exact_product: Mud Pie Fabulous at 50 Wine Glass
+    grocery: false
+  - query_id: 111924
+    query: wine glasses without stem
+    signal: query
+    food_title_share: 0.0
+    exact_product: Luigi Bormioli Atelier Stemless Pinot Noir Wine Glass, 20-Ounce, Set of 6
+    grocery: false
+  - query_id: 111932
+    query: wine openers best sellers
+    signal: query
+    food_title_share: 0.0
+    exact_product: Brookstone Compact Wine Opener
+    grocery: false
+  - query_id: 111950
+    query: wine vacuum pump
+    signal: query
+    food_title_share: 0.0
+    exact_product: The Original Vacu Vin Wine Saver with 2 Vacuum Stoppers – White
+    grocery: false
+  - query_id: 113838
+    query: work will suck without you water bottle
+    signal: query
+    food_title_share: 0.23
+    exact_product: 'Reduce Water Bottle Set, 14 oz – WaterWeek Refillable Water Bottles with Twist Off Cap – 5 Small Reusable Water Bottles '
+    grocery: false
+  - query_id: 114597
+    query: xtend bcaa chocolate
+    signal: both
+    food_title_share: 0.56
+    exact_product: XTEND Pro Protein Powder Chocolate Lava Cake | 100% Whey Protein Isolate | Keto Friendly + 7g BCAAs with Natural Flavors
+    grocery: true
+  - query_id: 114799
+    query: year without sugar
+    signal: query
+    food_title_share: 0.0
+    exact_product: 'Straight Up Food: Delicious and Easy Plant-based Cooking without Salt, Oil or Sugar'
+    grocery: false
+  - query_id: 114954
+    query: yeti coffee travel mug
+    signal: query
+    food_title_share: 0.33
+    exact_product: YETI Rambler 30 oz Stainless Steel Vacuum Insulated Tumbler with Lid
+    grocery: false
+  - query_id: 114997
+    query: ylang ylang floral water
+    signal: query
+    food_title_share: 0.05
+    exact_product: NOW Essential Oils, Ylang Ylang Extra Oil, Comforting Aromatherapy Scent, Steam Distilled, 100% Pure, Vegan, Child Resis
+    grocery: false
+  - query_id: 115070
+    query: yogurt greek whole milk
+    signal: both
+    food_title_share: 0.85
+    exact_product: FAGE TOTAL, Greek Yogurt, 17.6 oz
+    grocery: true
+  - query_id: 115094
+    query: yorktend not a day over fabulous wine tumbler
+    signal: query
+    food_title_share: 0.07
+    exact_product: SassyCups Not A Day Over Fabulous Engraved Stainless Steel Vacuum Insulated Wine Tumbler with Lid and Straw | Birthday W
+    grocery: false
+  - query_id: 115144
+    query: young living oil storage
+    signal: query
+    food_title_share: 0.0
+    exact_product: Essential Oil Spa Storage System [MULTIPLE SIZES] + Oil Opener & Stickers - Holds Young Living & Doterra bottles 5,10,15
+    grocery: false
+  - query_id: 115816
+    query: zojirushi bread machine virtuoso
+    signal: query
+    food_title_share: 0.25
+    exact_product: Zojirushi BB-CEC20 Home Bakery Supreme 2-Pound-Loaf Breadmaker, Black
+    grocery: false

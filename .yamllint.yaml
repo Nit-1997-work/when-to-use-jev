@@ -1,7 +1,7 @@
 extends: default
 
 rules:
-  # data/intents.yaml keeps one prompt description per line so diffs stay reviewable.
+  # data/intent/intents.yaml keeps one prompt description per line so diffs stay reviewable.
   line-length:
     max: 160
   document-start: disable
