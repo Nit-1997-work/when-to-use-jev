@@ -366,8 +366,8 @@ Make targets: `rerank-grocery-candidates`, `rerank-prepare`, `rerank-check`, `re
 1. Done: ESCI pinned (commit `7916cdf`, SHA-256 of every file in `data/SOURCES.md`); Apache-2.0 license saved with the data.
 2. Done: `labels.yaml` and `grocery_terms.yaml` drafted; grocery review proposed (171 of 499); splits built and committed.
 3. Done: every system implemented and tested offline (mocked APIs); smoke run over 5 practice searches per system (results in section 14).
-4. Next: the authors review `grocery_review.yaml`; any change rebuilds `main` with `make rerank-prepare`.
-5. Practice run (`make rerank-practice`): tune label definitions, Jev criteria, and prompts; `make rerank-tune RUN_ID=...`; decide whether `jev-noul-pair`, `jev-choice`, and `gemini-pointwise` stay in.
+4. Done: the authors accepted the grocery review as proposed.
+5. Done: practice run `practice-20261001` (every system x 100 `practice` + 50 `practice-nomatch` searches), thresholds tuned and frozen in `data/rerank/thresholds.yaml` (section 15). Label definitions, prompts, and Jev criteria were not changed.
 6. Freeze `labels.yaml`, prompts, and `thresholds.yaml`; commit.
 7. Full run from committed code (`make rerank-run`), then the report and write-up.
 
@@ -380,7 +380,6 @@ Make targets: `rerank-grocery-candidates`, `rerank-prepare`, `rerank-check`, `re
 - Decided: zero-shot, frozen definitions, thresholds tuned only on practice data and applied by the report.
 - Decided: every no-match search is constructed, because ESCI's reduced set has almost none.
 - Decided: Gemini listwise always returns the full ranking, even when it flags that nothing matches.
-- Open: the authors' review of the 171 grocery decisions.
 - Open: whether shorter Score criteria keep `jev-score`'s quality while cutting its per-question tokens (practice run).
 - Open: the source and date for Jev's price per million input tokens (carried over from Experiment 1).
 - Open: whether TypeSafe's Master Customer Agreement allows publishing benchmark results (carried over from Experiment 1).
@@ -417,3 +416,26 @@ Measured on the 5 practice searches (1 HTTP attempt each; Jev output tokens are 
 | `jev-choice` | 1 | 133 ms | 1,439 | $0.06 |
 
 At these rates one full run (about 1,700 searches per system) costs about $15, in line with the estimate in section 8.
+
+## 15. Practice run
+
+Run `practice-20261001`, 2026-10-01, from a laptop on home Wi-Fi: every system x 100 `practice` + 50 `practice-nomatch` searches, one search at a time per system, systems one after another.
+Practice searches come from ESCI's train split and tune the setup; these numbers are not results.
+Two Gemini Flash searches failed on connection errors after every retry and were resumed; 1 to 3 searches per Gemini system were withheld by the provider's safety filter (queries about antibiotics and adult products), and are excluded from quality metrics.
+
+| System | NDCG@3 (95% CI) | Exact@1 | p50 / p95 latency | Cost / 1k searches |
+|---|---|---|---|---|
+| `gemini-listwise` | 0.750 (0.684-0.809) | 79.0% | 1,072 / 1,537 ms | $1.09 |
+| `gemini-flash-listwise` | 0.769 (0.707-0.829) | 78.8% | 2,755 / 8,502 ms | $2.69 |
+| `gemini-label` | 0.701 (0.637-0.764) | 73.2% | 1,211 / 1,847 ms | $1.44 |
+| `gemini-pointwise` | 0.675 (0.615-0.735) | 70.0% | 908 / 1,615 ms | $4.36 |
+| `jev-score` | 0.767 (0.706-0.825) | 81.0% | 169 / 275 ms | $0.46 |
+| `jev-noul-batch` | 0.783 (0.720-0.843) | 80.0% | 134 / 196 ms | $0.20 |
+| `jev-noul-pair` | 0.771 (0.711-0.830) | 79.0% | 189 / 579 ms | $0.42 |
+| `jev-choice` | 0.741 (0.679-0.802) | 76.0% | 116 / 179 ms | $0.07 |
+| `lexical` | 0.570 (0.506-0.636) | 56.0% | - | - |
+| `random` | 0.426 (0.365-0.488) | 36.0% | - | - |
+
+Abstention thresholds tuned on this run (best F1 on practice + practice-nomatch): `jev-score` 0.785, `jev-noul-batch` 0.565, `jev-noul-pair` 0.59, `jev-choice` 0.795.
+Gemini decides with its own flag; its abstention F1 on the same searches was 50% to 55%, against 66% to 68% for the tuned Jev systems (tuned on these same searches, so the Jev numbers are optimistic here).
+

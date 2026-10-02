@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import math
+from pathlib import Path
 
 import numpy as np
 import pandas as pd
@@ -25,6 +26,8 @@ from jevbench.rerank.metrics import (
     summarize,
     tune_threshold,
 )
+from jevbench.rerank.report import load_thresholds
+from jevbench.rerank.thresholds import write_thresholds
 from tests.rerank.helpers import rerank_record
 
 # "sesame chips" from ESCI: 1 Exact, 9 Substitutes, 6 Irrelevant. Ideal top 3: E, S, S.
@@ -105,6 +108,21 @@ def test_abstention_uses_flag_or_threshold() -> None:
     threshold, f1 = tune_threshold(frame)  # pyright: ignore[reportGeneralTypeIssues]
     assert f1 == pytest.approx(abstention(frame, threshold)["f1"])
     assert f1 >= result["f1"]
+
+
+def test_tuned_threshold_survives_the_round_trip_through_the_thresholds_file(tmp_path: Path) -> None:
+    """A threshold never lands on an observed confidence, so writing and re-reading it keeps the same F1."""
+    frame = _frame(
+        rerank_record(example_id="n1", should_abstain=True, exact_confidence=0.78, gold=["S", "I", "I"]),
+        rerank_record(example_id="n2", should_abstain=True, exact_confidence=0.4, gold=["S", "I", "I"]),
+        rerank_record(example_id="m1", exact_confidence=0.95),
+        rerank_record(example_id="m2", exact_confidence=0.78 + 1e-12),
+    )
+    threshold, f1 = tune_threshold(frame)  # pyright: ignore[reportGeneralTypeIssues]
+    path = write_thresholds({"jev-score": (threshold, f1)}, "run", tmp_path / "thresholds.yaml")
+    reread = load_thresholds(path)[0]["jev-score"]
+    assert abstention(frame, reread)["f1"] == pytest.approx(f1)
+    assert reread not in {0.78, 0.4, 0.95}
 
 
 def test_tuning_needs_searches_that_should_abstain() -> None:

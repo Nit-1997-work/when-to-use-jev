@@ -22,7 +22,7 @@ def write_thresholds(tuned: dict[str, tuple[float, float]], run_id: str, path: P
     path = path or THRESHOLDS_PATH
     body = {
         "tuned_on_run": run_id,
-        "thresholds": {system: round(threshold, 6) for system, (threshold, _) in sorted(tuned.items())},
+        "thresholds": {system: threshold for system, (threshold, _) in sorted(tuned.items())},  # full precision
         "practice_f1": {system: round(f1, 4) for system, (_, f1) in sorted(tuned.items())},
     }
     path.write_text(HEADER + "---\n" + yaml.safe_dump(body, sort_keys=False), encoding="utf-8")

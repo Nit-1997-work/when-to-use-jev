@@ -14,6 +14,7 @@ from __future__ import annotations
 import math
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
+from itertools import pairwise
 from typing import Any, cast
 
 import numpy as np
@@ -142,13 +143,15 @@ def abstention(frame: pd.DataFrame, threshold: float) -> dict[str, float]:
 def tune_threshold(frame: pd.DataFrame) -> tuple[float, float] | None:
     """The `exact_confidence` threshold with the best abstention F1, and that F1. None when there is nothing to tune.
 
-    Candidate thresholds sit just above each observed confidence, so every distinct cut is tried once.
+    Candidate thresholds sit halfway between neighbouring observed confidences (plus one below all and one above all),
+    so every distinct cut is tried once and a threshold never lands on an observed value.
     """
     rows = frame[answered(frame) & frame["exact_confidence"].notna()]
     if rows.empty or not rows["should_abstain"].astype(bool).any():
         return None
     values = sorted({float(v) for v in rows["exact_confidence"]})
-    candidates = [math.nextafter(v, math.inf) for v in values] + [values[0]]
+    midpoints = [(low + high) / 2 for low, high in pairwise(values)]
+    candidates = [values[0] / 2, *midpoints, (values[-1] + 1.0) / 2 if values[-1] < 1.0 else math.nextafter(1.0, 2)]
     best: tuple[float, float] | None = None
     for threshold in sorted(set(candidates)):
         f1 = abstention(rows, threshold)["f1"]

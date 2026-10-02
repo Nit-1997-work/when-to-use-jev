@@ -1,0 +1,16 @@
+# Abstention thresholds: a system abstains ("nothing here is an exact match") when its confidence that some candidate
+# is Exact is below its threshold. Written by `jevbench rerank tune-thresholds` from a practice run (the threshold
+# with the best abstention F1 on practice + practice-nomatch), then frozen. Systems that decide with their own flag
+# (Gemini) have no threshold. The report records this file's SHA-256.
+---
+tuned_on_run: practice-20261001
+thresholds:
+  jev-choice: 0.795
+  jev-noul-batch: 0.565
+  jev-noul-pair: 0.59
+  jev-score: 0.785
+practice_f1:
+  jev-choice: 0.6612
+  jev-noul-batch: 0.6667
+  jev-noul-pair: 0.6667
+  jev-score: 0.6777
