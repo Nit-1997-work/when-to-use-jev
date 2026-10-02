@@ -236,7 +236,7 @@ when-to-use-jev/
   src/jevbench/intent/report.py   # results/intent/<run>/report.md
   src/jevbench/intent/phoenix_sync.py # datasets + experiments in Phoenix
   src/jevbench/cli.py             # `jevbench intent prepare | systems | check | run | report | phoenix-sync`, `jevbench audit`
-  results/intent/<run>/           # published runs: records, manifests, and report.md
+  results/intent/<run>/           # published runs: report.md committed; records and manifests kept locally
   scripts/run_matrix.sh           # systems x splits x repeats under one run id
   tests/                          # offline unit tests
   docs/intent/experiment-design.md

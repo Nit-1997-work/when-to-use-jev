@@ -229,8 +229,12 @@ data/*/raw/*.parquet
 
 # Run outputs (JSONL records, manifests, reports). Publish selected runs deliberately, not by accident:
 # everything under results/<experiment>/ is ignored, and each published run is re-included by name.
+# Only a published run's report.md is committed; its records and manifests stay local.
 results/*/*
 !results/intent/pilot-20260929T205311Z/
+!results/rerank/main-20261002/
+results/*/*/*
+!results/*/*/report.md
 
 # Local-only patterns for `jevbench audit` (internal names or hosts that must never be published).
 .audit-denylist

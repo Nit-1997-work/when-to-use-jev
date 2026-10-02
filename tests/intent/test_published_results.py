@@ -1,6 +1,7 @@
 """The published results must be exactly what the harness computes from the published records.
 
-These run in CI without API keys: they read only files committed under results/intent/.
+Only a published run's report.md is committed; its records and manifests stay local. These checks need the records,
+so they run on a machine that has them and skip elsewhere (including CI). They need no API keys.
 """
 
 from __future__ import annotations
@@ -33,6 +34,8 @@ def _run_dir(run_id: str) -> Path:
     path = results_dir("intent") / run_id
     if not (path / "report.md").exists():
         pytest.skip(f"published run {run_id} is not in this checkout")
+    if not any(path.rglob("repeat-*.jsonl")):
+        pytest.skip(f"published run {run_id} has no local records (only report.md is committed)")
     return path
 
 
