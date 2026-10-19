@@ -1,0 +1,1236 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Experiment 2: Jev vs Gemini for Product Search Re-ranking</title>
+<style>
+  :root {
+    --bg: #f7f8fa;
+    --panel: #ffffff;
+    --ink: #1c2330;
+    --muted: #5d6778;
+    --line: #e2e6ec;
+    --jev: #0f8f7e;
+    --jev-soft: #e3f4f1;
+    --gem: #3d63d9;
+    --gem-soft: #e8edfb;
+    --ref: #9aa3b2;
+    --good: #18864b;
+    --good-soft: #e5f4ea;
+    --bad: #c2412d;
+    --bad-soft: #fbeae6;
+    --warn: #a66a00;
+    --warn-soft: #fdf3dc;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    font: 15px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, Helvetica, Arial, sans-serif;
+    color: var(--ink);
+    background: var(--bg);
+  }
+  .layout { display: grid; grid-template-columns: 250px minmax(0, 1fr); max-width: 1320px; margin: 0 auto; }
+  nav.toc {
+    position: sticky; top: 0; align-self: start; height: 100vh; overflow-y: auto;
+    padding: 28px 18px 28px 24px; border-right: 1px solid var(--line); font-size: 13.5px;
+  }
+  nav.toc .brand { font-weight: 700; font-size: 14px; margin-bottom: 4px; }
+  nav.toc .sub { color: var(--muted); font-size: 12px; margin-bottom: 18px; }
+  nav.toc ol { list-style: none; padding: 0; margin: 0; counter-reset: s; }
+  nav.toc li { margin: 2px 0; }
+  nav.toc a { display: block; padding: 4px 8px; border-radius: 6px; color: var(--muted); text-decoration: none; }
+  nav.toc a:hover { background: #eceff4; color: var(--ink); }
+  nav.toc a.active { background: var(--jev-soft); color: var(--jev); font-weight: 600; }
+  nav.toc .group { margin: 14px 0 4px 8px; font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: #8a93a3; }
+  main { padding: 36px 48px 80px; min-width: 0; }
+  header.hero { margin-bottom: 28px; }
+  .eyebrow { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--jev); font-weight: 700; }
+  h1 { font-size: 30px; line-height: 1.25; margin: 6px 0 10px; letter-spacing: -.01em; }
+  h2 { font-size: 22px; margin: 0 0 14px; letter-spacing: -.005em; }
+  h3 { font-size: 16.5px; margin: 26px 0 10px; }
+  h4 { font-size: 14px; margin: 18px 0 8px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+  p { margin: 0 0 12px; }
+  .lede { font-size: 16.5px; color: #374152; max-width: 860px; }
+  .meta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+  .chip { display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 999px; background: #eceff4; color: #3c4657; font-size: 12.5px; white-space: nowrap; }
+  .chip.jev { background: var(--jev-soft); color: var(--jev); }
+  .chip.gem { background: var(--gem-soft); color: var(--gem); }
+  section.card {
+    background: var(--panel); border: 1px solid var(--line); border-radius: 12px;
+    padding: 26px 30px; margin: 0 0 22px; scroll-margin-top: 16px;
+  }
+  code, .mono { font-family: var(--mono); font-size: 12.5px; }
+  code { background: #f0f2f6; padding: 1px 5px; border-radius: 4px; }
+  pre { background: #121826; color: #dfe6f3; padding: 16px 18px; border-radius: 10px; overflow-x: auto; font: 12.5px/1.55 var(--mono); margin: 10px 0 14px; }
+  pre .c { color: #7f8ba3; }
+  pre .k { color: #8fc7ff; }
+  pre .s { color: #a6e3a1; }
+  ul, ol.plain { padding-left: 20px; margin: 0 0 12px; }
+  li { margin: 3px 0; }
+  a { color: var(--gem); }
+  .table-wrap { overflow-x: auto; margin: 8px 0 14px; border: 1px solid var(--line); border-radius: 10px; }
+  table { border-collapse: collapse; width: 100%; font-size: 13px; font-variant-numeric: tabular-nums; }
+  th, td { padding: 8px 10px; text-align: left; border-bottom: 1px solid var(--line); vertical-align: top; }
+  thead th { background: #f3f5f8; font-weight: 600; font-size: 12.5px; color: #3c4657; vertical-align: bottom; }
+  td.nw { white-space: nowrap; }
+  tbody tr:last-child td { border-bottom: 0; }
+  td.n, th.n { text-align: right; white-space: nowrap; }
+  td:first-child code { white-space: nowrap; }
+  tr.jev td:first-child { border-left: 3px solid var(--jev); }
+  tr.gem td:first-child { border-left: 3px solid var(--gem); }
+  tr.ref td:first-child { border-left: 3px solid var(--ref); }
+  tr.ref td { color: var(--muted); }
+  tr.hl td { background: #fbfcfe; font-weight: 600; }
+  .best { color: var(--good); font-weight: 700; }
+  .pass { color: var(--good); font-weight: 700; }
+  .fail { color: var(--bad); font-weight: 700; }
+  .ns { color: var(--muted); }
+  .grid { display: grid; gap: 14px; }
+  .g2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .g3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .g4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .kpi { border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; background: #fcfdfe; }
+  .kpi .label { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+  .kpi .value { font-size: 26px; font-weight: 700; letter-spacing: -.01em; margin: 2px 0; font-variant-numeric: tabular-nums; }
+  .kpi .note { font-size: 12.5px; color: var(--muted); }
+  .kpi.jev .value { color: var(--jev); }
+  .callout { border-radius: 10px; padding: 14px 16px; margin: 12px 0; border: 1px solid; }
+  .callout.good { background: var(--good-soft); border-color: #bfe3cc; }
+  .callout.bad { background: var(--bad-soft); border-color: #f1c7bd; }
+  .callout.warn { background: var(--warn-soft); border-color: #efd9a6; }
+  .callout.info { background: var(--gem-soft); border-color: #c9d5f6; }
+  .callout strong:first-child { display: block; margin-bottom: 4px; }
+  .verdict { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin: 14px 0 4px; }
+  .verdict .v { border: 1px solid var(--line); border-radius: 10px; padding: 14px; background: #fff; }
+  .verdict .v h5 { margin: 0 0 6px; font-size: 14px; font-family: var(--mono); }
+  .verdict .v .tag { display: inline-block; font-size: 11.5px; font-weight: 700; padding: 2px 8px; border-radius: 999px; margin-bottom: 8px; }
+  .tag.ok { background: var(--good-soft); color: var(--good); }
+  .tag.no { background: var(--bad-soft); color: var(--bad); }
+  .verdict .v ul { margin: 0; padding-left: 16px; font-size: 13px; }
+  /* pipeline */
+  .pipeline { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 10px; margin: 16px 0 8px; }
+  .stage { position: relative; border: 1px solid var(--line); border-radius: 10px; padding: 12px; background: #fcfdfe; font-size: 13px; }
+  .stage .num { width: 22px; height: 22px; border-radius: 50%; background: var(--ink); color: #fff; font-size: 12px; font-weight: 700; display: grid; place-items: center; margin-bottom: 6px; }
+  .stage b { display: block; font-size: 13.5px; margin-bottom: 4px; }
+  .stage code { font-size: 11.5px; }
+  .stage:not(:last-child)::after { content: "\2192"; position: absolute; right: -10px; top: 50%; transform: translateY(-50%); color: #a7b0bf; font-size: 15px; }
+  .timeline { position: relative; margin: 14px 0 6px 6px; padding-left: 22px; border-left: 2px solid var(--line); }
+  .timeline .t { position: relative; margin: 0 0 16px; }
+  .timeline .t::before { content: ""; position: absolute; left: -29px; top: 5px; width: 12px; height: 12px; border-radius: 50%; background: #fff; border: 2px solid var(--jev); }
+  .timeline .t .when { font-size: 12px; color: var(--muted); font-family: var(--mono); }
+  .timeline .t b { display: block; }
+  /* charts */
+  .chart { width: 100%; }
+  .chart svg { display: block; width: 100%; height: auto; overflow: visible; }
+  .chart-title { font-size: 13.5px; font-weight: 600; margin: 4px 0 2px; }
+  .chart-sub { font-size: 12.5px; color: var(--muted); margin-bottom: 8px; }
+  .legend { display: flex; gap: 14px; flex-wrap: wrap; font-size: 12.5px; color: var(--muted); margin: 6px 0 0; }
+  .legend span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: -1px; background: var(--c); }
+  .figure { border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px 12px; background: #fcfdfe; }
+  .example { border: 1px solid var(--line); border-radius: 10px; overflow: hidden; margin: 10px 0 14px; }
+  .example .q { background: #f3f5f8; padding: 10px 14px; font-weight: 600; }
+  .example .q code { background: #fff; }
+  .example .rows { display: grid; grid-template-columns: 1fr 1fr; }
+  .example .col { padding: 12px 14px; font-size: 13.5px; }
+  .example .col + .col { border-left: 1px solid var(--line); }
+  .lbl { display: inline-block; min-width: 18px; text-align: center; font-weight: 700; font-size: 11.5px; padding: 1px 6px; border-radius: 4px; margin-right: 6px; }
+  .lbl.E { background: var(--good-soft); color: var(--good); }
+  .lbl.S { background: var(--warn-soft); color: var(--warn); }
+  .lbl.C { background: #efe8fb; color: #6b45c2; }
+  .lbl.I { background: var(--bad-soft); color: var(--bad); }
+  .small { font-size: 12.5px; color: var(--muted); }
+  footer { color: var(--muted); font-size: 12.5px; margin-top: 30px; }
+  @media (max-width: 1080px) {
+    .layout { grid-template-columns: 1fr; }
+    nav.toc { display: none; }
+    main { padding: 24px 18px 60px; }
+    .pipeline, .verdict, .g4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .stage::after { display: none; }
+    .g3, .g2 { grid-template-columns: 1fr; }
+  }
+  @media print {
+    nav.toc { display: none; }
+    .layout { grid-template-columns: 1fr; }
+    body { background: #fff; }
+    section.card { break-inside: avoid-page; border-color: #ccc; }
+  }
+</style>
+</head>
+<body>
+<div class="layout">
+
+<nav class="toc" aria-label="Contents">
+  <div class="brand">Experiment 2: Re-ranking</div>
+  <div class="sub">Jev vs Gemini on Amazon ESCI</div>
+  <ol>
+    <li><a href="#summary">Summary</a></li>
+    <li class="group">Design</li>
+    <li><a href="#question">Question and scope</a></li>
+    <li><a href="#pipeline">End-to-end pipeline</a></li>
+    <li><a href="#dataset">Dataset and splits</a></li>
+    <li><a href="#systems">Systems compared</a></li>
+    <li><a href="#metrics">Metrics and fairness</a></li>
+    <li><a href="#process">How the run was done</a></li>
+    <li class="group">Outcomes</li>
+    <li><a href="#scorecard">Success criteria</a></li>
+    <li><a href="#quality">Ranking quality</a></li>
+    <li><a href="#slices">Slices</a></li>
+    <li><a href="#latcost">Latency and cost</a></li>
+    <li><a href="#approach">Approach vs model</a></li>
+    <li><a href="#abstention">Abstention</a></li>
+    <li><a href="#consistency">Consistency</a></li>
+    <li><a href="#labels">Label quality and calibration</a></li>
+    <li><a href="#cascade">Cascade</a></li>
+    <li><a href="#reliability">Reliability</a></li>
+    <li><a href="#example">A worked search</a></li>
+    <li class="group">Reading it</li>
+    <li><a href="#limits">Limitations</a></li>
+    <li><a href="#next">Recommendations</a></li>
+    <li><a href="#repro">Reproducibility</a></li>
+  </ol>
+</nav>
+
+<main>
+<header class="hero">
+  <div class="eyebrow">Experiment 2 &middot; Run <span class="mono">main-20261002</span></div>
+  <h1>Jev vs Gemini Flash-Lite for product search re-ranking</h1>
+  <p class="lede">
+    Can TypeSafe's Jev replace a typical LLM re-ranker, where Gemini Flash-Lite ranks a shortlist of products in one structured-output call?
+    This document covers the experiment end to end: the question, the data, the ten systems, how they were measured, and what the full run on 1,700 held-out Amazon searches showed.
+  </p>
+  <div class="meta">
+    <span class="chip">Dataset: Amazon ESCI (KDD Cup 2022), English, reduced</span>
+    <span class="chip">1,000 main + 300 no-match + 100 x 3 consistency + 100 reversed searches</span>
+    <span class="chip jev">Jev: jev-1.13.0</span>
+    <span class="chip gem">Gemini: 3.5 Flash-Lite, 3.7 Flash</span>
+    <span class="chip">Run date: 2026-10-02 (UTC)</span>
+    <span class="chip">Code: commit f00502f</span>
+  </div>
+</header>
+
+<!-- ============================ SUMMARY ============================ -->
+<section class="card" id="summary">
+  <h2>Summary</h2>
+  <p>
+    On re-ranking, Jev beats the production-style baseline (<code>gemini-listwise</code>) on quality, latency, and cost all at once.
+    The best Jev designs rank as well as Gemini Flash, the larger model, at about one twentieth of its p95 latency and one sixth to one thirty-fifth of its cost.
+    Where Jev is weaker is deciding that <em>nothing</em> on the list matches: its tuned thresholds wrongly abstain on a fifth to a third of searches that do have a match.
+  </p>
+  <div class="grid g4" style="margin:16px 0 6px">
+    <div class="kpi jev"><div class="label">NDCG@3, jev-score</div><div class="value">0.789</div><div class="note">vs 0.768 gemini-listwise (+0.021, p=0.003)</div></div>
+    <div class="kpi jev"><div class="label">Exact@1, jev-score</div><div class="value">81.0%</div><div class="note">vs 77.4% gemini-listwise (+3.6 pts, p=0.004)</div></div>
+    <div class="kpi jev"><div class="label">p95 latency, jev-noul-batch</div><div class="value">369 ms</div><div class="note">vs 1,523 ms gemini-listwise (4.1x lower)</div></div>
+    <div class="kpi jev"><div class="label">Cost / 1k, jev-noul-batch</div><div class="value">$0.20</div><div class="note">vs $1.08 gemini-listwise (5.5x lower)</div></div>
+  </div>
+
+  <h3>Verdict against the pre-registered bar</h3>
+  <p class="small">The bar (design section 9): within 0.02 NDCG@3 and 2 points Exact@1 of <code>gemini-listwise</code> or better, at least 3x lower p95 latency, and at least 5x lower cost.</p>
+  <div class="verdict">
+    <div class="v"><h5>jev-noul-batch</h5><span class="tag ok">Meets all three</span>
+      <ul><li>+0.017 NDCG@3 (significant)</li><li>4.1x lower p95</li><li>5.5x cheaper</li></ul></div>
+    <div class="v"><h5>jev-choice</h5><span class="tag ok">Meets all three</span>
+      <ul><li>+0.013 NDCG@3 (not significant), +3.6 pts Exact@1</li><li>5.0x lower p95</li><li>14.6x cheaper</li></ul></div>
+    <div class="v"><h5>jev-score</h5><span class="tag no">Misses cost</span>
+      <ul><li>Best Jev quality, +0.021 NDCG@3</li><li>3.6x lower p95</li><li>Only 2.4x cheaper: Jev bills the shared state once per question</li></ul></div>
+    <div class="v"><h5>jev-noul-pair</h5><span class="tag no">Misses latency and cost</span>
+      <ul><li>Ties on quality (+0.006, n.s.)</li><li>2.1x lower p95 (20.8 calls per search)</li><li>2.6x cheaper</li></ul></div>
+  </div>
+
+  <h3>The five things to take away</h3>
+  <ol class="plain">
+    <li><b>Quality:</b> three of four Jev designs beat <code>gemini-listwise</code> on Exact@1 with statistical significance, and two on NDCG@3. None is worse.</li>
+    <li><b>Speed and cost:</b> every single-call Jev design is 3.6x to 5x faster at p95 and 2.4x to 14.6x cheaper.</li>
+    <li><b>Model, not approach:</b> given the same per-candidate labelling task, Jev beats Gemini by about 0.07 NDCG@3. Gemini needs to see the whole list to compete; Jev does not.</li>
+    <li><b>Order robustness:</b> Jev's top product survives reversing the candidate order in 54% to 75% of searches, against 14% to 43% for Gemini.</li>
+    <li><b>Weak spot:</b> abstention. F1 is about the same for both (49% to 54%), but Jev trades it for many more false "nothing matches" calls (22% to 35%, vs 10% to 15%). Thresholds tuned on 150 practice searches did not carry over.</li>
+  </ol>
+</section>
+
+<!-- ============================ QUESTION ============================ -->
+<section class="card" id="question">
+  <h2>1. Question and scope</h2>
+  <p>
+    Product search is usually two steps.
+    A fast retriever (keyword, embedding, or both) returns a shortlist of a few dozen products.
+    A small LLM then re-ranks that shortlist in one structured-output call, and flags when nothing on it really matches.
+    The application acts on the first result and shows the next few as alternatives, so top-1 matters most, then the top 3.
+  </p>
+  <p>This experiment tests only the second step, and asks how Jev compares with that typical setup on:</p>
+  <div class="grid g3">
+    <div class="kpi"><div class="label">Primary</div><div class="value" style="font-size:18px">Ranking quality</div><div class="note">Is the best product first, and are the top 3 good?</div></div>
+    <div class="kpi"><div class="label">Primary</div><div class="value" style="font-size:18px">Latency</div><div class="note">Time to re-rank one shortlist, p50 / p95 / p99.</div></div>
+    <div class="kpi"><div class="label">Primary</div><div class="value" style="font-size:18px">Cost</div><div class="note">Dollars to re-rank one shortlist, at list price.</div></div>
+  </div>
+  <p style="margin-top:12px">
+    Secondary questions: <b>abstention</b> (noticing that nothing is an exact match), <b>consistency</b> (same ranking on a repeat and on a reversed list), and <b>approach vs model</b> (how much of a difference comes from Jev itself, and how much from scoring candidates separately rather than ranking the whole list).
+  </p>
+  <div class="grid g2">
+    <div>
+      <h4>In scope</h4>
+      <ul>
+        <li>Re-ranking a fixed shortlist of real products for a short query</li>
+        <li>Detecting that no candidate is an exact match</li>
+        <li>Quality, latency, cost, consistency</li>
+      </ul>
+    </div>
+    <div>
+      <h4>Out of scope</h4>
+      <ul>
+        <li>Retrieval, query rewriting, category tagging</li>
+        <li>Personalization and session context</li>
+        <li>Price-aware ranking (no prices in the data; numbers belong in code)</li>
+        <li>Writing the "couldn't find it" message (generation stays with an LLM)</li>
+      </ul>
+    </div>
+  </div>
+  <h4>Why Jev might fit, and where it might not</h4>
+  <p>Re-ranking is a set of short judgments ("how well does this product match this query?"), which is the narrow, structured decision Jev is built for. Jev's documented weak spots were designed around up front:</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Jev weak spot</th><th>Where it bites in re-ranking</th><th>Mitigation in this design</th></tr></thead>
+    <tbody>
+      <tr><td>Literal reading</td><td>"pineapple" vs pineapple juice; "gluten-free bread" vs plain bread</td><td>Exact/substitute boundary written into the criteria, with grocery examples</td></tr>
+      <tr><td>Indirection</td><td>A question naming one candidate must find it in a long list</td><td>Candidates keyed by short id (<code>candidates.c7</code>); a one-candidate-per-request variant is also tested</td></tr>
+      <tr><td>Large, irrelevant state</td><td>Long product descriptions</td><td>Title, brand, and color only</td></tr>
+      <tr><td>Numbers</td><td>"under $5", "family size"</td><td>Out of scope; keep in code</td></tr>
+      <tr><td>Generation</td><td>The friendly "couldn't find white rum" message</td><td>Not measured; a hybrid would call an LLM only when Jev abstains</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- ============================ PIPELINE ============================ -->
+<section class="card" id="pipeline">
+  <h2>2. End-to-end pipeline</h2>
+  <p>Every number in this document is computed from per-search records by the report step; nothing is hand-edited. The harness is the <code>jevbench.rerank</code> module on the shared <code>jevbench.common</code> core used by Experiment 1.</p>
+  <div class="pipeline">
+    <div class="stage"><div class="num">1</div><b>Pin data</b>ESCI at commit <code>7916cdf</code>; SHA-256 of every file checked before use.</div>
+    <div class="stage"><div class="num">2</div><b>Prepare splits</b><code>rerank prepare</code>, seed <code>20261001</code>: searches, slices, shuffled candidates with ids <code>c1..cN</code>.</div>
+    <div class="stage"><div class="num">3</div><b>Freeze inputs</b><code>labels.yaml</code>, prompts, and <code>thresholds.yaml</code>; hashes go into every manifest.</div>
+    <div class="stage"><div class="num">4</div><b>Run systems</b>One search at a time per system, after warm-up; one JSONL record per search.</div>
+    <div class="stage"><div class="num">5</div><b>Complete orderings</b>Drop invented or duplicate ids, append missing ones in presented order.</div>
+    <div class="stage"><div class="num">6</div><b>Report</b>Metrics, bootstrap CIs, paired tests, cascade, all from records only.</div>
+  </div>
+  <h4>What one record holds</h4>
+  <p>Gold labels and candidate ids in presented order, the returned ordering, per-candidate scores, predicted labels and P(exact) where the system gives them, the abstain flag or confidence, invented / duplicate / missing ids, HTTP calls, summed tokens, latency, attempts, backoff, gateway timing, and the model id the API reported.</p>
+  <h4>Commands</h4>
+  <pre><span class="c"># build and check</span>
+make rerank-prepare        <span class="c"># deterministic splits from pinned ESCI</span>
+make rerank-check          <span class="c"># every system once on the largest practice search (40 candidates)</span>
+make rerank-smoke          <span class="c"># 5 practice + 5 practice-nomatch searches per system</span>
+<span class="c"># tune, then freeze</span>
+make rerank-practice       <span class="c"># 100 practice + 50 practice-nomatch per system</span>
+make rerank-tune           <span class="c"># abstention thresholds with best F1 &rarr; data/rerank/thresholds.yaml</span>
+<span class="c"># the reported run</span>
+make rerank-run            <span class="c"># main, nomatch, consistency (x3), reversed</span>
+make rerank-report         <span class="c"># results/rerank/main-20261002/report.md</span></pre>
+</section>
+
+<!-- ============================ DATASET ============================ -->
+<section class="card" id="dataset">
+  <h2>3. Dataset and splits</h2>
+  <p>
+    <b>Amazon Shopping Queries Dataset (ESCI)</b>, KDD Cup 2022, Apache-2.0.
+    Real, difficult Amazon queries, each with a shortlist of products, and every query-product pair labelled by a human as
+    <span class="lbl E">E</span>Exact, <span class="lbl S">S</span>Substitute, <span class="lbl C">C</span>Complement, or <span class="lbl I">I</span>Irrelevant.
+    The reduced "Task 1" English version has 29,844 queries and 601,354 judgments, with a median of 16 candidates per query.
+  </p>
+  <p>It matches the job exactly: a query, a real shortlist, and graded labels that line up with a re-ranker's decisions (gluten-free vs plain bread is E vs S; rum extract for "rum" is C).</p>
+
+  <h3>Splits</h3>
+  <p>Built deterministically, by search, with no search in two splits. Only searches with 8 to 40 candidates are used (drops 2.2% of test searches). Tuning splits come from ESCI <code>train</code>; every reported split comes from ESCI <code>test</code>.</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Split</th><th class="n">Searches</th><th>Built from</th><th>Use</th></tr></thead>
+    <tbody>
+      <tr><td><code>practice</code></td><td class="n">100</td><td>ESCI train</td><td>Tune labels, prompts, criteria. Never reported.</td></tr>
+      <tr><td><code>practice-nomatch</code></td><td class="n">50</td><td>ESCI train, Exact candidates removed</td><td>Tune Jev abstention thresholds.</td></tr>
+      <tr class="hl"><td><code>main</code></td><td class="n">1,000</td><td>ESCI test: 171 reviewed grocery + 829 random</td><td>Headline quality, latency, cost; false abstentions.</td></tr>
+      <tr><td><code>nomatch</code></td><td class="n">300</td><td>ESCI test, Exact candidates removed</td><td>Abstention: nothing on the list is an exact match.</td></tr>
+      <tr><td><code>consistency</code></td><td class="n">100</td><td>ESCI test</td><td>Run 3 times: same ranking on a repeat?</td></tr>
+      <tr><td><code>reversed</code></td><td class="n">100</td><td>Same 100 searches, order reversed, ids reassigned</td><td>Run once: does the top product depend on order?</td></tr>
+      <tr><td><code>warmup</code></td><td class="n">20</td><td>ESCI train</td><td>Discarded warm-up.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>How candidates are presented</h3>
+  <ul>
+    <li>Every labelled candidate for the search, in a seeded per-search shuffle, with ids <code>c1</code>...<code>cN</code> in presented order. ESCI has no original search-engine order, and a random order keeps systems from inheriting a hint.</li>
+    <li>Every system sees the same candidates in the same order under the same ids.</li>
+    <li>Product text is title (capped at 300 characters), brand, and color.</li>
+  </ul>
+
+  <h3>Slices of <code>main</code></h3>
+  <div class="grid g3">
+    <div class="kpi"><div class="label">Grocery</div><div class="value">171</div><div class="note">Keyword filter (499 candidates) plus a per-search review; food or drink for people only. Proposed by the coding agent, accepted by the authors.</div></div>
+    <div class="kpi"><div class="label">Hard</div><div class="value">218</div><div class="note">3 or fewer Exact candidates. About 42% of all candidates are Exact, so most searches have many right answers; this is where systems separate.</div></div>
+    <div class="kpi"><div class="label">Negations</div><div class="value">81</div><div class="note">ESCI's <code>negations</code> source, queries like "without X" or "X free".</div></div>
+  </div>
+
+  <h3>No-match searches</h3>
+  <p>
+    Only 1 of 29,844 reduced English searches has no Exact candidate, so every no-match search is constructed: take a test search, remove every Exact candidate, keep it if at least 5 remain.
+    This mirrors a catalog that does not carry the item but carries near alternatives.
+    No-match searches are scored on abstention only, since NDCG is undefined without an Exact candidate.
+  </p>
+</section>
+
+<!-- ============================ SYSTEMS ============================ -->
+<section class="card" id="systems">
+  <h2>4. Systems compared</h2>
+  <p>Ten systems: four Gemini, four Jev, two references. All return a full ordering of candidate ids; code completes every ordering the same way, and an unusable answer is ranked in presented order and counted as answered.</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>System</th><th>Model</th><th class="n">Calls / search</th><th>How it ranks</th><th>Abstains when</th></tr></thead>
+    <tbody>
+      <tr class="gem hl"><td><code>gemini-listwise</code><br><span class="small">The production baseline</span></td><td>Gemini 3.5 Flash-Lite</td><td class="n">1</td><td>Sees every candidate; strict JSON with <code>ranked_ids</code>, <code>no_relevant_results</code>, <code>explanation</code>.</td><td>Its own flag</td></tr>
+      <tr class="gem"><td><code>gemini-flash-listwise</code></td><td>Gemini 3.7 Flash, low reasoning</td><td class="n">1</td><td>Same call on the larger model. A quality ceiling for the LLM approach.</td><td>Its own flag</td></tr>
+      <tr class="gem"><td><code>gemini-label</code></td><td>Gemini 3.5 Flash-Lite</td><td class="n">1</td><td>Labels every candidate E / S / C / I in one call; ranked by label. Same task as <code>jev-score</code>.</td><td>No candidate labelled exact</td></tr>
+      <tr class="gem"><td><code>gemini-pointwise</code></td><td>Gemini 3.5 Flash-Lite</td><td class="n">~21</td><td>One call per candidate, in parallel, one label each. Mirrors <code>jev-noul-pair</code>.</td><td>No candidate labelled exact</td></tr>
+      <tr class="jev hl"><td><code>jev-score</code></td><td>jev-1.13.0</td><td class="n">1</td><td>One <code>Score</code> question per candidate over 4 ordered levels; ranked by expected gain.</td><td>Max P(exact) &lt; 0.785</td></tr>
+      <tr class="jev hl"><td><code>jev-noul-batch</code></td><td>jev-1.13.0</td><td class="n">1</td><td>One <code>Noul</code> (yes/no) per candidate: "is <code>candidates.cK</code> an exact match?"; ranked by P(yes).</td><td>Max P(yes) &lt; 0.565</td></tr>
+      <tr class="jev"><td><code>jev-noul-pair</code></td><td>jev-1.13.0</td><td class="n">~21</td><td>One request per candidate, state is query + one product. TypeSafe's cookbook design.</td><td>Max P(yes) &lt; 0.59</td></tr>
+      <tr class="jev"><td><code>jev-choice</code></td><td>jev-1.13.0</td><td class="n">1</td><td>One <code>Choice</code> over the candidate ids plus <code>none_of_these</code>; ranked by option probability.</td><td>1 - P(none) &lt; 0.795</td></tr>
+      <tr class="ref"><td><code>lexical</code></td><td>BM25</td><td class="n">0</td><td>BM25 over title and brand within the shortlist. "Search engine only".</td><td>-</td></tr>
+      <tr class="ref"><td><code>random</code></td><td>none</td><td class="n">0</td><td>Presented (shuffled) order. The floor.</td><td>-</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>One set of label definitions for everyone</h3>
+  <p>All systems see the same four definitions from <code>data/rerank/labels.yaml</code>, written once from ESCI's guidelines for a shopper's search and frozen before the main run. Gemini gets them as JSON in its prompt; Jev gets the same objects as Score criteria, their exact-match wording as Noul criteria, and the descriptions as Choice text.</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Level</th><th>Means</th><th>Example</th></tr></thead>
+    <tbody>
+      <tr><td class="nw"><span class="lbl E">E</span>Exact</td><td>The thing searched for, meeting every stated requirement (brand, flavor, form, size, "without X").</td><td>"shredded cheddar cheese" &rarr; a bag of shredded cheddar</td></tr>
+      <tr><td class="nw"><span class="lbl S">S</span>Substitute</td><td>Same kind of thing, misses at least one stated requirement; could be bought instead.</td><td>"gluten-free bread" &rarr; regular whole wheat bread</td></tr>
+      <tr><td class="nw"><span class="lbl C">C</span>Complement</td><td>Not what was searched for, but used with it.</td><td>"lavazza coffee machine" &rarr; Lavazza coffee pods</td></tr>
+      <tr><td class="nw"><span class="lbl I">I</span>Irrelevant</td><td>A different kind of thing, or fails the core of the query.</td><td>"sesame chips" &rarr; a trail mix</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>The main Jev request</h3>
+  <pre><span class="k">from</span> typesafe_sdk <span class="k">import</span> Score
+
+state = {<span class="s">"query"</span>: search.query,
+         <span class="s">"candidates"</span>: {<span class="s">"c1"</span>: {<span class="s">"title"</span>: ..., <span class="s">"brand"</span>: ..., <span class="s">"color"</span>: ...}, ...}}
+questions = {
+    cid: Score(
+        instructions=<span class="s">f"{labels.instruction} How well does the product `candidates.{cid}` match `query`?"</span>,
+        criteria=[irrelevant, complement, substitute, exact],  <span class="c"># each {"means", "not", "example"}</span>
+    )
+    <span class="k">for</span> cid <span class="k">in</span> state[<span class="s">"candidates"</span>]
+}
+response = <span class="k">await</span> client.system_one(state, questions)
+<span class="c"># response.answers[cid].probabilities &rarr; {0: p_irrelevant, 1: p_complement, 2: p_substitute, 3: p_exact}</span>
+<span class="c"># rank by expected gain: sum(p_level * KDD gain), gains E 1.0, S 0.1, C 0.01, I 0</span></pre>
+
+  <h3>The baseline Gemini call</h3>
+  <pre><span class="c"># system prompt: the shared instruction + label JSON, then:</span>
+<span class="s">"Rank every product, best match first: exact matches first, then substitutes, then complements, then
+irrelevant products. Return every product id exactly once in `ranked_ids`.
+If no product is an exact match, set `no_relevant_results` to true and write a one-sentence
+`explanation` for the shopper; still return the full ranking."</span>
+
+<span class="c"># strict response schema; ids are an enum of this search's ids</span>
+{<span class="s">"ranked_ids"</span>: [<span class="s">"c3"</span>, <span class="s">"c1"</span>, ...], <span class="s">"no_relevant_results"</span>: false, <span class="s">"explanation"</span>: <span class="s">""</span>}</pre>
+</section>
+
+<!-- ============================ METRICS ============================ -->
+<section class="card" id="metrics">
+  <h2>5. Metrics and fairness rules</h2>
+  <h3>Ranking quality (on <code>main</code>)</h3>
+  <p>ESCI labels become gains with the KDD Cup 2022 values: Exact 1.0, Substitute 0.1, Complement 0.01, Irrelevant 0. Each step is ten times the one below, so any Exact in the top 3 outweighs three Substitutes there. Scores come only from the human labels; no model judges another model.</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Metric</th><th>Why it matters</th></tr></thead>
+    <tbody>
+      <tr class="hl"><td>NDCG@3 (headline)</td><td>The product the app acts on and the alternatives shown beside it</td></tr>
+      <tr><td>Exact@1</td><td>Is the product the app acts on an exact match? <code>random</code> already gets about 42%.</td></tr>
+      <tr><td>Usable@1</td><td>Is the top product at least Exact or Substitute?</td></tr>
+      <tr><td>MRR of first Exact</td><td>How far down the first right answer is</td></tr>
+      <tr><td>NDCG@10</td><td>Overall list quality</td></tr>
+      <tr><td>NDCG@3 gentle</td><td>Gains E 1, S 0.5, C 0.1, I 0: does the winner depend on how much a Substitute is worth?</td></tr>
+    </tbody>
+  </table></div>
+  <p><b>Statistics:</b> 95% bootstrap confidence intervals over searches. Against <code>gemini-listwise</code>: a paired permutation test on the NDCG@3 difference, and McNemar's exact test on Exact@1.</p>
+
+  <div class="grid g2">
+    <div>
+      <h4>Latency</h4>
+      <ul>
+        <li>Client wall-clock per search, request sent to parsed ordering; for per-candidate systems, the whole parallel fan-out.</li>
+        <li>One clean attempt timed: SDK retries off; runner retries and backoff recorded separately.</li>
+        <li>Gateway cache bypassed; cache hits flagged and excluded.</li>
+      </ul>
+      <h4>Cost</h4>
+      <ul>
+        <li>Tokens from every response, summed per search, including Gemini reasoning tokens, at list price on the run date.</li>
+        <li>Blocked responses are billed and included.</li>
+      </ul>
+    </div>
+    <div>
+      <h4>Abstention</h4>
+      <ul><li>Precision, recall, F1 over <code>main</code> + <code>nomatch</code>; false-abstention rate on <code>main</code>.</li></ul>
+      <h4>Consistency</h4>
+      <ul><li>Top-1 agreement and Kendall's tau across 3 repeats; top-1 agreement with the order reversed.</li></ul>
+      <h4>Also reported</h4>
+      <ul><li>4-way label accuracy and confusion, calibration of Jev's P(exact), a Jev-then-Gemini cascade, and reliability counts.</li></ul>
+    </div>
+  </div>
+
+  <h3>Fairness rules</h3>
+  <ul>
+    <li>Same query, candidates, order, ids, and product fields for every system.</li>
+    <li>Same frozen label definitions for every system.</li>
+    <li>Zero-shot only. Jev cannot be fine-tuned, so no labelled examples in any prompt.</li>
+    <li>Prompts, questions, and thresholds changed only on practice splits; thresholds frozen with their hash recorded.</li>
+    <li>Gemini at temperature 0, provider default thinking and safety settings.</li>
+    <li>Blocked searches and API errors are excluded from quality metrics and reported separately.</li>
+  </ul>
+</section>
+
+<!-- ============================ PROCESS ============================ -->
+<section class="card" id="process">
+  <h2>6. How the run was done</h2>
+  <div class="timeline">
+    <div class="t"><span class="when">Step 1-2</span><b>Data pinned, labels drafted, splits built</b>ESCI commit <code>7916cdf</code> with SHA-256 per file; grocery review proposed (171 of 499) and accepted by the authors.</div>
+    <div class="t"><span class="when">Step 3 &middot; 2026-10-01</span><b>Offline tests and smoke run <code>smoke-20261001-rerank</code></b>
+      Every system on 5 + 5 practice searches. No invalid outputs or invented ids. Gemini strict schemas work through the gateway; Jev accepts 40 questions and a 40-option Choice in one request.
+      Two findings shaped the run:
+      <ul>
+        <li>Gemini's safety filter blocks some harmless per-candidate calls (a juice variety pack every time), so <code>gemini-pointwise</code> ranks a blocked candidate last instead of losing the search.</li>
+        <li><b>Jev bills input tokens per question, not per request.</b> The shared state is counted again for every question, so <code>jev-score</code> used about 500 input tokens per candidate.</li>
+      </ul>
+    </div>
+    <div class="t"><span class="when">Step 5 &middot; 2026-10-01</span><b>Practice run <code>practice-20261001</code> and threshold tuning</b>
+      100 + 50 practice searches per system. Labels, prompts, and criteria were not changed. Thresholds picked for best abstention F1 (66% to 68% on practice) and frozen.</div>
+    <div class="t"><span class="when">Step 6</span><b>Freeze</b><code>labels.yaml</code> (SHA-256 <code>7b99d837...</code>), prompts, and <code>thresholds.yaml</code> (SHA-256 <code>afcb6eaf...</code>) committed.</div>
+    <div class="t"><span class="when">Step 7 &middot; 2026-10-02 02:12-03:21 UTC</span><b>Full run <code>main-20261002</code> from commit <code>f00502f</code></b>
+      All 10 systems on <code>main</code>, <code>nomatch</code>, <code>consistency</code> (3 repeats), and <code>reversed</code>. Systems ran concurrently (one search at a time each) from a laptop on home Wi-Fi with a 30 s request timeout. Jev systems finished every split in under 10 minutes; Gemini Flash took 68 minutes for <code>main</code>.</div>
+  </div>
+  <h4>Practice vs main: did the practice run predict the result?</h4>
+  <div class="table-wrap"><table>
+    <thead><tr><th>System</th><th class="n">NDCG@3 practice</th><th class="n">NDCG@3 main</th><th class="n">Exact@1 practice</th><th class="n">Exact@1 main</th></tr></thead>
+    <tbody>
+      <tr class="gem"><td><code>gemini-listwise</code></td><td class="n">0.750</td><td class="n">0.768</td><td class="n">79.0%</td><td class="n">77.4%</td></tr>
+      <tr class="gem"><td><code>gemini-flash-listwise</code></td><td class="n">0.769</td><td class="n">0.793</td><td class="n">78.8%</td><td class="n">80.2%</td></tr>
+      <tr class="jev"><td><code>jev-score</code></td><td class="n">0.767</td><td class="n">0.789</td><td class="n">81.0%</td><td class="n">81.0%</td></tr>
+      <tr class="jev"><td><code>jev-noul-batch</code></td><td class="n">0.783</td><td class="n">0.786</td><td class="n">80.0%</td><td class="n">80.9%</td></tr>
+    </tbody>
+  </table></div>
+  <p class="small">Yes for ranking: the ordering of systems held from 100 train searches to 1,000 test searches. Not for abstention (see section 11).</p>
+</section>
+
+<!-- ============================ SCORECARD ============================ -->
+<section class="card" id="scorecard">
+  <h2>7. Outcome against the success criteria</h2>
+  <p>Ratios are against <code>gemini-listwise</code> on <code>main</code>: p95 1,523 ms, $1.082 per 1,000 searches, NDCG@3 0.768, Exact@1 77.4%.</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>System</th><th class="n">&Delta; NDCG@3</th><th>Within 0.02 or better</th><th class="n">&Delta; Exact@1</th><th>Within 2 pts or better</th><th class="n">p95 ratio</th><th>&ge; 3x</th><th class="n">Cost ratio</th><th>&ge; 5x</th><th>Verdict</th></tr></thead>
+    <tbody>
+      <tr class="jev"><td><code>jev-score</code></td><td class="n">+0.021*</td><td class="pass">Yes</td><td class="n">+3.6*</td><td class="pass">Yes</td><td class="n">3.6x</td><td class="pass">Yes</td><td class="n">2.4x</td><td class="fail">No</td><td class="fail">Misses cost</td></tr>
+      <tr class="jev hl"><td><code>jev-noul-batch</code></td><td class="n">+0.017*</td><td class="pass">Yes</td><td class="n">+3.5*</td><td class="pass">Yes</td><td class="n">4.1x</td><td class="pass">Yes</td><td class="n">5.5x</td><td class="pass">Yes</td><td class="pass">Strong candidate</td></tr>
+      <tr class="jev"><td><code>jev-noul-pair</code></td><td class="n">+0.006</td><td class="pass">Yes</td><td class="n">+0.7</td><td class="pass">Yes</td><td class="n">2.1x</td><td class="fail">No</td><td class="n">2.6x</td><td class="fail">No</td><td class="fail">Misses speed, cost</td></tr>
+      <tr class="jev hl"><td><code>jev-choice</code></td><td class="n">+0.013</td><td class="pass">Yes</td><td class="n">+3.6*</td><td class="pass">Yes</td><td class="n">5.0x</td><td class="pass">Yes</td><td class="n">14.6x</td><td class="pass">Yes</td><td class="pass">Strong candidate</td></tr>
+      <tr class="gem"><td><code>gemini-flash-listwise</code></td><td class="n">+0.025*</td><td class="pass">Yes</td><td class="n">+2.8*</td><td class="pass">Yes</td><td class="n">0.17x</td><td class="fail">No</td><td class="n">0.42x</td><td class="fail">No</td><td class="small">Reference ceiling</td></tr>
+    </tbody>
+  </table></div>
+  <p class="small">* Significant at p &lt; 0.05 (paired permutation for NDCG@3, McNemar for Exact@1). The "strong result" extras (better abstention and consistency) are only partly met; see sections 11 and 12.</p>
+</section>
+
+<!-- ============================ QUALITY ============================ -->
+<section class="card" id="quality">
+  <h2>8. Ranking quality</h2>
+  <div class="grid g2">
+    <div class="figure">
+      <div class="chart-title">NDCG@3 on <code>main</code>, with 95% CI</div>
+      <div class="chart-sub">Higher is better. Sorted by score.</div>
+      <div class="chart" id="chart-ndcg"></div>
+    </div>
+    <div class="figure">
+      <div class="chart-title">Exact@1 on <code>main</code>, with 95% CI</div>
+      <div class="chart-sub">Share of searches whose top product is an Exact match.</div>
+      <div class="chart" id="chart-exact"></div>
+    </div>
+  </div>
+  <div class="legend"><span style="--c:var(--jev)">Jev</span><span style="--c:var(--gem)">Gemini</span><span style="--c:var(--ref)">Reference</span></div>
+
+  <h3>Full table (<code>main</code>, answered searches with an Exact candidate)</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>System</th><th class="n">n</th><th class="n">NDCG@3 (95% CI)</th><th class="n">Exact@1 (95% CI)</th><th class="n">Usable@1</th><th class="n">MRR</th><th class="n">NDCG@10</th><th class="n">NDCG@3 gentle</th></tr></thead>
+    <tbody>
+      <tr class="gem hl"><td><code>gemini-listwise</code></td><td class="n">991</td><td class="n">0.768 (0.750-0.786)</td><td class="n">77.4% (74.9-79.9)</td><td class="n">92.4%</td><td class="n">0.853</td><td class="n">0.785</td><td class="n">0.839</td></tr>
+      <tr class="gem"><td><code>gemini-flash-listwise</code></td><td class="n">994</td><td class="n best">0.793 (0.776-0.810)</td><td class="n">80.2% (77.7-82.6)</td><td class="n">94.1%</td><td class="n">0.872</td><td class="n">0.807</td><td class="n best">0.860</td></tr>
+      <tr class="gem"><td><code>gemini-label</code></td><td class="n">984</td><td class="n">0.723 (0.705-0.742)</td><td class="n">73.5% (70.7-76.2)</td><td class="n">92.6%</td><td class="n">0.829</td><td class="n">0.754</td><td class="n">0.813</td></tr>
+      <tr class="gem"><td><code>gemini-pointwise</code></td><td class="n">997</td><td class="n">0.700 (0.680-0.720)</td><td class="n">69.4% (66.6-72.3)</td><td class="n">90.0%</td><td class="n">0.803</td><td class="n">0.737</td><td class="n">0.794</td></tr>
+      <tr class="jev hl"><td><code>jev-score</code></td><td class="n">1,000</td><td class="n">0.789 (0.772-0.808)</td><td class="n best">81.0% (78.6-83.3)</td><td class="n best">94.5%</td><td class="n">0.874</td><td class="n">0.806</td><td class="n">0.857</td></tr>
+      <tr class="jev hl"><td><code>jev-noul-batch</code></td><td class="n">1,000</td><td class="n">0.786 (0.768-0.804)</td><td class="n">80.9% (78.4-83.3)</td><td class="n">94.4%</td><td class="n">0.873</td><td class="n best">0.808</td><td class="n">0.854</td></tr>
+      <tr class="jev"><td><code>jev-noul-pair</code></td><td class="n">1,000</td><td class="n">0.774 (0.756-0.791)</td><td class="n">78.1% (75.5-80.6)</td><td class="n">93.0%</td><td class="n">0.861</td><td class="n">0.795</td><td class="n">0.845</td></tr>
+      <tr class="jev"><td><code>jev-choice</code></td><td class="n">1,000</td><td class="n">0.781 (0.764-0.798)</td><td class="n best">81.0% (78.5-83.3)</td><td class="n">93.9%</td><td class="n best">0.880</td><td class="n">0.773</td><td class="n">0.846</td></tr>
+      <tr class="ref"><td><code>lexical</code></td><td class="n">1,000</td><td class="n">0.627 (0.607-0.646)</td><td class="n">61.6% (58.5-64.5)</td><td class="n">85.6%</td><td class="n">0.750</td><td class="n">0.687</td><td class="n">0.731</td></tr>
+      <tr class="ref"><td><code>random</code></td><td class="n">1,000</td><td class="n">0.472 (0.452-0.493)</td><td class="n">41.6% (38.5-44.6)</td><td class="n">80.3%</td><td class="n">0.599</td><td class="n">0.565</td><td class="n">0.629</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Head-to-head against <code>gemini-listwise</code> (paired, same searches)</h3>
+  <div class="figure">
+    <div class="chart-title">NDCG@3 difference vs <code>gemini-listwise</code>, 95% CI</div>
+    <div class="chart-sub">Right of zero means better than the production baseline. Hollow markers: not significant at p &lt; 0.05.</div>
+    <div class="chart" id="chart-delta"></div>
+  </div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Pair</th><th class="n">Searches</th><th class="n">NDCG@3 &Delta; (95% CI)</th><th class="n">p (perm.)</th><th class="n">Only it Exact@1</th><th class="n">Only baseline Exact@1</th><th class="n">p (McNemar)</th></tr></thead>
+    <tbody>
+      <tr class="gem"><td><code>gemini-flash-listwise</code></td><td class="n">991</td><td class="n">+0.025 (+0.013 to +0.037)</td><td class="n">&lt;0.0001</td><td class="n">52</td><td class="n">25</td><td class="n">0.0028</td></tr>
+      <tr class="gem"><td><code>gemini-label</code></td><td class="n">983</td><td class="n">-0.045 (-0.057 to -0.033)</td><td class="n">&lt;0.0001</td><td class="n">30</td><td class="n">69</td><td class="n">0.0001</td></tr>
+      <tr class="gem"><td><code>gemini-pointwise</code></td><td class="n">990</td><td class="n">-0.066 (-0.080 to -0.052)</td><td class="n">&lt;0.0001</td><td class="n">38</td><td class="n">115</td><td class="n">&lt;0.0001</td></tr>
+      <tr class="jev"><td><code>jev-score</code></td><td class="n">991</td><td class="n">+0.021 (+0.007 to +0.035)</td><td class="n">0.0030</td><td class="n">94</td><td class="n">58</td><td class="n">0.0044</td></tr>
+      <tr class="jev"><td><code>jev-noul-batch</code></td><td class="n">991</td><td class="n">+0.017 (+0.003 to +0.031)</td><td class="n">0.0152</td><td class="n">94</td><td class="n">61</td><td class="n">0.0099</td></tr>
+      <tr class="jev"><td><code>jev-noul-pair</code></td><td class="n">991</td><td class="n">+0.006 (-0.009 to +0.021)</td><td class="n ns">0.4428</td><td class="n">97</td><td class="n">89</td><td class="n ns">0.6079</td></tr>
+      <tr class="jev"><td><code>jev-choice</code></td><td class="n">991</td><td class="n">+0.013 (-0.001 to +0.027)</td><td class="n ns">0.0739</td><td class="n">95</td><td class="n">58</td><td class="n">0.0035</td></tr>
+      <tr class="ref"><td><code>lexical</code></td><td class="n">991</td><td class="n">-0.141 (-0.162 to -0.121)</td><td class="n">&lt;0.0001</td><td class="n">88</td><td class="n">244</td><td class="n">&lt;0.0001</td></tr>
+      <tr class="ref"><td><code>random</code></td><td class="n">991</td><td class="n">-0.294 (-0.316 to -0.273)</td><td class="n">&lt;0.0001</td><td class="n">27</td><td class="n">381</td><td class="n">&lt;0.0001</td></tr>
+    </tbody>
+  </table></div>
+  <p>
+    The gentle-gain column (Substitute worth 0.5) keeps the same ordering, so the conclusion does not hinge on how a Substitute is valued.
+    On the smaller <code>consistency</code> and <code>reversed</code> splits (100 searches each) Jev's single-call designs again score above <code>gemini-listwise</code>, but no difference there is significant; they are too small to decide on their own.
+  </p>
+</section>
+
+<!-- ============================ SLICES ============================ -->
+<section class="card" id="slices">
+  <h2>9. Where the differences are: slices</h2>
+  <div class="figure">
+    <div class="chart-title">NDCG@3 by slice</div>
+    <div class="chart-sub">Main systems only. The hard slice (3 or fewer Exact candidates) is where systems separate most.</div>
+    <div class="chart" id="chart-slices"></div>
+    <div class="legend" id="legend-slices"></div>
+  </div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>System</th><th class="n">General (829)</th><th class="n">Grocery (171)</th><th class="n">Hard (218)</th><th class="n">Negations (81)</th></tr></thead>
+    <tbody>
+      <tr class="gem hl"><td><code>gemini-listwise</code></td><td class="n">0.765 / 77.4%</td><td class="n">0.783 / 77.2%</td><td class="n">0.587 / 56.3%</td><td class="n">0.713 / 77.5%</td></tr>
+      <tr class="gem"><td><code>gemini-flash-listwise</code></td><td class="n best">0.786 / 79.3%</td><td class="n best">0.829 / 84.2%</td><td class="n best">0.644 / 59.7%</td><td class="n best">0.762 / 82.7%</td></tr>
+      <tr class="gem"><td><code>gemini-label</code></td><td class="n">0.722 / 72.9%</td><td class="n">0.728 / 76.5%</td><td class="n">0.533 / 52.8%</td><td class="n">0.691 / 72.7%</td></tr>
+      <tr class="gem"><td><code>gemini-pointwise</code></td><td class="n">0.701 / 69.1%</td><td class="n">0.695 / 70.8%</td><td class="n">0.491 / 44.0%</td><td class="n">0.646 / 70.0%</td></tr>
+      <tr class="jev hl"><td><code>jev-score</code></td><td class="n">0.783 / 80.5%</td><td class="n">0.818 / 83.6%</td><td class="n">0.608 / 61.0%</td><td class="n">0.760 / 82.7%</td></tr>
+      <tr class="jev hl"><td><code>jev-noul-batch</code></td><td class="n">0.781 / 80.8%</td><td class="n">0.809 / 81.3%</td><td class="n">0.611 / 62.4%</td><td class="n">0.756 / 82.7%</td></tr>
+      <tr class="jev"><td><code>jev-noul-pair</code></td><td class="n">0.770 / 77.3%</td><td class="n">0.791 / 81.9%</td><td class="n">0.595 / 57.3%</td><td class="n">0.757 / 84.0%</td></tr>
+      <tr class="jev"><td><code>jev-choice</code></td><td class="n">0.779 / 81.3%</td><td class="n">0.789 / 79.5%</td><td class="n">0.614 / 61.0%</td><td class="n">0.748 / 80.2%</td></tr>
+      <tr class="ref"><td><code>lexical</code></td><td class="n">0.629 / 62.4%</td><td class="n">0.617 / 57.9%</td><td class="n">0.482 / 44.5%</td><td class="n">0.536 / 55.6%</td></tr>
+      <tr class="ref"><td><code>random</code></td><td class="n">0.482 / 43.5%</td><td class="n">0.424 / 32.2%</td><td class="n">0.227 / 11.9%</td><td class="n">0.435 / 39.5%</td></tr>
+    </tbody>
+  </table></div>
+  <p class="small">Cells are NDCG@3 / Exact@1. Search counts are for systems with no blocked searches; Gemini counts are a few lower.</p>
+  <ul>
+    <li><b>Grocery:</b> the target domain. Jev's two main designs lead <code>gemini-listwise</code> by 0.026 to 0.035 NDCG@3 and 4.1 to 6.4 points Exact@1. Only Gemini Flash is ahead.</li>
+    <li><b>Hard:</b> all Jev single-call designs beat <code>gemini-listwise</code> on Exact@1 by 4.7 to 6.1 points. Gemini Flash is best on NDCG@3 here.</li>
+    <li><b>Negations:</b> literal reading is a documented Jev weak spot, yet Jev scores 0.75 to 0.76, about 0.04 above <code>gemini-listwise</code> and level with Gemini Flash. The slice is small (81 searches), so treat this as directional.</li>
+  </ul>
+</section>
+
+<!-- ============================ LATENCY & COST ============================ -->
+<section class="card" id="latcost">
+  <h2>10. Latency and cost</h2>
+  <div class="grid">
+    <div class="figure">
+      <div class="chart-title">Quality vs p95 latency</div>
+      <div class="chart-sub">NDCG@3 on <code>main</code> vs p95 per search (log scale). Up and to the left is better.</div>
+      <div class="chart" id="chart-lat"></div>
+    </div>
+    <div class="figure">
+      <div class="chart-title">Quality vs cost</div>
+      <div class="chart-sub">NDCG@3 vs dollars per 1,000 searches (log scale). Up and to the left is better.</div>
+      <div class="chart" id="chart-cost"></div>
+    </div>
+  </div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>System</th><th class="n">Calls / search</th><th class="n">p50 ms</th><th class="n">p95 ms</th><th class="n">p99 ms</th><th class="n">Input tok</th><th class="n">Output tok</th><th class="n">$ / 1k searches</th><th class="n">$ / 1M searches</th></tr></thead>
+    <tbody>
+      <tr class="gem hl"><td><code>gemini-listwise</code></td><td class="n">1.0</td><td class="n">1,038</td><td class="n">1,523</td><td class="n">1,651</td><td class="n">2,188</td><td class="n">171</td><td class="n">$1.082</td><td class="n">$1,082</td></tr>
+      <tr class="gem"><td><code>gemini-flash-listwise</code></td><td class="n">1.0</td><td class="n">2,989</td><td class="n">8,748</td><td class="n">11,030</td><td class="n">2,186</td><td class="n">169</td><td class="n">$2.606</td><td class="n">$2,606</td></tr>
+      <tr class="gem"><td><code>gemini-label</code></td><td class="n">1.0</td><td class="n">1,127</td><td class="n">1,826</td><td class="n">1,963</td><td class="n">2,972</td><td class="n">216</td><td class="n">$1.430</td><td class="n">$1,429</td></tr>
+      <tr class="gem"><td><code>gemini-pointwise</code></td><td class="n">20.8</td><td class="n">875</td><td class="n">1,263</td><td class="n">2,813</td><td class="n">12,897</td><td class="n">176</td><td class="n">$4.305</td><td class="n">$4,305</td></tr>
+      <tr class="jev hl"><td><code>jev-score</code></td><td class="n">1.0</td><td class="n">214</td><td class="n">425</td><td class="n">529</td><td class="n">10,883</td><td class="n">307</td><td class="n">$0.457</td><td class="n">$457</td></tr>
+      <tr class="jev hl"><td><code>jev-noul-batch</code></td><td class="n">1.0</td><td class="n">154</td><td class="n">369</td><td class="n">476</td><td class="n">4,691</td><td class="n">369</td><td class="n">$0.197</td><td class="n">$197</td></tr>
+      <tr class="jev"><td><code>jev-noul-pair</code></td><td class="n">20.8</td><td class="n">323</td><td class="n">718</td><td class="n">849</td><td class="n">9,909</td><td class="n">416</td><td class="n">$0.416</td><td class="n">$416</td></tr>
+      <tr class="jev"><td><code>jev-choice</code></td><td class="n">1.0</td><td class="n best">138</td><td class="n best">306</td><td class="n best">421</td><td class="n">1,761</td><td class="n">207</td><td class="n best">$0.074</td><td class="n best">$74</td></tr>
+    </tbody>
+  </table></div>
+  <p class="small">Gemini Flash also used about 90 reasoning tokens per search, included in its cost; no other system used any. Prices per 1M tokens (in / out / thinking): Flash-Lite $0.30 / $2.50 / $2.50; Flash $0.75 / $3.75 / $3.75 (promo price through 2026-12-31); Jev $0.042 input, output free. Gemini prices from the Google AI pricing page, read 2026-09-29.</p>
+
+  <div class="callout info">
+    <strong>Why jev-score misses the 5x cost bar</strong>
+    Jev bills input tokens per question, and the shared state (query plus every candidate) is counted again for each question.
+    A search with N candidates therefore costs roughly N times the state, plus each question's criteria.
+    <code>jev-score</code> uses about 10,900 input tokens per search against 2,200 for <code>gemini-listwise</code>; Jev's per-token price is 7x lower, which nets out to 2.4x cheaper.
+    <code>jev-noul-batch</code> carries much shorter criteria (match / no-match) and lands at 5.5x; <code>jev-choice</code> asks one question per search and lands at 14.6x.
+  </div>
+  <div class="callout info">
+    <strong>Is the latency gap the gateway?</strong>
+    No. Gemini calls go through a LiteLLM-based gateway, but its measured overhead on <code>gemini-listwise</code> was a median of 3.4 ms against a median of about 920 ms upstream.
+    Gemini Flash's long tail (p99 11 s) also explains why it took 68 minutes for <code>main</code> while every Jev system finished it in 7 or less.
+  </div>
+</section>
+
+<!-- ============================ APPROACH VS MODEL ============================ -->
+<section class="card" id="approach">
+  <h2>11a. Approach vs model</h2>
+  <p>The design pairs systems that do the same task with different models, to separate "Jev is better at this" from "scoring candidates separately is better".</p>
+  <div class="figure">
+    <div class="chart-title">Same task, different model (NDCG@3 on <code>main</code>)</div>
+    <div class="chart-sub">Each pair asks the two models the same question shape.</div>
+    <div class="chart" id="chart-pairs"></div>
+  </div>
+  <div class="grid g2" style="margin-top:12px">
+    <div class="callout good"><strong>The model matters</strong>
+      On the same per-candidate labelling task, Jev beats Gemini Flash-Lite by 0.066 NDCG@3 (one call per search) and 0.074 (one call per candidate).
+      The gap is larger than any difference between Jev designs.</div>
+    <div class="callout warn"><strong>Gemini needs the whole list; Jev does not</strong>
+      Gemini's quality drops by 0.045 when it labels instead of ranks, and by 0.068 when it sees one candidate at a time.
+      Jev loses only 0.012 to 0.015 going from batch to one-candidate-per-request.
+      Listwise ranking lets Gemini compare candidates against each other; Jev's per-candidate probabilities already carry that information.</div>
+  </div>
+  <p>
+    A likely reason, inferred from the label-quality results below: Jev and Gemini are about equally accurate at picking the single right label (55% to 58%), but Jev returns a probability for every level.
+    Ranking by expected gain separates candidates within a label, while a Gemini label leaves ties that fall back to presented order.
+  </p>
+</section>
+
+<!-- ============================ ABSTENTION ============================ -->
+<section class="card" id="abstention">
+  <h2>11b. Abstention: noticing that nothing matches</h2>
+  <p>Scored over <code>main</code> (should never abstain) and <code>nomatch</code> (should always abstain): 300 positives out of about 1,300 searches.</p>
+  <div class="figure">
+    <div class="chart-title">Abstention recall vs false-abstention rate</div>
+    <div class="chart-sub">Recall on <code>nomatch</code> against the share of <code>main</code> searches wrongly abstained on. Down and to the right is better.</div>
+    <div class="chart" id="chart-abst"></div>
+  </div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>System</th><th>Threshold</th><th class="n">Precision</th><th class="n">Recall</th><th class="n">F1</th><th class="n">False abstentions on main</th></tr></thead>
+    <tbody>
+      <tr class="gem hl"><td><code>gemini-listwise</code></td><td>own flag</td><td class="n">49.3%</td><td class="n">48.3%</td><td class="n">48.8%</td><td class="n">14.9%</td></tr>
+      <tr class="gem"><td><code>gemini-flash-listwise</code></td><td>own flag</td><td class="n best">58.5%</td><td class="n">46.0%</td><td class="n">51.5%</td><td class="n best">9.9%</td></tr>
+      <tr class="gem"><td><code>gemini-label</code></td><td>no exact label</td><td class="n">52.4%</td><td class="n">51.5%</td><td class="n">52.0%</td><td class="n">14.0%</td></tr>
+      <tr class="gem"><td><code>gemini-pointwise</code></td><td>no exact label</td><td class="n">52.8%</td><td class="n">51.0%</td><td class="n">51.9%</td><td class="n">13.7%</td></tr>
+      <tr class="jev"><td><code>jev-score</code></td><td>0.785</td><td class="n">40.3%</td><td class="n best">78.0%</td><td class="n">53.1%</td><td class="n fail">34.7%</td></tr>
+      <tr class="jev"><td><code>jev-noul-batch</code></td><td>0.565</td><td class="n">43.8%</td><td class="n">65.3%</td><td class="n">52.4%</td><td class="n fail">25.2%</td></tr>
+      <tr class="jev"><td><code>jev-noul-pair</code></td><td>0.59</td><td class="n">46.2%</td><td class="n">62.0%</td><td class="n">52.9%</td><td class="n fail">21.7%</td></tr>
+      <tr class="jev"><td><code>jev-choice</code></td><td>0.795</td><td class="n">43.4%</td><td class="n">71.0%</td><td class="n best">53.9%</td><td class="n fail">27.8%</td></tr>
+    </tbody>
+  </table></div>
+  <div class="callout bad">
+    <strong>Abstention is the one area where Jev is not a drop-in replacement</strong>
+    F1 is about the same for every system (49% to 54%), so nobody does this well.
+    But the frozen Jev thresholds sit at a different point: they catch more true no-match searches and also say "nothing matches" on 22% to 35% of searches that have a match, 1.5x to 3.5x the Gemini rate.
+    In a shopping app a false "couldn't find it" is usually worse than a missed one.
+    The thresholds were tuned for F1 on only 150 practice searches (F1 66% to 68% there), and that did not carry over to test data.
+  </div>
+  <p>
+    Because Jev returns a confidence, the operating point is a dial, not a fixed behaviour; a production setting would choose a threshold to cap false abstentions (for example at Gemini's 10% to 15%) on a larger tuning set, and accept the lower recall.
+    That trade-off was not measured here and is a recommended follow-up.
+  </p>
+</section>
+
+<!-- ============================ CONSISTENCY ============================ -->
+<section class="card" id="consistency">
+  <h2>12. Consistency</h2>
+  <div class="figure">
+    <div class="chart-title">Same top product: across repeats vs with candidate order reversed</div>
+    <div class="chart-sub">100 searches, 3 repeats; then once with the order reversed and ids reassigned.</div>
+    <div class="chart" id="chart-cons"></div>
+    <div class="legend"><span style="--c:#7b8597">Same #1 across 3 repeats</span><span style="--c:#d9a33a">Same #1 with order reversed</span></div>
+  </div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>System</th><th class="n">Same #1 across repeats</th><th class="n">Kendall's tau across repeats</th><th class="n">Same #1 when order is reversed</th></tr></thead>
+    <tbody>
+      <tr class="gem hl"><td><code>gemini-listwise</code></td><td class="n best">95.3%</td><td class="n">0.895</td><td class="n">26.3%</td></tr>
+      <tr class="gem"><td><code>gemini-flash-listwise</code></td><td class="n">91.9%</td><td class="n">0.890</td><td class="n">43.0%</td></tr>
+      <tr class="gem"><td><code>gemini-label</code></td><td class="n">86.7%</td><td class="n">0.900</td><td class="n">14.3%</td></tr>
+      <tr class="gem"><td><code>gemini-pointwise</code></td><td class="n">82.0%</td><td class="n">0.846</td><td class="n">22.0%</td></tr>
+      <tr class="jev"><td><code>jev-score</code></td><td class="n">79.7%</td><td class="n">0.881</td><td class="n">54.0%</td></tr>
+      <tr class="jev"><td><code>jev-noul-batch</code></td><td class="n">85.7%</td><td class="n">0.883</td><td class="n">57.0%</td></tr>
+      <tr class="jev"><td><code>jev-noul-pair</code></td><td class="n">80.7%</td><td class="n">0.893</td><td class="n best">75.0%</td></tr>
+      <tr class="jev"><td><code>jev-choice</code></td><td class="n">94.0%</td><td class="n best">0.960</td><td class="n">61.0%</td></tr>
+      <tr class="ref"><td><code>lexical</code></td><td class="n">100.0%</td><td class="n">1.000</td><td class="n">94.0%</td></tr>
+    </tbody>
+  </table></div>
+  <ul>
+    <li><b>Order:</b> Jev is much less sensitive to where a product sits in the list. Gemini Flash-Lite keeps the same top product in only about a quarter of reversed searches, which means presented order steers its pick. <code>jev-noul-pair</code>, which never sees the other candidates, is the most order-robust model system.</li>
+    <li><b>Repeats:</b> Gemini at temperature 0 repeats its top pick more often. Jev's batch designs flip their top product on 14% to 20% of repeats; <code>jev-choice</code> is close to Gemini (94%) and has the highest rank agreement of any model system.</li>
+    <li>Many top-1 flips are between two Exact products, which costs no quality; but a shopper may still see a different first result for the same search.</li>
+  </ul>
+</section>
+
+<!-- ============================ LABELS & CALIBRATION ============================ -->
+<section class="card" id="labels">
+  <h2>13. Label quality and calibration</h2>
+  <p>For systems that label each candidate, 4-way agreement with the human label on about 24,500 candidates:</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>System</th><th class="n">Candidates</th><th class="n">Accuracy</th><th class="n">Macro-F1</th><th class="n">Exact labelled Substitute</th><th class="n">Substitute labelled Exact</th></tr></thead>
+    <tbody>
+      <tr class="gem"><td><code>gemini-label</code></td><td class="n">24,379</td><td class="n best">57.9%</td><td class="n best">54.2%</td><td class="n">39.3%</td><td class="n">14.8%</td></tr>
+      <tr class="gem"><td><code>gemini-pointwise</code></td><td class="n">24,668</td><td class="n">55.8%</td><td class="n">53.2%</td><td class="n">33.3%</td><td class="n">16.0%</td></tr>
+      <tr class="jev"><td><code>jev-score</code></td><td class="n">24,708</td><td class="n">55.3%</td><td class="n">53.2%</td><td class="n best">31.3%</td><td class="n best">14.3%</td></tr>
+    </tbody>
+  </table></div>
+  <div class="grid g3">
+    <div><div class="chart-title">Confusion, <code>jev-score</code></div><div class="chart" id="cm-jev"></div></div>
+    <div><div class="chart-title">Confusion, <code>gemini-label</code></div><div class="chart" id="cm-gl"></div></div>
+    <div><div class="chart-title">Confusion, <code>gemini-pointwise</code></div><div class="chart" id="cm-gp"></div></div>
+  </div>
+  <p class="small">Rows: gold label; columns: predicted; shading is row share. <code>gemini-pointwise</code>'s blocked candidates (about 4%) are shown as missing.</p>
+  <ul>
+    <li>All three are close; the hardest boundary for every system is Exact vs Substitute, where human labels are also noisiest.</li>
+    <li><code>jev-score</code> leans towards Irrelevant (it labels 16% of gold Exact and 30% of gold Substitute candidates as Irrelevant), which is harmless for ranking but would matter if the labels were used directly.</li>
+    <li>Jev is better on Complement (49% of gold Complements found, vs 40%).</li>
+  </ul>
+  <h3>Calibration of Jev's P(exact)</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>System</th><th class="n">Candidates</th><th class="n">Expected calibration error</th></tr></thead>
+    <tbody>
+      <tr class="jev"><td><code>jev-score</code></td><td class="n">24,708</td><td class="n">0.179</td></tr>
+      <tr class="jev"><td><code>jev-noul-batch</code></td><td class="n">24,708</td><td class="n">0.159</td></tr>
+      <tr class="jev"><td><code>jev-noul-pair</code></td><td class="n">24,708</td><td class="n best">0.125</td></tr>
+    </tbody>
+  </table></div>
+  <p>Jev's probabilities are useful for ranking but not well calibrated against ESCI's Exact label (an average gap of 0.13 to 0.18 between stated and observed rates). This is consistent with the abstention thresholds not transferring, and means thresholds must be tuned per use case rather than read as literal probabilities. Gemini gives no native probabilities through the gateway, so it has no calibration score.</p>
+</section>
+
+<!-- ============================ CASCADE ============================ -->
+<section class="card" id="cascade">
+  <h2>14. Cascade: Jev first, Gemini for the uncertain rest</h2>
+  <p>Computed from existing records, with no extra calls: Jev keeps the searches where the gap between its top two scores is largest, and <code>gemini-listwise</code> re-ranks the rest. The cost includes Jev on every search plus Gemini on the share passed on.</p>
+  <div class="figure">
+    <div class="chart-title">NDCG@3 as more searches are passed to <code>gemini-listwise</code></div>
+    <div class="chart-sub">0% = Jev only; 100% = Gemini decides every search (Jev cost still paid).</div>
+    <div class="chart" id="chart-cascade"></div>
+    <div class="legend" id="legend-cascade"></div>
+  </div>
+  <div class="callout warn">
+    <strong>A cascade does not help here</strong>
+    For the three single-call Jev designs, every search handed to Gemini lowers quality and raises cost; Jev alone is the best point on the curve.
+    Only <code>jev-noul-pair</code> gains slightly (0.774 &rarr; 0.779 at 25%), and still ends below <code>jev-score</code> alone.
+    A cascade would only make sense with a stronger second stage (for example Gemini Flash on the hard slice), which was not tested.
+  </div>
+</section>
+
+<!-- ============================ RELIABILITY ============================ -->
+<section class="card" id="reliability">
+  <h2>15. Reliability</h2>
+  <div class="table-wrap"><table>
+    <thead><tr><th>System</th><th class="n">Answered (main)</th><th class="n">Blocked searches</th><th class="n">API errors</th><th class="n">Invalid</th><th class="n">Invented / duplicate / missing ids</th><th class="n">Blocked calls</th></tr></thead>
+    <tbody>
+      <tr class="gem"><td><code>gemini-listwise</code></td><td class="n">991 / 1,000</td><td class="n">0.9%</td><td class="n">0</td><td class="n">0</td><td class="n">0 / 2 / 1</td><td class="n">0</td></tr>
+      <tr class="gem"><td><code>gemini-flash-listwise</code></td><td class="n">994 / 1,000</td><td class="n">0.6%</td><td class="n">0</td><td class="n">0</td><td class="n">0 / 0 / 4</td><td class="n">0</td></tr>
+      <tr class="gem"><td><code>gemini-label</code></td><td class="n">984 / 1,000</td><td class="n">1.6%</td><td class="n">0</td><td class="n">0</td><td class="n">0 / 0 / 0</td><td class="n">0</td></tr>
+      <tr class="gem"><td><code>gemini-pointwise</code></td><td class="n">997 / 1,000</td><td class="n">0.3%</td><td class="n">0</td><td class="n">0</td><td class="n">0 / 0 / 892</td><td class="n">892</td></tr>
+      <tr class="jev"><td>All four Jev systems</td><td class="n best">1,000 / 1,000</td><td class="n best">0%</td><td class="n">0</td><td class="n">0</td><td class="n">0 / 0 / 0</td><td class="n">0</td></tr>
+    </tbody>
+  </table></div>
+  <ul>
+    <li>Gemini's default safety filter withheld 0.3% to 1.6% of searches for harmless shopping queries (antibiotics, adult products, a juice variety pack), and about 4% of <code>gemini-pointwise</code>'s per-candidate calls. A production system would need a fallback for these.</li>
+    <li>Blocked searches are excluded from Gemini's quality numbers, which slightly favours Gemini: those are searches it could not answer at all.</li>
+    <li>Strict structured output held up: no invalid answers or invented ids from any system.</li>
+  </ul>
+</section>
+
+<!-- ============================ EXAMPLE ============================ -->
+<section class="card" id="example">
+  <h2>16. A worked search</h2>
+  <p>One real search from the grocery slice of <code>main</code> (search <code>q20104</code>), to make the task concrete. It is illustrative, not representative.</p>
+  <div class="example">
+    <div class="q">Query: <code>brown sugar crystals</code></div>
+    <div class="rows">
+      <div class="col"><b style="color:var(--jev)">jev-score, top product</b><br><span class="lbl E">E</span>The Spice Lab No. 5173 - Authentic Belgian Brown Rock Beet Sugar - 1 Pound Bag<br><span class="small">Meets "brown" and "crystals".</span></div>
+      <div class="col"><b style="color:var(--gem)">gemini-listwise, top product</b><br><span class="lbl S">S</span>Mothers Kitchen Essentials Rock Sugar Crystals<br><span class="small">Crystals, but not brown: a stated requirement is missed.</span></div>
+    </div>
+  </div>
+  <p>The labels are also noisy. In another grocery search, <code>nut free food coloring</code>, the human label marks an organic turmeric powder as Exact. Noise like this lowers every system's score equally and does not favour one system, but it caps how high any score can go.</p>
+</section>
+
+<!-- ============================ LIMITATIONS ============================ -->
+<section class="card" id="limits">
+  <h2>17. Limitations and threats to validity</h2>
+  <div class="grid g2">
+    <div>
+      <h4>Data</h4>
+      <ul>
+        <li>Amazon's general catalog, not a grocery catalog; the grocery slice is a keyword filter plus review (171 searches).</li>
+        <li>Every no-match search is constructed by removing Exact candidates.</li>
+        <li>Labels are noisy; nearly identical products sometimes carry different labels.</li>
+        <li>No prices, no session context, no original search order.</li>
+        <li>Public data: either model may have seen it in training, which can inflate absolute scores (but not obviously favour one side).</li>
+      </ul>
+    </div>
+    <div>
+      <h4>Run</h4>
+      <ul>
+        <li>One run, from one laptop on home Wi-Fi; systems ran concurrently and shared the machine and network. Absolute latencies will differ in a data center; the ratios are the useful part.</li>
+        <li>Abstention thresholds tuned on 150 searches; consistency and reversed splits are 100 searches each.</li>
+        <li>Gemini at temperature 0 and default thinking; no prompt engineering beyond the shared definitions, and no few-shot examples for either side.</li>
+        <li>Product text is title, brand, color only; descriptions might help either system.</li>
+      </ul>
+    </div>
+  </div>
+  <h4>Open items carried from the design</h4>
+  <ul>
+    <li>The source and date for Jev's price per million input tokens ($0.042 used here) still need confirming.</li>
+    <li>Whether TypeSafe's Master Customer Agreement allows publishing benchmark results is unresolved; treat this document as internal until it is.</li>
+  </ul>
+</section>
+
+<!-- ============================ NEXT ============================ -->
+<section class="card" id="next">
+  <h2>18. Recommendations</h2>
+  <h3>For a shopping re-ranker</h3>
+  <ol class="plain">
+    <li><b>Use <code>jev-noul-batch</code> as the default re-ranker.</b> It meets every pre-registered bar with significant quality gains, and costs about $197 per million searches.</li>
+    <li><b>Consider <code>jev-choice</code></b> when cost and latency dominate: comparable Exact@1, highest repeat consistency of any Jev design, $74 per million. Its NDCG@10 is lower (0.773), so prefer it when only the top result is shown.</li>
+    <li><b>Keep the "nothing matches" decision separate.</b> Re-tune the abstention threshold on a larger, catalog-specific set, with a cap on false abstentions rather than maximum F1; then call an LLM to write the message only when Jev abstains.</li>
+    <li><b>Plan a fallback</b> for searches the provider filter would block if any LLM stays in the path.</li>
+  </ol>
+  <h3>Follow-up experiments</h3>
+  <ul>
+    <li>Abstention operating curve: false-abstention rate vs recall for each Jev system, tuned on a larger set.</li>
+    <li>Shorter Score criteria for <code>jev-score</code> to bring its cost under the 5x bar while keeping its quality.</li>
+    <li>A labelled sample from the target catalog, to confirm the result on real grocery naming.</li>
+    <li>A cascade with Gemini Flash (not Flash-Lite) on the hard slice only.</li>
+    <li>Latency from a data-center client with systems run one after another.</li>
+  </ul>
+</section>
+
+<!-- ============================ REPRO ============================ -->
+<section class="card" id="repro">
+  <h2>19. Reproducibility</h2>
+  <div class="table-wrap"><table>
+    <tbody>
+      <tr><td>Run</td><td><code>results/rerank/main-20261002/report.md</code> (per-search JSONL and manifests next to it)</td></tr>
+      <tr><td>Design</td><td><code>docs/rerank/experiment-design.md</code></td></tr>
+      <tr><td>Code</td><td>commit <code>f00502f</code>; Python 3.12.14; typesafe-sdk 0.7.2, openai 3.22.0, httpx2 2.13.1, arize-phoenix-otel 0.17.2</td></tr>
+      <tr><td>Data</td><td>ESCI <code>amazon-science/esci-data</code> at <code>7916cdf</code>, SHA-256 per file in <code>data/SOURCES.md</code>; splits in <code>data/rerank/splits/</code>, seed <code>20261001</code></td></tr>
+      <tr><td>Frozen inputs</td><td><code>data/rerank/labels.yaml</code> (<code>7b99d837...</code>), <code>data/rerank/thresholds.yaml</code> (<code>afcb6eaf...</code>), <code>data/rerank/grocery_review.yaml</code></td></tr>
+      <tr><td>Models</td><td>Requested and reported ids matched for every system: <code>google/gemini-3.5-flash-lite</code>, <code>google/gemini-3.7-flash</code>, <code>jev-1.13.0</code></td></tr>
+      <tr><td>Client</td><td>Laptop on home Wi-Fi, 30 s request timeout, provider default safety settings</td></tr>
+    </tbody>
+  </table></div>
+  <footer>Every figure in this document is taken from <code>results/rerank/main-20261002/report.md</code> and <code>docs/rerank/experiment-design.md</code>; the worked example and gateway timing come from the run's per-search records. Ratios and differences are computed from those numbers.</footer>
+</section>
+
+</main>
+</div>
+
+<script>
+(function () {
+  const C = { jev: "#0f8f7e", gem: "#3d63d9", ref: "#9aa3b2", ink: "#1c2330", muted: "#5d6778", line: "#e2e6ec", grid: "#eef1f5" };
+  const NS = "http://www.w3.org/2000/svg";
+  function el(tag, attrs, text) {
+    const e = document.createElementNS(NS, tag);
+    for (const k in attrs) e.setAttribute(k, attrs[k]);
+    if (text !== undefined) e.textContent = text;
+    return e;
+  }
+  function svg(w, h) { return el("svg", { viewBox: `0 0 ${w} ${h}`, role: "img", "font-family": "-apple-system, BlinkMacSystemFont, Segoe UI, Inter, Roboto, sans-serif" }); }
+  function legend(id, items) {
+    const box = document.getElementById(id);
+    items.forEach(([name, color]) => {
+      const span = document.createElement("span");
+      span.style.setProperty("--c", color);
+      span.textContent = name;
+      box.append(span);
+    });
+  }
+  const fam = s => s.startsWith("jev") ? C.jev : s.startsWith("gemini") ? C.gem : C.ref;
+
+  // ---------- data (from results/rerank/main-20261002/report.md) ----------
+  const main = [
+    { s: "gemini-listwise", ndcg: 0.768, nlo: 0.750, nhi: 0.786, ex: 77.4, elo: 74.9, ehi: 79.9, p95: 1523, cost: 1.0820 },
+    { s: "gemini-flash-listwise", ndcg: 0.793, nlo: 0.776, nhi: 0.810, ex: 80.2, elo: 77.7, ehi: 82.6, p95: 8748, cost: 2.6056 },
+    { s: "gemini-label", ndcg: 0.723, nlo: 0.705, nhi: 0.742, ex: 73.5, elo: 70.7, ehi: 76.2, p95: 1826, cost: 1.4295 },
+    { s: "gemini-pointwise", ndcg: 0.700, nlo: 0.680, nhi: 0.720, ex: 69.4, elo: 66.6, ehi: 72.3, p95: 1263, cost: 4.3047 },
+    { s: "jev-score", ndcg: 0.789, nlo: 0.772, nhi: 0.808, ex: 81.0, elo: 78.6, ehi: 83.3, p95: 425, cost: 0.4571 },
+    { s: "jev-noul-batch", ndcg: 0.786, nlo: 0.768, nhi: 0.804, ex: 80.9, elo: 78.4, ehi: 83.3, p95: 369, cost: 0.1970 },
+    { s: "jev-noul-pair", ndcg: 0.774, nlo: 0.756, nhi: 0.791, ex: 78.1, elo: 75.5, ehi: 80.6, p95: 718, cost: 0.4162 },
+    { s: "jev-choice", ndcg: 0.781, nlo: 0.764, nhi: 0.798, ex: 81.0, elo: 78.5, ehi: 83.3, p95: 306, cost: 0.0740 },
+    { s: "lexical", ndcg: 0.627, nlo: 0.607, nhi: 0.646, ex: 61.6, elo: 58.5, ehi: 64.5 },
+    { s: "random", ndcg: 0.472, nlo: 0.452, nhi: 0.493, ex: 41.6, elo: 38.5, ehi: 44.6 },
+  ];
+
+  // ---------- horizontal bar chart with CI whiskers ----------
+  function barCI(id, key, lo, hi, xmin, xmax, fmt, ticks) {
+    const rows = main.slice().sort((a, b) => b[key] - a[key]);
+    const W = 560, L = 150, R = 50, rowH = 26, T = 8, H = T + rows.length * rowH + 26;
+    const s = svg(W, H);
+    const x = v => L + (v - xmin) / (xmax - xmin) * (W - L - R);
+    ticks.forEach(t => {
+      s.append(el("line", { x1: x(t), x2: x(t), y1: T, y2: H - 22, stroke: C.grid }));
+      s.append(el("text", { x: x(t), y: H - 6, "text-anchor": "middle", "font-size": 11, fill: C.muted }, fmt(t)));
+    });
+    rows.forEach((r, i) => {
+      const y = T + i * rowH;
+      s.append(el("text", { x: L - 8, y: y + 16, "text-anchor": "end", "font-size": 12, fill: C.ink, "font-family": "ui-monospace, Menlo, monospace" }, r.s));
+      s.append(el("rect", { x: x(xmin), y: y + 5, width: Math.max(0, x(r[key]) - x(xmin)), height: 15, rx: 3, fill: fam(r.s), opacity: r.s === "gemini-listwise" ? 1 : 0.85 }));
+      s.append(el("line", { x1: x(r[lo]), x2: x(r[hi]), y1: y + 12.5, y2: y + 12.5, stroke: C.ink, "stroke-width": 1.2 }));
+      [lo, hi].forEach(k => s.append(el("line", { x1: x(r[k]), x2: x(r[k]), y1: y + 8.5, y2: y + 16.5, stroke: C.ink, "stroke-width": 1.2 })));
+      s.append(el("text", { x: x(r[hi]) + 6, y: y + 16, "font-size": 11.5, fill: C.ink, "font-weight": 600 }, fmt(r[key])));
+    });
+    const base = main.find(r => r.s === "gemini-listwise");
+    s.append(el("line", { x1: x(base[key]), x2: x(base[key]), y1: T, y2: H - 22, stroke: C.gem, "stroke-dasharray": "3 3", "stroke-width": 1 }));
+    document.getElementById(id).append(s);
+  }
+  barCI("chart-ndcg", "ndcg", "nlo", "nhi", 0.4, 0.85, v => v.toFixed(2), [0.4, 0.5, 0.6, 0.7, 0.8]);
+  barCI("chart-exact", "ex", "elo", "ehi", 30, 90, v => Math.round(v) === v ? v + "%" : v.toFixed(1) + "%", [30, 40, 50, 60, 70, 80, 90]);
+
+  // ---------- delta forest plot ----------
+  (function () {
+    const d = [
+      { s: "gemini-flash-listwise", m: 0.025, lo: 0.013, hi: 0.037, sig: true },
+      { s: "jev-score", m: 0.021, lo: 0.007, hi: 0.035, sig: true },
+      { s: "jev-noul-batch", m: 0.017, lo: 0.003, hi: 0.031, sig: true },
+      { s: "jev-choice", m: 0.013, lo: -0.001, hi: 0.027, sig: false },
+      { s: "jev-noul-pair", m: 0.006, lo: -0.009, hi: 0.021, sig: false },
+      { s: "gemini-label", m: -0.045, lo: -0.057, hi: -0.033, sig: true },
+      { s: "gemini-pointwise", m: -0.066, lo: -0.080, hi: -0.052, sig: true },
+    ];
+    const W = 900, L = 170, R = 70, rowH = 26, T = 8, H = T + d.length * rowH + 26, xmin = -0.09, xmax = 0.05;
+    const s = svg(W, H);
+    const x = v => L + (v - xmin) / (xmax - xmin) * (W - L - R);
+    [-0.08, -0.06, -0.04, -0.02, 0, 0.02, 0.04].forEach(t => {
+      s.append(el("line", { x1: x(t), x2: x(t), y1: T, y2: H - 22, stroke: t === 0 ? "#b4bccb" : C.grid, "stroke-width": t === 0 ? 1.5 : 1 }));
+      s.append(el("text", { x: x(t), y: H - 6, "text-anchor": "middle", "font-size": 11, fill: C.muted }, (t > 0 ? "+" : "") + t.toFixed(2)));
+    });
+    // shaded "within 0.02" band
+    s.append(el("rect", { x: x(-0.02), y: T, width: x(0) - x(-0.02), height: H - 22 - T, fill: "#18864b", opacity: 0.06 }));
+    s.append(el("text", { x: x(-0.01), y: T + 10, "text-anchor": "middle", "font-size": 10, fill: "#18864b" }, "within 0.02"));
+    d.forEach((r, i) => {
+      const y = T + i * rowH + 13;
+      const c = fam(r.s);
+      s.append(el("text", { x: L - 8, y: y + 4, "text-anchor": "end", "font-size": 12, fill: C.ink, "font-family": "ui-monospace, Menlo, monospace" }, r.s));
+      s.append(el("line", { x1: x(r.lo), x2: x(r.hi), y1: y, y2: y, stroke: c, "stroke-width": 2 }));
+      s.append(el("circle", { cx: x(r.m), cy: y, r: 5.5, fill: r.sig ? c : "#fff", stroke: c, "stroke-width": 2 }));
+      s.append(el("text", { x: x(r.hi) + 8, y: y + 4, "font-size": 11.5, fill: C.ink, "font-weight": 600 }, (r.m > 0 ? "+" : "") + r.m.toFixed(3)));
+    });
+    document.getElementById("chart-delta").append(s);
+  })();
+
+  // ---------- grouped bars by slice ----------
+  (function () {
+    const sys = ["gemini-listwise", "gemini-flash-listwise", "jev-score", "jev-noul-batch", "jev-choice", "lexical"];
+    const colors = { "gemini-listwise": "#3d63d9", "gemini-flash-listwise": "#93a9ec", "jev-score": "#0f8f7e", "jev-noul-batch": "#4fbfae", "jev-choice": "#a3dcd3", "lexical": "#b9c0cc" };
+    const slices = ["General", "Grocery", "Hard", "Negations"];
+    const v = {
+      "gemini-listwise": [0.765, 0.783, 0.587, 0.713],
+      "gemini-flash-listwise": [0.786, 0.829, 0.644, 0.762],
+      "jev-score": [0.783, 0.818, 0.608, 0.760],
+      "jev-noul-batch": [0.781, 0.809, 0.611, 0.756],
+      "jev-choice": [0.779, 0.789, 0.614, 0.748],
+      "lexical": [0.629, 0.617, 0.482, 0.536],
+    };
+    const W = 900, H = 260, L = 40, R = 10, T = 10, B = 30, ymin = 0.4, ymax = 0.85;
+    const s = svg(W, H);
+    const y = val => T + (1 - (val - ymin) / (ymax - ymin)) * (H - T - B);
+    [0.4, 0.5, 0.6, 0.7, 0.8].forEach(t => {
+      s.append(el("line", { x1: L, x2: W - R, y1: y(t), y2: y(t), stroke: C.grid }));
+      s.append(el("text", { x: L - 6, y: y(t) + 4, "text-anchor": "end", "font-size": 11, fill: C.muted }, t.toFixed(1)));
+    });
+    const gw = (W - L - R) / slices.length, bw = (gw - 30) / sys.length;
+    slices.forEach((name, gi) => {
+      const gx = L + gi * gw + 15;
+      sys.forEach((sn, si) => {
+        const val = v[sn][gi];
+        s.append(el("rect", { x: gx + si * bw + 1, y: y(val), width: bw - 2, height: y(ymin) - y(val), rx: 2, fill: colors[sn] }));
+        s.append(el("text", { x: gx + si * bw + bw / 2, y: y(val) - 4, "text-anchor": "middle", "font-size": 9.5, fill: C.muted }, val.toFixed(2).slice(1)));
+      });
+      s.append(el("text", { x: gx + (gw - 30) / 2, y: H - 10, "text-anchor": "middle", "font-size": 12, fill: C.ink, "font-weight": 600 }, name));
+    });
+    document.getElementById("chart-slices").append(s);
+    legend("legend-slices", sys.map(n => [n, colors[n]]));
+  })();
+
+  // ---------- scatter (log x) ----------
+  function scatter(id, key, xmin, xmax, ticks, fmt, offsets) {
+    const pts = main.filter(r => r[key] !== undefined);
+    const W = 900, H = 300, L = 46, R = 16, T = 14, B = 38, ymin = 0.68, ymax = 0.80;
+    const s = svg(W, H);
+    const lx = v => L + (Math.log10(v) - Math.log10(xmin)) / (Math.log10(xmax) - Math.log10(xmin)) * (W - L - R);
+    const y = v => T + (1 - (v - ymin) / (ymax - ymin)) * (H - T - B);
+    ticks.forEach(t => {
+      s.append(el("line", { x1: lx(t), x2: lx(t), y1: T, y2: H - B, stroke: C.grid }));
+      s.append(el("text", { x: lx(t), y: H - B + 16, "text-anchor": "middle", "font-size": 11, fill: C.muted }, fmt(t)));
+    });
+    [0.68, 0.70, 0.72, 0.74, 0.76, 0.78, 0.80].forEach(t => {
+      s.append(el("line", { x1: L, x2: W - R, y1: y(t), y2: y(t), stroke: C.grid }));
+      s.append(el("text", { x: L - 6, y: y(t) + 4, "text-anchor": "end", "font-size": 11, fill: C.muted }, t.toFixed(2)));
+    });
+    s.append(el("text", { x: (L + W - R) / 2, y: H - 4, "text-anchor": "middle", "font-size": 11.5, fill: C.muted }, key === "p95" ? "p95 latency per search (ms, log)" : "$ per 1,000 searches (log)"));
+    pts.forEach(r => {
+      const c = fam(r.s), cx = lx(r[key]), cy = y(r.ndcg);
+      s.append(el("circle", { cx, cy, r: r.s === "gemini-listwise" ? 7 : 6, fill: c, stroke: "#fff", "stroke-width": 1.5 }));
+      const o = offsets[r.s] || [8, 4, "start"];
+      s.append(el("text", { x: cx + o[0], y: cy + o[1], "text-anchor": o[2], "font-size": 11, fill: C.ink, "font-family": "ui-monospace, Menlo, monospace" }, r.s));
+    });
+    document.getElementById(id).append(s);
+  }
+  scatter("chart-lat", "p95", 100, 14000, [100, 300, 1000, 3000, 10000], t => t >= 1000 ? (t / 1000) + " s" : t + " ms", {
+    "jev-score": [8, -8, "start"], "jev-noul-batch": [-8, -8, "end"], "jev-choice": [0, 20, "middle"], "jev-noul-pair": [10, 4, "start"],
+    "gemini-listwise": [10, 4, "start"], "gemini-flash-listwise": [-10, 4, "end"], "gemini-label": [10, 4, "start"], "gemini-pointwise": [10, 4, "start"],
+  });
+  scatter("chart-cost", "cost", 0.03, 8, [0.03, 0.1, 0.3, 1, 3], t => "$" + t, {
+    "jev-score": [0, -11, "middle"], "jev-noul-batch": [0, 20, "middle"], "jev-choice": [10, 4, "start"], "jev-noul-pair": [0, 20, "middle"],
+    "gemini-listwise": [10, 4, "start"], "gemini-flash-listwise": [-10, 4, "end"], "gemini-label": [10, 4, "start"], "gemini-pointwise": [-10, 4, "end"],
+  });
+
+  // ---------- approach vs model pairs ----------
+  (function () {
+    const pairs = [
+      { task: "Label every candidate, one call per search", a: ["gemini-label", 0.723], b: ["jev-score", 0.789] },
+      { task: "Label one candidate per call, in parallel", a: ["gemini-pointwise", 0.700], b: ["jev-noul-pair", 0.774] },
+      { task: "Reference: rank the whole list in one call", a: ["gemini-listwise", 0.768], b: null },
+    ];
+    const W = 900, L = 290, R = 60, T = 6, rowH = 52, H = T + pairs.length * rowH + 22, xmin = 0.6, xmax = 0.82;
+    const s = svg(W, H);
+    const x = v => L + (v - xmin) / (xmax - xmin) * (W - L - R);
+    [0.6, 0.65, 0.7, 0.75, 0.8].forEach(t => {
+      s.append(el("line", { x1: x(t), x2: x(t), y1: T, y2: H - 20, stroke: C.grid }));
+      s.append(el("text", { x: x(t), y: H - 5, "text-anchor": "middle", "font-size": 11, fill: C.muted }, t.toFixed(2)));
+    });
+    pairs.forEach((p, i) => {
+      const y0 = T + i * rowH;
+      s.append(el("text", { x: 0, y: y0 + 26, "font-size": 12.5, fill: C.ink, "font-weight": 600 }, p.task));
+      [p.a, p.b].forEach((it, j) => {
+        if (!it) return;
+        const yy = y0 + 6 + j * 20, c = fam(it[0]);
+        s.append(el("rect", { x: x(xmin), y: yy, width: x(it[1]) - x(xmin), height: 16, rx: 3, fill: c, opacity: 0.88 }));
+        s.append(el("text", { x: x(xmin) + 6, y: yy + 12, "font-size": 11, fill: "#fff", "font-family": "ui-monospace, Menlo, monospace" }, it[0]));
+        s.append(el("text", { x: x(it[1]) + 6, y: yy + 12, "font-size": 11.5, fill: C.ink, "font-weight": 600 }, it[1].toFixed(3)));
+      });
+      if (p.b) {
+        const d = (p.b[1] - p.a[1]);
+        s.append(el("text", { x: W - 4, y: y0 + 26, "text-anchor": "end", "font-size": 12, fill: "#18864b", "font-weight": 700 }, "+" + d.toFixed(3)));
+      }
+    });
+    document.getElementById("chart-pairs").append(s);
+  })();
+
+  // ---------- abstention scatter ----------
+  (function () {
+    const d = [
+      ["gemini-listwise", 48.3, 14.9], ["gemini-flash-listwise", 46.0, 9.9], ["gemini-label", 51.5, 14.0], ["gemini-pointwise", 51.0, 13.7],
+      ["jev-score", 78.0, 34.7], ["jev-noul-batch", 65.3, 25.2], ["jev-noul-pair", 62.0, 21.7], ["jev-choice", 71.0, 27.8],
+    ];
+    const off = { "gemini-listwise": [-10, 4, "end"], "gemini-flash-listwise": [10, 4, "start"], "gemini-label": [10, -6, "start"], "gemini-pointwise": [8, 18, "start"],
+      "jev-score": [-10, 4, "end"], "jev-noul-batch": [10, 4, "start"], "jev-noul-pair": [10, 4, "start"], "jev-choice": [10, 4, "start"] };
+    const W = 900, H = 300, L = 50, R = 20, T = 12, B = 40, xmin = 40, xmax = 85, ymin = 5, ymax = 40;
+    const s = svg(W, H);
+    const x = v => L + (v - xmin) / (xmax - xmin) * (W - L - R);
+    const y = v => T + (v - ymin) / (ymax - ymin) * (H - T - B);
+    for (let t = 40; t <= 85; t += 5) {
+      s.append(el("line", { x1: x(t), x2: x(t), y1: T, y2: H - B, stroke: C.grid }));
+      s.append(el("text", { x: x(t), y: H - B + 16, "text-anchor": "middle", "font-size": 11, fill: C.muted }, t + "%"));
+    }
+    for (let t = 5; t <= 40; t += 5) {
+      s.append(el("line", { x1: L, x2: W - R, y1: y(t), y2: y(t), stroke: C.grid }));
+      s.append(el("text", { x: L - 6, y: y(t) + 4, "text-anchor": "end", "font-size": 11, fill: C.muted }, t + "%"));
+    }
+    s.append(el("text", { x: (L + W - R) / 2, y: H - 4, "text-anchor": "middle", "font-size": 11.5, fill: C.muted }, "Recall on nomatch (higher is better)"));
+    s.append(el("text", { x: 12, y: (T + H - B) / 2, "text-anchor": "middle", "font-size": 11.5, fill: C.muted, transform: `rotate(-90 12 ${(T + H - B) / 2})` }, "False abstentions on main"));
+    d.forEach(([n, rec, fa]) => {
+      const c = fam(n);
+      s.append(el("circle", { cx: x(rec), cy: y(fa), r: n === "gemini-listwise" ? 7 : 6, fill: c, stroke: "#fff", "stroke-width": 1.5 }));
+      const o = off[n];
+      s.append(el("text", { x: x(rec) + o[0], y: y(fa) + o[1], "text-anchor": o[2], "font-size": 11, fill: C.ink, "font-family": "ui-monospace, Menlo, monospace" }, n));
+    });
+    document.getElementById("chart-abst").append(s);
+  })();
+
+  // ---------- consistency paired bars ----------
+  (function () {
+    const d = [
+      ["gemini-listwise", 95.3, 26.3], ["gemini-flash-listwise", 91.9, 43.0], ["gemini-label", 86.7, 14.3], ["gemini-pointwise", 82.0, 22.0],
+      ["jev-score", 79.7, 54.0], ["jev-noul-batch", 85.7, 57.0], ["jev-noul-pair", 80.7, 75.0], ["jev-choice", 94.0, 61.0],
+    ];
+    const W = 900, L = 170, R = 50, T = 4, rowH = 30, H = T + d.length * rowH + 24;
+    const s = svg(W, H);
+    const x = v => L + v / 100 * (W - L - R);
+    [0, 25, 50, 75, 100].forEach(t => {
+      s.append(el("line", { x1: x(t), x2: x(t), y1: T, y2: H - 20, stroke: C.grid }));
+      s.append(el("text", { x: x(t), y: H - 5, "text-anchor": "middle", "font-size": 11, fill: C.muted }, t + "%"));
+    });
+    d.forEach(([n, rep, rev], i) => {
+      const y0 = T + i * rowH;
+      s.append(el("text", { x: L - 8, y: y0 + 18, "text-anchor": "end", "font-size": 12, fill: fam(n), "font-family": "ui-monospace, Menlo, monospace", "font-weight": 600 }, n));
+      s.append(el("rect", { x: x(0), y: y0 + 4, width: x(rep) - x(0), height: 10, rx: 2, fill: "#7b8597" }));
+      s.append(el("text", { x: x(rep) + 5, y: y0 + 13, "font-size": 10.5, fill: C.muted }, rep.toFixed(1) + "%"));
+      s.append(el("rect", { x: x(0), y: y0 + 15, width: x(rev) - x(0), height: 10, rx: 2, fill: "#d9a33a" }));
+      s.append(el("text", { x: x(rev) + 5, y: y0 + 24, "font-size": 10.5, fill: C.ink, "font-weight": 600 }, rev.toFixed(1) + "%"));
+    });
+    document.getElementById("chart-cons").append(s);
+  })();
+
+  // ---------- confusion matrices ----------
+  function cm(id, rows, cols, color) {
+    const cell = 52, L = 64, T = 26, extra = 6;
+    const W = L + cols.length * cell + extra, H = T + rows.length * cell + 6;
+    const s = svg(W, H);
+    cols.forEach((c, j) => s.append(el("text", { x: L + j * cell + cell / 2, y: 16, "text-anchor": "middle", "font-size": 11, fill: C.muted }, c)));
+    rows.forEach((r, i) => {
+      const tot = r.v.reduce((a, b) => a + b, 0);
+      s.append(el("text", { x: L - 8, y: T + i * cell + cell / 2 + 4, "text-anchor": "end", "font-size": 11, fill: C.muted }, "gold " + r.g));
+      r.v.forEach((n, j) => {
+        const share = n / tot;
+        s.append(el("rect", { x: L + j * cell + 1, y: T + i * cell + 1, width: cell - 2, height: cell - 2, rx: 4, fill: color, opacity: 0.08 + 0.85 * share }));
+        s.append(el("text", { x: L + j * cell + cell / 2, y: T + i * cell + cell / 2, "text-anchor": "middle", "font-size": 11.5, "font-weight": 600, fill: share > 0.45 ? "#fff" : C.ink }, Math.round(share * 100) + "%"));
+        s.append(el("text", { x: L + j * cell + cell / 2, y: T + i * cell + cell / 2 + 13, "text-anchor": "middle", "font-size": 9, fill: share > 0.45 ? "#e9f1ff" : C.muted }, n.toLocaleString()));
+      });
+    });
+    document.getElementById(id).append(s);
+  }
+  cm("cm-jev", [{ g: "E", v: [5269, 3280, 274, 1645] }, { g: "S", v: [1302, 4924, 126, 2777] }, { g: "C", v: [113, 100, 525, 341] }, { g: "I", v: [223, 683, 191, 2935] }], ["E", "S", "C", "I"], C.jev);
+  cm("cm-gl", [{ g: "E", v: [5335, 4071, 169, 784] }, { g: "S", v: [1329, 6055, 90, 1533] }, { g: "C", v: [103, 288, 426, 259] }, { g: "I", v: [218, 1241, 169, 2309] }], ["E", "S", "C", "I"], C.gem);
+  cm("cm-gp", [{ g: "E", v: [5491, 3480, 236, 836, 403] }, { g: "S", v: [1455, 5548, 119, 1514, 477] }, { g: "C", v: [139, 265, 444, 199, 32] }, { g: "I", v: [286, 1098, 184, 2274, 188] }], ["E", "S", "C", "I", "miss"], C.gem);
+
+  // ---------- cascade lines ----------
+  (function () {
+    const share = [0, 10, 25, 50, 100];
+    const series = [
+      { n: "jev-score", v: [0.789, 0.785, 0.781, 0.775, 0.768], c: "#0f8f7e" },
+      { n: "jev-noul-batch", v: [0.785, 0.781, 0.776, 0.771, 0.768], c: "#4fbfae" },
+      { n: "jev-noul-pair", v: [0.774, 0.776, 0.779, 0.777, 0.768], c: "#7a5bd1" },
+      { n: "jev-choice", v: [0.781, 0.781, 0.778, 0.773, 0.768], c: "#d9a33a" },
+    ];
+    const W = 900, H = 260, L = 50, R = 120, T = 12, B = 34, ymin = 0.764, ymax = 0.792;
+    const s = svg(W, H);
+    const x = v => L + v / 100 * (W - L - R);
+    const y = v => T + (1 - (v - ymin) / (ymax - ymin)) * (H - T - B);
+    share.forEach(t => {
+      s.append(el("line", { x1: x(t), x2: x(t), y1: T, y2: H - B, stroke: C.grid }));
+      s.append(el("text", { x: x(t), y: H - B + 16, "text-anchor": "middle", "font-size": 11, fill: C.muted }, t + "%"));
+    });
+    [0.765, 0.770, 0.775, 0.780, 0.785, 0.790].forEach(t => {
+      s.append(el("line", { x1: L, x2: W - R, y1: y(t), y2: y(t), stroke: C.grid }));
+      s.append(el("text", { x: L - 6, y: y(t) + 4, "text-anchor": "end", "font-size": 11, fill: C.muted }, t.toFixed(3)));
+    });
+    s.append(el("line", { x1: L, x2: W - R, y1: y(0.768), y2: y(0.768), stroke: C.gem, "stroke-dasharray": "4 3" }));
+    s.append(el("text", { x: W - R + 6, y: y(0.768) + 4, "font-size": 11, fill: C.gem }, "gemini-listwise"));
+    s.append(el("text", { x: (L + W - R) / 2, y: H - 2, "text-anchor": "middle", "font-size": 11.5, fill: C.muted }, "Share of searches passed to gemini-listwise"));
+    series.forEach(se => {
+      const d = se.v.map((v, i) => (i ? "L" : "M") + x(share[i]) + " " + y(v)).join(" ");
+      s.append(el("path", { d, fill: "none", stroke: se.c, "stroke-width": 2.2 }));
+      se.v.forEach((v, i) => s.append(el("circle", { cx: x(share[i]), cy: y(v), r: 3.5, fill: se.c })));
+    });
+    document.getElementById("chart-cascade").append(s);
+    legend("legend-cascade", series.map(se => [se.n, se.c]));
+  })();
+
+  // ---------- active TOC ----------
+  const links = Array.from(document.querySelectorAll("nav.toc a"));
+  const map = new Map(links.map(a => [a.getAttribute("href").slice(1), a]));
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { links.forEach(a => a.classList.remove("active")); const a = map.get(e.target.id); if (a) a.classList.add("active"); }
+    });
+  }, { rootMargin: "-20% 0px -70% 0px" });
+  document.querySelectorAll("section.card").forEach(s => obs.observe(s));
+})();
+</script>
+</body>
+</html>
